@@ -30,4 +30,19 @@ export class CategoryService {
       } satisfies ApiResponse;
     }
   }
+
+  async update(dto: CategoryDto, categoryId: number) {
+    try {
+      const response = await fetch(`${API_URL}/${categoryId}`, {
+        method: "PUT",
+        body: JSON.stringify(dto),
+      });
+      return (await response.json()) as ApiResponse;
+    } catch (error) {
+      return {
+        success: false,
+        message: "Could not connect to the server",
+      } satisfies ApiResponse;
+    }
+  }
 }

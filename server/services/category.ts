@@ -38,4 +38,20 @@ export class CategoryService {
       } satisfies ApiResponse;
     }
   }
+
+  async update(dto: CategoryDto, categoryId: number) {
+    try {
+      await cateogryRepository.update(dto, categoryId);
+      return {
+        success: true,
+        message: "Category successfully updated",
+      } satisfies ApiResponse;
+    } catch (error) {
+      console.error("Server error", error);
+      return {
+        success: false,
+        message: "Something went wrong while updating the category.",
+      } satisfies ApiResponse;
+    }
+  }
 }

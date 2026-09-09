@@ -19,4 +19,16 @@ export class CategoryRepository {
       },
     });
   }
+
+  //UPDATE CATEGORY
+  async update(dto: CategoryDto, categoryId: number) {
+    return prisma.category.update({
+      where: {
+        id: categoryId,
+      },
+      data: {
+        name: dto.name,
+      },
+    });
+  }
 }
