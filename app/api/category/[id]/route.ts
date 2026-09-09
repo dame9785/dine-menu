@@ -1,17 +1,22 @@
-import { ApiResponse } from "@/types/api-responses";
 import { CategoryService } from "@/server/services/category";
-import { CategoryDto } from "@/types/category";
+import { ApiResponse } from "@/types/api-responses";
 import { NextResponse } from "next/server";
+
+type RouteParams = {
+  params: Promise<{
+    id: string;
+  }>;
+};
 
 const categoryService = new CategoryService();
 
-export async function POST(request: Request) {
+export async function DELETE(request: Request, { params }: RouteParams) {
   try {
-    const dto: CategoryDto = await request.json();
-    const result = await categoryService.create(dto);
+    const { id } = await params;
+    const result = await categoryService.delete(Number(id));
     return NextResponse.json(result, { status: result.success ? 200 : 404 });
   } catch (error) {
-    console.error("CATEGORY/POST", error);
+    console.error("CATEGORY/{ID}/DELETE", error);
     return {
       success: false,
       message: "Failed to create category",

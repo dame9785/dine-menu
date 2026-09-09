@@ -10,4 +10,13 @@ export class CategoryRepository {
       },
     });
   }
+
+  //DELETE CATEGORY
+  async delete(categoryId: number) {
+    return prisma.category.delete({
+      where: {
+        id: categoryId,
+      },
+    });
+  }
 }

@@ -18,4 +18,16 @@ export class CategoryService {
       } satisfies ApiResponse;
     }
   }
+
+  async delete(categoryId: number) {
+    try {
+      const response = await fetch(`${API_URL}/${categoryId}`);
+      return (await response.json()) as ApiResponse;
+    } catch (error) {
+      return {
+        success: false,
+        message: "Could not connect to the server",
+      } satisfies ApiResponse;
+    }
+  }
 }
