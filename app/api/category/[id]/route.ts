@@ -28,7 +28,9 @@ export async function DELETE(request: Request, { params }: RouteParams) {
 export async function PUT(request: Request, { params }: RouteParams) {
   try {
     const { id } = await params;
+    console.log('ID', id);
     const dto: CategoryDto = await request.json();
+    console.log('DTO', dto);
     const result = await categoryService.update(dto, Number(id));
     return NextResponse.json(result, { status: result.success ? 200 : 404 });
   } catch (error) {

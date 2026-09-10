@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useTransition } from 'react';
-import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 import type { CategoryDto, CategoryViewModel } from '@/types/category';
@@ -25,8 +24,10 @@ export default function CategoryModal({ category }: Props) {
       if (isEdit) {
         const categoryDto: CategoryDto = {
           id: category.id,
-          name: category.name,
+          name: name.trim(),
         };
+
+        console.log(categoryDto);
 
         const response = await updateCategory(categoryDto);
         if (!response?.success) {
@@ -61,7 +62,7 @@ export default function CategoryModal({ category }: Props) {
 
   return (
     <>
-      {/* Trigger */}
+      {/* Displays depending on whether it is editing or creating. */}
       {isEdit ? (
         <button
           type="button"
@@ -84,7 +85,6 @@ export default function CategoryModal({ category }: Props) {
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
           <div className="w-full max-w-md rounded-xl border border-white/10 bg-zinc-900 p-6 shadow-2xl">
-            {/* Header */}
             <div className="mb-6 flex items-center justify-between">
               <h2 className="text-xl font-semibold text-white">{isEdit ? 'Edit category' : 'Create category'}</h2>
 
@@ -112,7 +112,7 @@ export default function CategoryModal({ category }: Props) {
                 className="w-full rounded-lg border border-white/10 bg-zinc-800 px-4 py-2.5 text-white outline-none transition placeholder:text-zinc-500 focus:border-blue-500"
               />
 
-              {/* Buttons */}
+              {/* Buttons actions */}
               <div className="mt-6 flex justify-end gap-3">
                 <button
                   type="button"
