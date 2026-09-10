@@ -2,6 +2,10 @@ import { prisma } from "@/lib/prisma";
 import { CategoryDto } from "@/types/category";
 
 export class CategoryRepository {
+  async getAll() {
+    return prisma.category.findMany();
+  }
+
   //CREATE CATEGORY
   async create(dto: CategoryDto) {
     return prisma.category.create({

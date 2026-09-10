@@ -1,7 +1,7 @@
-import { CategoryService } from "@/server/services/category";
-import { ApiResponse } from "@/types/api-responses";
-import { CategoryDto } from "@/types/category";
-import { NextResponse } from "next/server";
+import { CategoryService } from '@/server/services/category';
+import { ApiResponse } from '@/types/api-responses';
+import { CategoryDto } from '@/types/category';
+import { NextResponse } from 'next/server';
 
 type RouteParams = {
   params: Promise<{
@@ -17,11 +17,11 @@ export async function DELETE(request: Request, { params }: RouteParams) {
     const result = await categoryService.delete(Number(id));
     return NextResponse.json(result, { status: result.success ? 200 : 404 });
   } catch (error) {
-    console.error("CATEGORY/{ID}/DELETE", error);
+    console.error('CATEGORY/{ID}/DELETE', error);
     return {
       success: false,
-      message: "Failed to create category",
-    } satisfies ApiResponse;
+      message: 'Failed to create category',
+    } satisfies ApiResponse<[]>;
   }
 }
 
@@ -32,10 +32,10 @@ export async function PUT(request: Request, { params }: RouteParams) {
     const result = await categoryService.update(dto, Number(id));
     return NextResponse.json(result, { status: result.success ? 200 : 404 });
   } catch (error) {
-    console.error("CATEGORY/{ID}/PUT", error);
+    console.error('CATEGORY/{ID}/PUT', error);
     return {
       success: false,
-      message: "Failed to update category",
-    } satisfies ApiResponse;
+      message: 'Failed to update category',
+    } satisfies ApiResponse<[]>;
   }
 }

@@ -1,10 +1,16 @@
-import { CategoryService } from "@/services/category";
+import { CategoryService } from '@/services/category';
+import CategoryTable from '@/components/category/categories-table';
 
 const categoryService = new CategoryService();
-export default function CategoryPage() {
+export default async function CategoryPage() {
+  const response = await categoryService.getAll();
+  const categories = response.data;
   return (
-    <div>
-      <h1 className="text-3xl font-bold">Categories</h1>
-    </div>
+    <section>
+      <header>
+        <h1 className="text-3xl font-bold">Categories</h1>
+      </header>
+      <CategoryTable categories={categories} />
+    </section>
   );
 }
