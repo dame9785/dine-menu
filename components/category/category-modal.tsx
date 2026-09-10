@@ -3,8 +3,9 @@
 import { useState, useTransition } from 'react';
 import { toast } from 'sonner';
 
-import type { CategoryDto, CategoryViewModel } from '@/types/category';
+import type { CategoryViewModel } from '@/types/category';
 import { createCategory, updateCategory } from '@/actions/category';
+import { CategoryDto, createCategorySchema } from '@/schemas/category';
 
 type Props = {
   category?: CategoryViewModel;
@@ -14,6 +15,7 @@ export default function CategoryModal({ category }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState(category?.name ?? '');
   const [isPending, startTransition] = useTransition();
+  const [errors, setErrors] = useState<Record<string, string[]>>({});
 
   const isEdit = !!category;
 
@@ -22,14 +24,19 @@ export default function CategoryModal({ category }: Props) {
 
     startTransition(async () => {
       if (isEdit) {
-        const categoryDto: CategoryDto = {
+        const dto: CategoryDto = {
           id: category.id,
-          name: name.trim(),
+          name: name,
         };
 
-        console.log(categoryDto);
+        //Validation with zod
+        const validate = createCategorySchema.safeParse(dto);
+        if (!validate.success) {
+          setErrors(validate.error.flatten().fieldErrors);
+          return;
+        }
 
-        const response = await updateCategory(categoryDto);
+        const response = await updateCategory(validate.data);
         if (!response?.success) {
           toast.error(response?.message);
           return;
@@ -42,7 +49,13 @@ export default function CategoryModal({ category }: Props) {
           name: name,
         };
 
-        const response = await createCategory(dto);
+        const validate = createCategorySchema.safeParse(dto);
+        if (!validate.success) {
+          setErrors(validate.error.flatten().fieldErrors);
+          return;
+        }
+
+        const response = await createCategory(validate.data);
         if (!response.success) {
           toast.error(response?.message);
           return;
@@ -99,18 +112,25 @@ export default function CategoryModal({ category }: Props) {
 
             {/* Form */}
             <form onSubmit={handleSubmit}>
-              <label htmlFor="category-name" className="mb-2 block text-sm font-medium text-zinc-300">
-                Category name
-              </label>
+              <div className="form-group">
+                <label htmlFor="category-name" className="mb-2 block text-sm font-medium text-zinc-300">
+                  Category name
+                </label>
 
-              <input
-                id="category-name"
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="e.g. Breakfast"
-                className="w-full rounded-lg border border-white/10 bg-zinc-800 px-4 py-2.5 text-white outline-none transition placeholder:text-zinc-500 focus:border-blue-500"
-              />
+                <input
+                  id="category-name"
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="e.g. Breakfast"
+                  className="w-full rounded-lg border border-white/10 bg-zinc-800 px-4 py-2.5 text-white outline-none transition placeholder:text-zinc-500 focus:border-blue-500"
+                />
+                {errors.name?.[0] && (
+                  <p id="name-error" className="text-red-500" role="alert">
+                    {errors.name[0]}
+                  </p>
+                )}
+              </div>
 
               {/* Buttons actions */}
               <div className="mt-6 flex justify-end gap-3">
