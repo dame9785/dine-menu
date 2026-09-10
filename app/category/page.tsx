@@ -1,5 +1,6 @@
 import { CategoryService } from '@/services/category';
 import CategoryTable from '@/components/category/categories-table';
+import CategoryModal from '@/components/category/category-modal';
 
 const categoryService = new CategoryService();
 export default async function CategoryPage() {
@@ -8,7 +9,10 @@ export default async function CategoryPage() {
   return (
     <section>
       <header>
-        <h1 className="text-3xl font-bold">Categories</h1>
+        <div className="flex justify-between">
+          <h1 className="text-3xl font-bold">Categories</h1>
+          <CategoryModal />
+        </div>
       </header>
       <CategoryTable categories={categories} />
     </section>

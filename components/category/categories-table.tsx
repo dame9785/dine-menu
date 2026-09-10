@@ -1,6 +1,7 @@
 import { CategoryViewModel } from '@/types/category';
 import { deleteCategory } from '@/actions/category';
 import DeleteCategoryButton from '@/components/category/delete-category-button';
+import CategoryModal from '@/components/category/category-modal';
 
 type Props = {
   categories: CategoryViewModel[] | undefined;
@@ -31,9 +32,7 @@ export default function CategoryTable({ categories }: Props) {
               <td className="px-6 py-4 text-sm text-zinc-400">{category.id}</td>
               <td className="px-6 py-4 text-right">
                 <div className="flex justify-end gap-2">
-                  <button className="rounded-lg border border-blue-500/30 px-3 py-1.5 text-sm text-blue-400 transition hover:bg-blue-500/10">
-                    Edit
-                  </button>
+                  <CategoryModal category={category} />
                   <DeleteCategoryButton categoryId={category.id} deleteCategory={deleteCategory} />
                 </div>
               </td>
