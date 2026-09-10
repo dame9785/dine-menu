@@ -1,29 +1,35 @@
-import { CategoryDto, CategoryViewModel } from '@/types/category';
+import { CategoryViewModel } from '@/types/category';
 import { CategoryRepository } from '../repositories/category';
-import { ApiResponse } from '@/types/api-responses';
+import { ApiResponse, CategoryApiResponse } from '@/types/api-responses';
 import { CategoryMapper } from '@/server/mapping/category';
+import { CategoryDto } from '@/schemas/category';
 
 const cateogryRepository = new CategoryRepository();
 
 export class CategoryService {
   //GET ALL CATEGORIES
-  async getAll(): Promise<ApiResponse<CategoryViewModel[]>> {
+  async getAll(page: number): Promise<CategoryApiResponse> {
     try {
-      const categories = await cateogryRepository.getAll();
-      const viewModel = categories.map((i) => CategoryMapper.categoryDboToViewModel(i));
+      const result = await cateogryRepository.getAll(page);
 
       return {
         success: true,
         message: 'Retrieval of categories succeeded.',
-        data: viewModel,
-      } satisfies ApiResponse<CategoryViewModel[]>;
+        data: result.categories.map((i) => CategoryMapper.categoryDboToViewModel(i)),
+        pagination: {
+          totalItems: result.totalNumberOfCategories,
+          currentPage: page,
+          pageSize: result.pageSize,
+          totalPages: result.totalPages,
+        },
+      } satisfies CategoryApiResponse;
     } catch (error) {
       console.error('Server error', error);
 
       return {
         success: false,
         message: 'Something went wrong while getting all the categories.',
-      } satisfies ApiResponse<CategoryViewModel[]>;
+      } satisfies CategoryApiResponse;
     }
   }
 

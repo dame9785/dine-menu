@@ -1,20 +1,25 @@
-import { ApiResponse } from '@/types/api-responses';
-import { CategoryDto, CategoryViewModel } from '@/types/category';
+import { CategoryDto } from '@/schemas/category';
+import { ApiResponse, CategoryApiResponse } from '@/types/api-responses';
 
 const API_URL = 'http://localhost:3000/api/category';
 
 export class CategoryService {
-  async getAll(): Promise<ApiResponse<CategoryViewModel[]>> {
+  async getAll(page: number): Promise<CategoryApiResponse> {
     try {
-      const response = await fetch(`${API_URL}`, {
+      const response = await fetch(`${API_URL}?page=${page}`, {
         method: 'GET',
       });
-      return (await response.json()) as ApiResponse<CategoryViewModel[]>;
+
+      return (await response.json()) as CategoryApiResponse;
     } catch (error) {
+      console.error('API/CATEGORY/GET', error);
+
       return {
         success: false,
-        message: 'Could not connect to the server',
-      } satisfies ApiResponse<[]>;
+        message: 'Could not connect to the server.',
+        data: [],
+        pagination: null,
+      } satisfies CategoryApiResponse;
     }
   }
 

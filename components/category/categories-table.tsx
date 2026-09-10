@@ -8,31 +8,51 @@ type Props = {
 };
 
 export default function CategoryTable({ categories }: Props) {
-  if (categories === undefined) {
-    return <h2>No categories found..</h2>;
+  if (!categories || categories.length === 0) {
+    return (
+      <div className="mt-6 flex min-h-40 items-center justify-center rounded-xl border border-neutral-800 bg-neutral-900/70">
+        <p className="text-sm text-neutral-500">No categories found.</p>
+      </div>
+    );
   }
 
   return (
-    <div className="mt-6 overflow-hidden rounded-xl border border-white/10 bg-zinc-900">
+    <div className="mt-6 overflow-hidden rounded-xl border border-neutral-800 bg-neutral-900/70 shadow-xl shadow-black/20">
       <table className="w-full text-left">
-        <thead className="border-b border-white/10 bg-zinc-800/60">
+        {/* Header */}
+        <thead className="border-b border-neutral-800 bg-neutral-800/40">
           <tr>
-            <th className="px-6 py-4 text-sm font-semibold text-zinc-400">ID</th>
-            <th className="px-6 py-4 text-sm font-semibold text-zinc-400">Name</th>
-            <th className="px-6 py-4 text-sm font-semibold text-zinc-400">#</th>
-            <th className="px-6 py-4 text-right text-sm font-semibold text-zinc-400">Actions</th>
+            <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-neutral-500">ID</th>
+
+            <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-neutral-500">Name</th>
+
+            <th className="px-6 py-4 text-right text-xs font-semibold uppercase tracking-wider text-neutral-500">
+              Actions
+            </th>
           </tr>
         </thead>
 
-        <tbody className="divide-y divide-white/10">
+        {/* Body */}
+        <tbody className="divide-y divide-neutral-800">
           {categories.map((category) => (
-            <tr key={category.id} className="transition-colors hover:bg-white/5">
-              <td className="px-6 py-4 text-sm text-zinc-500">#{category.id}</td>
-              <td className="px-6 py-4 font-medium text-white">{category.name}</td>
-              <td className="px-6 py-4 text-sm text-zinc-400">{category.id}</td>
-              <td className="px-6 py-4 text-right">
+            <tr key={category.id} className="group transition-colors hover:bg-blue-500/[0.04]">
+              {/* ID */}
+              <td className="px-6 py-4">
+                <span className="text-sm font-medium text-neutral-500">#{category.id}</span>
+              </td>
+
+              {/* Name */}
+              <td className="px-6 py-4">
+                <span className="font-medium text-neutral-100 transition-colors group-hover:text-blue-400">
+                  {category.name}
+                </span>
+              </td>
+
+              {/* Actions */}
+              <td className="px-6 py-4">
                 <div className="flex justify-end gap-2">
                   <CategoryModal category={category} />
+
                   <DeleteCategoryButton categoryId={category.id} deleteCategory={deleteCategory} />
                 </div>
               </td>

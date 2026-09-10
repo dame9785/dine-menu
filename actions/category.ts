@@ -1,7 +1,7 @@
 'use server';
 
+import { CategoryDto } from '@/schemas/category';
 import { CategoryService } from '@/services/category';
-import { CategoryDto } from '@/types/category';
 import { revalidatePath } from 'next/cache';
 
 const categoryService = new CategoryService();

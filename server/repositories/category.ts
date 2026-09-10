@@ -1,9 +1,29 @@
-import { prisma } from "@/lib/prisma";
-import { CategoryDto } from "@/types/category";
+import { prisma } from '@/lib/prisma';
+import { CategoryDto } from '@/schemas/category';
 
 export class CategoryRepository {
-  async getAll() {
-    return prisma.category.findMany();
+  async getAll(page: number) {
+    const totalNumberOfCategories = await prisma.category.count();
+
+    const pageSize = 5;
+    const skip = (page - 1) * pageSize;
+
+    const totalPages = Math.ceil(totalNumberOfCategories / pageSize);
+
+    const categories = await prisma.category.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+      skip,
+      take: pageSize,
+    });
+
+    return {
+      totalNumberOfCategories,
+      categories,
+      totalPages,
+      pageSize,
+    };
   }
 
   //CREATE CATEGORY
