@@ -3,16 +3,30 @@ import { CategoryService } from '@/services/category';
 import { FoodService } from '@/services/food';
 import FoodCard from '@/components/food/food-card';
 import FoodModal from '@/components/food/add-food-modal';
+import Pagination from '@/components/food/pagination';
 
 const categoryService = new CategoryService();
 const foodService = new FoodService();
 
-export default async function MenuPage() {
-  const [categoryResponse, productgResponse] = await Promise.all([categoryService.getAll(1), foodService.getAll()]);
+type Props = {
+  searchParams: Promise<{
+    page?: string;
+  }>;
+};
+
+export default async function MenuPage({ searchParams }: Props) {
+  const params = await searchParams;
+
+  //Set default current page to 1 if params.page is undefined.
+  const currentPage = Number(params.page ?? '1');
+
+  const [categoryResponse, foodResponse] = await Promise.all([
+    categoryService.getAll(1),
+    foodService.getAll(currentPage),
+  ]);
 
   const categories = categoryResponse.data;
-  const foods = productgResponse.data;
-  console.log(foods);
+  const foods = foodResponse.data;
 
   return (
     <main className="min-h-screen bg-[#05070d] p-8 text-white">
@@ -66,9 +80,10 @@ export default async function MenuPage() {
       {/* Foods */}
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
         {foods?.map((item) => {
-          return <FoodCard key={item.categoryId} foodItem={item} />;
+          return <FoodCard key={item.id} foodItem={item} />;
         })}
       </div>
+      <Pagination currentPage={currentPage} totalPages={foodResponse.pagination?.totalPages ?? 1} />
     </main>
   );
 }

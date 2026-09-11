@@ -17,15 +17,30 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const result = await foodService.getAll();
-    return NextResponse.json(result, { status: result ? 200 : 404 });
+    const pageParam = request.nextUrl.searchParams.get('page');
+    const page = pageParam ? Number(pageParam) : 1;
+
+    console.log('PAGE FROM URL:', page);
+
+    const result = await foodService.getAll(page);
+
+    console.log('FOODS RETURNED:', result.data.length);
+    console.log('PAGINATION:', result.pagination);
+
+    return NextResponse.json(result, {
+      status: 200,
+    });
   } catch (error) {
     console.error('FOOD/GET', error);
-    return {
-      success: false,
-      message: 'Failed to create category',
-    } satisfies ApiResponse<[]>;
+
+    return NextResponse.json(
+      {
+        success: false,
+        message: 'Failed to get foods',
+      },
+      { status: 500 },
+    );
   }
 }

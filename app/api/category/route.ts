@@ -16,6 +16,8 @@ export async function GET(request: NextRequest) {
         {
           success: false,
           message: 'Page must be a positive integer.',
+          data: [],
+          pagination: null,
         } satisfies CategoryApiResponse,
         { status: 400 },
       );
@@ -28,6 +30,8 @@ export async function GET(request: NextRequest) {
     return {
       success: false,
       message: 'Failed to create category',
+      data: [],
+      pagination: null,
     } satisfies CategoryApiResponse;
   }
 }

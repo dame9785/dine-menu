@@ -1,4 +1,4 @@
-import { ApiResponse } from '@/types/api-responses';
+import { ApiResponse, FoodApiResponse } from '@/types/api-responses';
 import { FoodDto, FoodViewModel } from '@/types/food';
 import { FoodRepository } from '../repositories/food';
 import { FoodMapper } from '../mapping/food';
@@ -69,22 +69,30 @@ export class FoodService {
     }
   }
 
-  async getAll(): Promise<ApiResponse<FoodViewModel[]>> {
+  async getAll(page: number): Promise<FoodApiResponse> {
     try {
-      const foods = await foodRepository.getAll();
-      const viewModel = foods.map((item) => FoodMapper.foodDboToViewModel(item));
+      const result = await foodRepository.getAll(page);
+      const viewModel = result.foods.map((item) => FoodMapper.foodDboToViewModel(item));
       return {
         success: true,
         message: 'Retrieval of foods succeeded.',
         data: viewModel,
-      } satisfies ApiResponse<FoodViewModel[]>;
+        pagination: {
+          totalItems: result.totalNumberOfFoods,
+          currentPage: page,
+          pageSize: result.pageSize,
+          totalPages: result.totalPages,
+        },
+      } satisfies FoodApiResponse;
     } catch (error) {
       console.error('Server error', error);
 
       return {
         success: false,
         message: 'Something went wrong while getting foods.',
-      } satisfies ApiResponse<[]>;
+        data: [],
+        pagination: null,
+      } satisfies FoodApiResponse;
     }
   }
 

@@ -18,12 +18,30 @@ export class FoodRepository {
     });
   }
 
-  async getAll() {
-    return await prisma.menuItem.findMany({
+  async getAll(page: number) {
+    const totalNumberOfFoods = await prisma.menuItem.count();
+    const pageSize = 6;
+    const skip = (page - 1) * pageSize;
+
+    const totalPages = Math.ceil(totalNumberOfFoods / pageSize);
+
+    const foods = await prisma.menuItem.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
       include: {
         category: true,
       },
+      skip,
+      take: pageSize,
     });
+
+    return {
+      totalNumberOfFoods,
+      foods,
+      totalPages,
+      pageSize,
+    };
   }
 
   async delete(foodId: number) {

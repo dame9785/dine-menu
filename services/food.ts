@@ -1,14 +1,14 @@
-import { ApiResponse } from '@/types/api-responses';
-import { FoodViewModel } from '@/types/food';
+import { ApiResponse, FoodApiResponse } from '@/types/api-responses';
+
 const API_URL = 'http://localhost:3000/api/food';
 
 export class FoodService {
-  async getAll(): Promise<ApiResponse<FoodViewModel[]>> {
+  async getAll(page: number): Promise<FoodApiResponse> {
     try {
-      const response = await fetch(`${API_URL}`, {
+      const response = await fetch(`${API_URL}?page=${page}`, {
         method: 'GET',
       });
-      return (await response.json()) as ApiResponse<FoodViewModel[]>;
+      return (await response.json()) as FoodApiResponse;
     } catch (error) {
       console.error('API/CATEGORY/GET', error);
 
@@ -16,7 +16,8 @@ export class FoodService {
         success: false,
         message: 'Could not connect to the server.',
         data: [],
-      } satisfies ApiResponse<FoodViewModel[]>;
+        pagination: null,
+      } satisfies FoodApiResponse;
     }
   }
 
