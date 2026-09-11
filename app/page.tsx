@@ -7,11 +7,10 @@ const categoryService = new CategoryService();
 const foodService = new FoodService();
 
 export default async function MenuPage() {
-  const response = await categoryService.getAll(1);
-  const categories = response.data;
+  const [categoryResponse, productgResponse] = await Promise.all([categoryService.getAll(1), foodService.getAll()]);
 
-  const foodResponse = await foodService.getAll();
-  const foods = foodResponse.data;
+  const categories = categoryResponse.data;
+  const foods = productgResponse.data;
 
   return (
     <main className="min-h-screen bg-[#05070d] p-8 text-white">
@@ -58,7 +57,7 @@ export default async function MenuPage() {
           return (
             <button
               key={item.id}
-              className="rounded-lg border border-slate-800 bg-[#0b1120] px-4 py-2 text-sm text-slate-400 transition hover:text-white"
+              className="cursor-pointer rounded-lg border border-slate-800 bg-[#0b1120] px-4 py-2 text-sm text-slate-400 transition hover:text-white"
             >
               {item.name}
             </button>

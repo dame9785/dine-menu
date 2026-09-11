@@ -14,10 +14,10 @@ export class FoodMapper {
       description: foodItem.description,
       price: foodItem.price,
       imageUrl: foodItem.imageUrl ?? '',
-      categoryId: foodItem.categoryId,
-      category: foodItem.category.name,
       createdAt: foodItem.createdAt,
       updatedAt: foodItem.updatedAt,
+      category: foodItem.category.name,
+      categoryId: foodItem.categoryId,
     };
   }
 }

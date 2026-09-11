@@ -1,6 +1,4 @@
-import Image from 'next/image';
 import { MoreVertical } from 'lucide-react';
-
 import { FoodViewModel } from '@/types/food';
 
 type Props = {
@@ -24,7 +22,6 @@ export default function FoodCard({ foodItem }: Props) {
         <div className="mb-3 flex items-start justify-between gap-3">
           <div>
             <h2 className="font-semibold text-white">{foodItem.name}</h2>
-
             <p className="mt-1 text-xs text-slate-500">{foodItem.category}</p>
           </div>
 
@@ -34,14 +31,8 @@ export default function FoodCard({ foodItem }: Props) {
         </div>
 
         <p className="mb-6 line-clamp-2 text-sm leading-6 text-slate-400">{foodItem.description}</p>
-
         <div className="flex items-center justify-between border-t border-slate-800/80 pt-4">
           <span className="text-lg font-semibold text-white">{Number(foodItem.price)} kr</span>
-
-          <span className="flex items-center gap-2 text-xs text-green-400">
-            <span className="h-2 w-2 rounded-full bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.7)]" />
-            Active
-          </span>
         </div>
       </div>
     </div>

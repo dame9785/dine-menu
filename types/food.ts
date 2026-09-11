@@ -15,8 +15,8 @@ export interface FoodViewModel {
   description: string;
   price: Decimal;
   imageUrl: string;
-  categoryId: number;
   createdAt: Date;
   updatedAt: Date;
   category: string;
+  categoryId: number;
 }
