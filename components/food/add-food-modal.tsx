@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 
 import { addFood } from '@/actions/food';
 import { FoodDto } from '@/types/food';
+import { addFoodSchema } from '@/schemas/food';
 
 type Props = {
   categories: {
@@ -15,6 +16,8 @@ type Props = {
 };
 
 export default function FoodModal({ categories }: Props) {
+  const [errors, setErrors] = useState<Record<string, string[]>>({});
+
   const [isOpen, setIsOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
 
@@ -49,9 +52,13 @@ export default function FoodModal({ categories }: Props) {
     }
 
     startTransition(async () => {
-      console.log(formData);
-      const response = await addFood(formData);
+      const validate = addFoodSchema.safeParse(formData);
+      if (!validate.success) {
+        setErrors(validate.error.flatten().fieldErrors);
+        return;
+      }
 
+      const response = await addFood(formData);
       if (!response.success) {
         toast.error(response.message);
         return;
@@ -73,12 +80,46 @@ export default function FoodModal({ categories }: Props) {
       setIsOpen(false);
     });
   };
+
+  const handleOpen = () => {
+    resetForm();
+    setIsOpen(true);
+  };
+
+  const handleClose = () => {
+    resetForm();
+    setIsOpen(false);
+  };
+
+  const resetForm = () => {
+    setName('');
+    setDescription('');
+    setPrice('');
+    setCategoryId('');
+    setImage(null);
+
+    if (imagePreview) {
+      URL.revokeObjectURL(imagePreview);
+    }
+
+    setImagePreview(null);
+    setErrors({});
+  };
+
+  const clearError = (field: string) => {
+    setErrors((prev) => {
+      const newErrors = { ...prev };
+      delete newErrors[field];
+      return newErrors;
+    });
+  };
+
   return (
     <>
       {/* Add food button */}
       <button
         type="button"
-        onClick={() => setIsOpen(true)}
+        onClick={handleOpen}
         className="flex cursor-pointer items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-500"
       >
         <span>+</span>
@@ -98,7 +139,7 @@ export default function FoodModal({ categories }: Props) {
 
               <button
                 type="button"
-                onClick={() => setIsOpen(false)}
+                onClick={handleClose}
                 className="rounded-lg p-2 text-slate-400 transition hover:bg-slate-800 hover:text-white"
               >
                 <X size={18} />
@@ -113,11 +154,19 @@ export default function FoodModal({ categories }: Props) {
 
                 <input
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                    clearError('name');
+                  }}
                   type="text"
                   placeholder="e.g. Margherita Pizza"
                   className="w-full rounded-lg border border-slate-800 bg-[#05070d] px-4 py-2.5 text-sm text-white outline-none placeholder:text-slate-500 focus:border-blue-500"
                 />
+                {errors.name?.[0] && (
+                  <p id="name-error" className="text-red-500" role="alert">
+                    {errors.name[0]}
+                  </p>
+                )}
               </div>
 
               {/* Description */}
@@ -125,11 +174,19 @@ export default function FoodModal({ categories }: Props) {
                 <label className="mb-2 block text-sm font-medium text-slate-300">Description</label>
                 <textarea
                   value={description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                    clearError('description');
+                  }}
                   placeholder="Describe the dish..."
                   rows={3}
                   className="w-full resize-none rounded-lg border border-slate-800 bg-[#05070d] px-4 py-2.5 text-sm text-white outline-none placeholder:text-slate-500 focus:border-blue-500"
                 />
+                {errors.description?.[0] && (
+                  <p id="description-error" className="text-red-500" role="alert">
+                    {errors.description[0]}
+                  </p>
+                )}
               </div>
               <div className="form-group">
                 <label
@@ -154,6 +211,11 @@ export default function FoodModal({ categories }: Props) {
                   onChange={handleImageChange}
                   className="hidden"
                 />
+                {errors.name?.[0] && (
+                  <p id="image-error" className="text-red-500" role="alert">
+                    {errors.image[0]}
+                  </p>
+                )}
               </div>
 
               {/* Price + Category */}
@@ -163,13 +225,21 @@ export default function FoodModal({ categories }: Props) {
                   <label className="mb-2 block text-sm font-medium text-slate-300">Price</label>
                   <input
                     value={price}
-                    onChange={(e) => setPrice(e.target.value)}
+                    onChange={(e) => {
+                      setName(e.target.value);
+                      clearError('price');
+                    }}
                     type="number"
                     min="0"
                     step="0.01"
                     placeholder="129"
                     className="w-full rounded-lg border border-slate-800 bg-[#05070d] px-4 py-2.5 text-sm text-white outline-none placeholder:text-slate-500 focus:border-blue-500"
                   />
+                  {errors.price?.[0] && (
+                    <p id="number-error" className="text-red-500" role="alert">
+                      {errors.price[0]}
+                    </p>
+                  )}
                 </div>
 
                 {/* Category */}
@@ -177,7 +247,10 @@ export default function FoodModal({ categories }: Props) {
                   <label className="mb-2 block text-sm font-medium text-slate-300">Category</label>
                   <select
                     value={categoryId}
-                    onChange={(e) => setCategoryId(e.target.value)}
+                    onChange={(e) => {
+                      setName(e.target.value);
+                      clearError('categoryId');
+                    }}
                     className="w-full rounded-lg border border-slate-800 bg-[#05070d] px-4 py-2.5 text-sm text-white outline-none focus:border-blue-500"
                   >
                     <option value="">Select</option>
@@ -187,6 +260,11 @@ export default function FoodModal({ categories }: Props) {
                       </option>
                     ))}
                   </select>
+                  {errors.categoryId?.[0] && (
+                    <p id="categoryId-error" className="text-red-500" role="alert">
+                      {errors.categoryId[0]}
+                    </p>
+                  )}
                 </div>
               </div>
 
