@@ -1,14 +1,17 @@
 import { Search, Plus } from 'lucide-react';
 import { CategoryService } from '@/services/category';
+import { FoodService } from '@/services/food';
 import FoodCard from '@/components/food/food-card';
-import { ca } from 'zod/locales';
 
 const categoryService = new CategoryService();
+const foodService = new FoodService();
 
 export default async function MenuPage() {
   const response = await categoryService.getAll(1);
   const categories = response.data;
-  console.log(categories);
+
+  const foodResponse = await foodService.getAll();
+  const foods = foodResponse.data;
 
   return (
     <main className="min-h-screen bg-[#05070d] p-8 text-white">
@@ -65,7 +68,9 @@ export default async function MenuPage() {
 
       {/* Foods */}
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
-        <FoodCard />
+        {foods?.map((item) => {
+          return <FoodCard key={item.categoryId} foodItem={item} />;
+        })}
       </div>
     </main>
   );

@@ -1,4 +1,3 @@
-import { CategoryViewModel } from '@/types/category';
 import { CategoryRepository } from '../repositories/category';
 import { ApiResponse, CategoryApiResponse } from '@/types/api-responses';
 import { CategoryMapper } from '@/server/mapping/category';
@@ -29,6 +28,8 @@ export class CategoryService {
       return {
         success: false,
         message: 'Something went wrong while getting all the categories.',
+        data: [],
+        pagination: null,
       } satisfies CategoryApiResponse;
     }
   }
