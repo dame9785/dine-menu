@@ -19,4 +19,22 @@ export class FoodService {
       } satisfies ApiResponse<FoodViewModel[]>;
     }
   }
+
+  async add(formData: FormData): Promise<ApiResponse<[]>> {
+    try {
+      const response = await fetch(`${API_URL}`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      return (await response.json()) as ApiResponse<[]>;
+    } catch (error) {
+      console.error('API/FOOD/POST', error);
+
+      return {
+        success: false,
+        message: 'Could not connect to the server.',
+      } satisfies ApiResponse<[]>;
+    }
+  }
 }

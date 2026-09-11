@@ -7,8 +7,6 @@ export class FoodRepository {
       data: {
         name: dto.name,
         description: dto.description,
-        createdAt: dto.createdAt,
-        updatedAt: dto.updatedAt,
         price: dto.price,
         imageUrl: dto.imageUrl,
         category: {

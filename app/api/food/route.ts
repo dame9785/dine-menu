@@ -6,8 +6,8 @@ import { FoodService } from '@/server/services/food';
 const foodService = new FoodService();
 export async function POST(request: NextRequest) {
   try {
-    const dto: FoodDto = await request.json();
-    const result = await foodService.addFood(dto);
+    const formData = await request.formData();
+    const result = await foodService.addFood(formData);
     return NextResponse.json(result, { status: result.success ? 200 : 404 });
   } catch (error) {
     console.error('FOOD/POST', error);

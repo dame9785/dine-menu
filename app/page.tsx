@@ -1,7 +1,8 @@
-import { Search, Plus } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { CategoryService } from '@/services/category';
 import { FoodService } from '@/services/food';
 import FoodCard from '@/components/food/food-card';
+import FoodModal from '@/components/food/add-food-modal';
 
 const categoryService = new CategoryService();
 const foodService = new FoodService();
@@ -11,6 +12,7 @@ export default async function MenuPage() {
 
   const categories = categoryResponse.data;
   const foods = productgResponse.data;
+  console.log(foods);
 
   return (
     <main className="min-h-screen bg-[#05070d] p-8 text-white">
@@ -20,11 +22,7 @@ export default async function MenuPage() {
           <h1 className="text-2xl font-semibold">Menu</h1>
           <p className="mt-1 text-sm text-slate-400">Manage your dishes, categories and availability.</p>
         </div>
-
-        <button className="cursor-pointer rounded-lg flex bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-500">
-          <Plus size={18} />
-          Add food
-        </button>
+        <FoodModal categories={categories ?? []} />
       </div>
 
       {/* Search / Filter */}

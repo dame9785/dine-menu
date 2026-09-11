@@ -1,0 +1,217 @@
+'use client';
+
+import { useState, useTransition } from 'react';
+import { X } from 'lucide-react';
+import { toast } from 'sonner';
+
+import { addFood } from '@/actions/food';
+import { FoodDto } from '@/types/food';
+
+type Props = {
+  categories: {
+    id: number;
+    name: string;
+  }[];
+};
+
+export default function FoodModal({ categories }: Props) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isPending, startTransition] = useTransition();
+
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [price, setPrice] = useState('');
+  const [categoryId, setCategoryId] = useState('');
+
+  const [image, setImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+
+    setImage(file);
+    setImagePreview(URL.createObjectURL(file));
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('description', description);
+    formData.append('price', price);
+    formData.append('categoryId', categoryId);
+
+    if (image) {
+      formData.append('image', image);
+    }
+
+    startTransition(async () => {
+      console.log(formData);
+      const response = await addFood(formData);
+
+      if (!response.success) {
+        toast.error(response.message);
+        return;
+      }
+
+      toast.success(response.message);
+
+      setName('');
+      setDescription('');
+      setPrice('');
+      setCategoryId('');
+      setImage(null);
+
+      if (imagePreview) {
+        URL.revokeObjectURL(imagePreview);
+      }
+
+      setImagePreview(null);
+      setIsOpen(false);
+    });
+  };
+  return (
+    <>
+      {/* Add food button */}
+      <button
+        type="button"
+        onClick={() => setIsOpen(true)}
+        className="flex cursor-pointer items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-500"
+      >
+        <span>+</span>
+        Add food
+      </button>
+
+      {/* Modal */}
+      {isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 backdrop-blur-sm">
+          <div className="w-full max-w-lg rounded-2xl border border-slate-800 bg-[#0b1120] shadow-2xl">
+            {/* Header */}
+            <div className="flex items-center justify-between border-b border-slate-800 px-6 py-4">
+              <div>
+                <h2 className="text-lg font-semibold text-white">Add food</h2>
+                <p className="mt-1 text-sm text-slate-400">Add a new dish to your menu.</p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setIsOpen(false)}
+                className="rounded-lg p-2 text-slate-400 transition hover:bg-slate-800 hover:text-white"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="space-y-5 p-6">
+              {/* Name */}
+              <div className="form-group">
+                <label className="mb-2 block text-sm font-medium text-slate-300">Name</label>
+
+                <input
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  type="text"
+                  placeholder="e.g. Margherita Pizza"
+                  className="w-full rounded-lg border border-slate-800 bg-[#05070d] px-4 py-2.5 text-sm text-white outline-none placeholder:text-slate-500 focus:border-blue-500"
+                />
+              </div>
+
+              {/* Description */}
+              <div className="form-group">
+                <label className="mb-2 block text-sm font-medium text-slate-300">Description</label>
+                <textarea
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder="Describe the dish..."
+                  rows={3}
+                  className="w-full resize-none rounded-lg border border-slate-800 bg-[#05070d] px-4 py-2.5 text-sm text-white outline-none placeholder:text-slate-500 focus:border-blue-500"
+                />
+              </div>
+              <div className="form-group">
+                <label
+                  htmlFor="image"
+                  className="flex cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-slate-700 bg-[#05070d] p-6 transition hover:border-blue-500 hover:bg-blue-500/5"
+                >
+                  {imagePreview ? (
+                    <img src={imagePreview} alt="Food preview" className="h-48 w-full rounded-lg object-cover" />
+                  ) : (
+                    <>
+                      <div className="mb-3 rounded-full bg-blue-500/10 p-3 text-blue-400">📷</div>
+                      <p className="text-sm font-medium text-white">Upload food image</p>
+                      <p className="mt-1 text-xs text-slate-500">PNG, JPG or WEBP</p>
+                    </>
+                  )}
+                </label>
+
+                <input
+                  id="image"
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp"
+                  onChange={handleImageChange}
+                  className="hidden"
+                />
+              </div>
+
+              {/* Price + Category */}
+              <div className="grid grid-cols-2 gap-4">
+                {/* Price */}
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-slate-300">Price</label>
+                  <input
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    placeholder="129"
+                    className="w-full rounded-lg border border-slate-800 bg-[#05070d] px-4 py-2.5 text-sm text-white outline-none placeholder:text-slate-500 focus:border-blue-500"
+                  />
+                </div>
+
+                {/* Category */}
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-slate-300">Category</label>
+                  <select
+                    value={categoryId}
+                    onChange={(e) => setCategoryId(e.target.value)}
+                    className="w-full rounded-lg border border-slate-800 bg-[#05070d] px-4 py-2.5 text-sm text-white outline-none focus:border-blue-500"
+                  >
+                    <option value="">Select</option>
+                    {categories.map((category) => (
+                      <option key={category.id} value={category.id}>
+                        {category.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {/* Buttons */}
+              <div className="flex justify-end gap-3 border-t border-slate-800 pt-5">
+                <button
+                  type="button"
+                  onClick={() => setIsOpen(false)}
+                  className="rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-300 transition hover:bg-slate-800 hover:text-white"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="submit"
+                  disabled={isPending}
+                  className="rounded-lg bg-blue-600 px-5 py-2 text-sm font-medium text-white transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {isPending ? 'Adding...' : 'Add food'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}

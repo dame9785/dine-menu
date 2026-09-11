@@ -10,7 +10,7 @@ export default function FoodCard({ foodItem }: Props) {
     <div className="group overflow-hidden rounded-2xl border border-slate-800/80 bg-[#0b1120] shadow-lg shadow-black/20 transition-all duration-300 hover:-translate-y-1 hover:border-slate-600 hover:shadow-xl hover:shadow-black/40">
       {/* Image */}
       <div className="relative h-48 overflow-hidden bg-slate-900">
-        <img src="/img/pizza.jpg" className="object-cover transition-transform duration-500 group-hover:scale-105" />
+        <img src={foodItem.imageUrl} className="object-cover transition-transform duration-500 group-hover:scale-105" />
         {/* Category badge */}
         <div className="absolute left-3 top-3 rounded-full border border-white/10 bg-black/60 px-3 py-1 text-xs font-medium text-white backdrop-blur-md">
           {foodItem.category}
