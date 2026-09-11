@@ -37,4 +37,20 @@ export class FoodService {
       } satisfies ApiResponse<[]>;
     }
   }
+
+  async deleteFood(foodId: number): Promise<ApiResponse<[]>> {
+    try {
+      const response = await fetch(`${API_URL}/${foodId}`, {
+        method: 'DELETE',
+      });
+      return (await response.json()) as ApiResponse<[]>;
+    } catch (error) {
+      console.error('API/FOOD/DELETE', error);
+
+      return {
+        success: false,
+        message: 'Could not connect to the server.',
+      } satisfies ApiResponse<[]>;
+    }
+  }
 }

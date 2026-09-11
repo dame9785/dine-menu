@@ -25,4 +25,12 @@ export class FoodRepository {
       },
     });
   }
+
+  async delete(foodId: number) {
+    return await prisma.menuItem.delete({
+      where: {
+        id: foodId,
+      },
+    });
+  }
 }

@@ -1,6 +1,6 @@
+import { CategoryDto } from '@/schemas/category';
 import { CategoryService } from '@/server/services/category';
 import { ApiResponse } from '@/types/api-responses';
-import { CategoryDto } from '@/types/category';
 import { NextResponse } from 'next/server';
 
 type RouteParams = {

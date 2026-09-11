@@ -87,4 +87,20 @@ export class FoodService {
       } satisfies ApiResponse<[]>;
     }
   }
+
+  async delete(foodId: number): Promise<ApiResponse<[]>> {
+    try {
+      await foodRepository.delete(foodId);
+      return {
+        success: true,
+        message: 'Category successfully deleted',
+      } satisfies ApiResponse<[]>;
+    } catch (error) {
+      console.error('Server error', error);
+      return {
+        success: false,
+        message: 'Something went wrong while deleting the food.',
+      } satisfies ApiResponse<[]>;
+    }
+  }
 }

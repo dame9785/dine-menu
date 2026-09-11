@@ -1,5 +1,4 @@
 import { ApiResponse } from '@/types/api-responses';
-import { FoodDto } from '@/types/food';
 import { NextRequest, NextResponse } from 'next/server';
 import { FoodService } from '@/server/services/food';
 
