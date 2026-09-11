@@ -5,7 +5,6 @@ import { X } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { addFood } from '@/actions/food';
-import { FoodDto } from '@/types/food';
 import { addFoodSchema } from '@/schemas/food';
 
 type Props = {
@@ -52,7 +51,14 @@ export default function FoodModal({ categories }: Props) {
     }
 
     startTransition(async () => {
-      const validate = addFoodSchema.safeParse(formData);
+      const validate = addFoodSchema.safeParse({
+        name,
+        description,
+        price: Number(price),
+        categoryId: Number(categoryId),
+        image,
+      });
+
       if (!validate.success) {
         setErrors(validate.error.flatten().fieldErrors);
         return;
@@ -175,7 +181,7 @@ export default function FoodModal({ categories }: Props) {
                 <textarea
                   value={description}
                   onChange={(e) => {
-                    setName(e.target.value);
+                    setDescription(e.target.value);
                     clearError('description');
                   }}
                   placeholder="Describe the dish..."
@@ -211,7 +217,7 @@ export default function FoodModal({ categories }: Props) {
                   onChange={handleImageChange}
                   className="hidden"
                 />
-                {errors.name?.[0] && (
+                {errors.image?.[0] && (
                   <p id="image-error" className="text-red-500" role="alert">
                     {errors.image[0]}
                   </p>
@@ -226,7 +232,7 @@ export default function FoodModal({ categories }: Props) {
                   <input
                     value={price}
                     onChange={(e) => {
-                      setName(e.target.value);
+                      setPrice(e.target.value);
                       clearError('price');
                     }}
                     type="number"
@@ -248,12 +254,13 @@ export default function FoodModal({ categories }: Props) {
                   <select
                     value={categoryId}
                     onChange={(e) => {
-                      setName(e.target.value);
+                      setCategoryId(e.target.value);
                       clearError('categoryId');
                     }}
                     className="w-full rounded-lg border border-slate-800 bg-[#05070d] px-4 py-2.5 text-sm text-white outline-none focus:border-blue-500"
                   >
                     <option value="">Select</option>
+
                     {categories.map((category) => (
                       <option key={category.id} value={category.id}>
                         {category.name}
