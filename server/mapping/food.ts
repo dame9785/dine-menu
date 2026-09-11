@@ -10,6 +10,7 @@ type FoodWithCategory = Prisma.MenuItemGetPayload<{
 export class FoodMapper {
   static foodDboToViewModel(foodItem: FoodWithCategory): FoodViewModel {
     return {
+      id: foodItem.id,
       name: foodItem.name,
       description: foodItem.description,
       price: foodItem.price,

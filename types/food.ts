@@ -9,6 +9,7 @@ export interface FoodDto {
 }
 
 export interface FoodViewModel {
+  id: number;
   name: string;
   description: string;
   price: Decimal;
