@@ -23,9 +23,7 @@ export default function CategoryTable({ categories }: Props) {
         <thead className="border-b border-neutral-800 bg-neutral-800/40">
           <tr>
             <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-neutral-500">ID</th>
-
             <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-neutral-500">Name</th>
-
             <th className="px-6 py-4 text-right text-xs font-semibold uppercase tracking-wider text-neutral-500">
               Actions
             </th>
@@ -52,7 +50,6 @@ export default function CategoryTable({ categories }: Props) {
               <td className="px-6 py-4">
                 <div className="flex justify-end gap-2">
                   <CategoryModal category={category} />
-
                   <DeleteCategoryButton categoryId={category.id} deleteCategory={deleteCategory} />
                 </div>
               </td>

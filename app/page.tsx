@@ -1,3 +1,72 @@
-export default function Home() {
-  return <h1>Dine menu</h1>;
+import { Search, Plus } from 'lucide-react';
+import { CategoryService } from '@/services/category';
+import FoodCard from '@/components/food/food-card';
+import { ca } from 'zod/locales';
+
+const categoryService = new CategoryService();
+
+export default async function MenuPage() {
+  const response = await categoryService.getAll(1);
+  const categories = response.data;
+  console.log(categories);
+
+  return (
+    <main className="min-h-screen bg-[#05070d] p-8 text-white">
+      {/* Header */}
+      <div className="mb-8 flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold">Menu</h1>
+          <p className="mt-1 text-sm text-slate-400">Manage your dishes, categories and availability.</p>
+        </div>
+
+        <button className="cursor-pointer rounded-lg flex bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-500">
+          <Plus size={18} />
+          Add food
+        </button>
+      </div>
+
+      {/* Search / Filter */}
+      <div className="mb-6 flex flex-col gap-4 md:flex-row">
+        {/* Search */}
+        <div className="relative flex-1">
+          <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+          <input
+            type="text"
+            placeholder="Search dishes..."
+            className="w-full rounded-lg border border-slate-800
+              bg-[#0b1120]
+              py-2.5
+              pl-10
+              pr-4
+              text-sm
+              text-white
+              outline-none
+              placeholder:text-slate-500
+              focus:border-blue-500
+            "
+          />
+        </div>
+      </div>
+
+      {/* Category tabs */}
+      <div className="mb-6 flex gap-2 overflow-x-auto">
+        <button className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium">All</button>
+        {categories?.map((item) => {
+          return (
+            <button
+              key={item.id}
+              className="rounded-lg border border-slate-800 bg-[#0b1120] px-4 py-2 text-sm text-slate-400 transition hover:text-white"
+            >
+              {item.name}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Foods */}
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <FoodCard />
+      </div>
+    </main>
+  );
 }
