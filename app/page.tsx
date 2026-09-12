@@ -4,6 +4,7 @@ import { FoodService } from '@/services/food';
 import FoodCard from '@/components/food/food-card';
 import FoodModal from '@/components/food/add-food-modal';
 import Pagination from '@/components/food/pagination';
+import FavoriteFilterButton from '@/components/food/favorite-filter-button';
 
 const categoryService = new CategoryService();
 const foodService = new FoodService();
@@ -13,6 +14,7 @@ type Props = {
     page?: string;
     search?: string;
     category?: string;
+    filter?: string;
   }>;
 };
 
@@ -26,9 +28,12 @@ export default async function MenuPage({ searchParams }: Props) {
 
   const categoryParam = params.category ?? '';
 
+  const filterParam = params.filter ?? '';
+  console.log(filterParam);
+
   const [categoryResponse, foodResponse] = await Promise.all([
     categoryService.getAll(1),
-    foodService.getAll(currentPage, searchParam, categoryParam),
+    foodService.getAll(currentPage, searchParam, categoryParam, filterParam),
   ]);
 
   const categories = categoryResponse.data;
@@ -111,12 +116,14 @@ export default async function MenuPage({ searchParams }: Props) {
       </div>
 
       {/* Food count */}
-      <div className="mb-6 flex items-center">
+      <div className="mb-6 flex items-center gap-2">
         <div className="flex items-center gap-2 rounded-lg border border-slate-800 bg-[#0b1120] px-3 py-2">
           <span className="h-2 w-2 rounded-full bg-blue-500" />
           <span className="text-l font-medium text-slate-300">{totalFoodsCount}</span>
           <span className="text-l text-slate-500">{totalFoodsCount === 1 ? 'Food' : 'Foods'}</span>
         </div>
+
+        <FavoriteFilterButton />
       </div>
 
       {/* Foods */}

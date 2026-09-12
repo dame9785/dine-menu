@@ -69,9 +69,14 @@ export class FoodService {
     }
   }
 
-  async getAll(page: number, searchParam: string, categoryParam: string): Promise<FoodApiResponse> {
+  async getAll(
+    page: number,
+    searchParam: string,
+    categoryParam: string,
+    filterParam: string,
+  ): Promise<FoodApiResponse> {
     try {
-      const result = await foodRepository.getAll(page, searchParam, categoryParam);
+      const result = await foodRepository.getAll(page, searchParam, categoryParam, filterParam);
       const viewModel = result.foods.map((item) => FoodMapper.foodDboToViewModel(item));
       return {
         success: true,

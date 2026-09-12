@@ -23,8 +23,9 @@ export async function GET(request: NextRequest) {
     const page = pageParam ? Number(pageParam) : 1;
     const searchParam = request.nextUrl.searchParams.get('search') ?? '';
     const categoryParam = request.nextUrl.searchParams.get('category') ?? ';';
+    const filterParam = request.nextUrl.searchParams.get('filter') ?? '';
 
-    const result = await foodService.getAll(page, searchParam, categoryParam);
+    const result = await foodService.getAll(page, searchParam, categoryParam, filterParam);
 
     return NextResponse.json(result, {
       status: 200,

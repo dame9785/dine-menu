@@ -18,7 +18,7 @@ export class FoodRepository {
     });
   }
 
-  async getAll(page: number, searchParam: string, categoryParam: string) {
+  async getAll(page: number, searchParam: string, categoryParam: string, filterParam: string) {
     const pageSize = 6;
 
     const currentPage = Number.isFinite(page) && page > 0 ? Math.floor(page) : 1;
@@ -28,9 +28,18 @@ export class FoodRepository {
     const search = searchParam?.trim() ?? '';
     const category = categoryParam?.trim() ?? '';
 
+    const filterIds = filterParam
+      ? filterParam
+          .split(',')
+          .map(Number)
+          .filter((id) => !Number.isNaN(id))
+      : [];
+
+    console.log(filterIds);
+
     const where = {
       AND: [
-        // Search filter
+        // Search
         search
           ? {
               OR: [
@@ -48,11 +57,20 @@ export class FoodRepository {
             }
           : {},
 
-        // Category filter
+        // Category
         category
           ? {
               category: {
                 name: category,
+              },
+            }
+          : {},
+
+        // Favorites
+        filterIds.length > 0
+          ? {
+              id: {
+                in: filterIds,
               },
             }
           : {},

@@ -3,10 +3,15 @@ import { ApiResponse, FoodApiResponse } from '@/types/api-responses';
 const API_URL = 'http://localhost:3000/api/food';
 
 export class FoodService {
-  async getAll(page: number, searchParams: string, categoryParam: string): Promise<FoodApiResponse> {
+  async getAll(
+    page: number,
+    searchParams: string,
+    categoryParam: string,
+    filterParam: string,
+  ): Promise<FoodApiResponse> {
     try {
       const response = await fetch(
-        `${API_URL}?page=${page}&search=${encodeURIComponent(searchParams)}&category=${encodeURIComponent(categoryParam)}`,
+        `${API_URL}?page=${page}&search=${encodeURIComponent(searchParams)}&category=${encodeURIComponent(categoryParam)}&filter=${encodeURIComponent(filterParam)}`,
         {
           method: 'GET',
         },
