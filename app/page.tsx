@@ -1,4 +1,4 @@
-import { Search } from 'lucide-react';
+import { Search, Utensils, Heart } from 'lucide-react';
 import { CategoryService } from '@/services/category';
 import { FoodService } from '@/services/food';
 import FoodCard from '@/components/food/food-card';
@@ -34,12 +34,17 @@ export default async function MenuPage({ searchParams }: Props) {
   const categories = categoryResponse.data;
   const foods = foodResponse.data;
 
+  const totalFoodsCount = foodResponse.pagination?.totalItems;
+
   return (
     <main className="min-h-screen bg-[#05070d] p-8 text-white">
       {/* Header */}
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold">Menu</h1>
+          <div className="flex gap-2 items-center">
+            <h1 className="text-2xl font-semibold">Menu</h1>
+            <Utensils />
+          </div>
           <p className="mt-1 text-sm text-slate-400">Manage your dishes, categories and availability.</p>
         </div>
         <FoodModal categories={categories ?? []} />
@@ -105,19 +110,13 @@ export default async function MenuPage({ searchParams }: Props) {
         </div>
       </div>
 
-      {/* Category tabs */}
-      <div className="mb-6 flex gap-2 overflow-x-auto">
-        <button className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium">All</button>
-        {categories?.map((item) => {
-          return (
-            <button
-              key={item.id}
-              className="cursor-pointer rounded-lg border border-slate-800 bg-[#0b1120] px-4 py-2 text-sm text-slate-400 transition hover:text-white"
-            >
-              {item.name}
-            </button>
-          );
-        })}
+      {/* Food count */}
+      <div className="mb-6 flex items-center">
+        <div className="flex items-center gap-2 rounded-lg border border-slate-800 bg-[#0b1120] px-3 py-2">
+          <span className="h-2 w-2 rounded-full bg-blue-500" />
+          <span className="text-l font-medium text-slate-300">{totalFoodsCount}</span>
+          <span className="text-l text-slate-500">{totalFoodsCount === 1 ? 'Food' : 'Foods'}</span>
+        </div>
       </div>
 
       {/* Foods */}
