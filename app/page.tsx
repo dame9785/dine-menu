@@ -11,6 +11,8 @@ const foodService = new FoodService();
 type Props = {
   searchParams: Promise<{
     page?: string;
+    search?: string;
+    category?: string;
   }>;
 };
 
@@ -20,9 +22,13 @@ export default async function MenuPage({ searchParams }: Props) {
   //Set default current page to 1 if params.page is undefined.
   const currentPage = Number(params.page ?? '1');
 
+  const searchParam = params.search ?? '';
+
+  const categoryParam = params.category ?? '';
+
   const [categoryResponse, foodResponse] = await Promise.all([
     categoryService.getAll(1),
-    foodService.getAll(currentPage),
+    foodService.getAll(currentPage, searchParam, categoryParam),
   ]);
 
   const categories = categoryResponse.data;
@@ -44,10 +50,12 @@ export default async function MenuPage({ searchParams }: Props) {
         {/* Search */}
         <div className="relative flex-1">
           <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
-          <input
-            type="text"
-            placeholder="Search dishes..."
-            className="w-full rounded-lg border border-slate-800
+          <form action="/" method="GET" className="flex gap-2">
+            <input
+              type="search"
+              name="search"
+              placeholder="Search pasta..."
+              className="w-full rounded-lg border border-slate-800
               bg-[#0b1120]
               py-2.5
               pl-10
@@ -58,7 +66,42 @@ export default async function MenuPage({ searchParams }: Props) {
               placeholder:text-slate-500
               focus:border-blue-500
             "
-          />
+            />
+            <select
+              name="category"
+              id="category"
+              className="
+    cursor-pointer
+    rounded-lg
+    border border-slate-800
+    bg-[#0b1120]
+    px-4
+    py-2.5
+    text-sm
+    text-slate-300
+    outline-none
+    transition
+    hover:border-slate-700
+    focus:border-blue-500
+    focus:ring-1
+    focus:ring-blue-500/30
+  "
+            >
+              <option value="">All Categories</option>
+
+              {categories?.map((category) => (
+                <option value={category.name} key={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+            <button
+              type="submit"
+              className="cursor-pointer rounded-lg border border-slate-800  bg-blue-600  px-4 py-2 text-sm  transition hover:text-white"
+            >
+              Sök
+            </button>
+          </form>
         </div>
       </div>
 

@@ -18,14 +18,55 @@ export class FoodRepository {
     });
   }
 
-  async getAll(page: number) {
-    const totalNumberOfFoods = await prisma.menuItem.count();
+  async getAll(page: number, searchParam: string, categoryParam: string) {
     const pageSize = 6;
-    const skip = (page - 1) * pageSize;
+
+    const currentPage = Number.isFinite(page) && page > 0 ? Math.floor(page) : 1;
+
+    const skip = (currentPage - 1) * pageSize;
+
+    const search = searchParam?.trim() ?? '';
+    const category = categoryParam?.trim() ?? '';
+
+    const where = {
+      AND: [
+        // Search filter
+        search
+          ? {
+              OR: [
+                {
+                  name: {
+                    contains: search,
+                  },
+                },
+                {
+                  description: {
+                    contains: search,
+                  },
+                },
+              ],
+            }
+          : {},
+
+        // Category filter
+        category
+          ? {
+              category: {
+                name: category,
+              },
+            }
+          : {},
+      ],
+    };
+
+    const totalNumberOfFoods = await prisma.menuItem.count({
+      where,
+    });
 
     const totalPages = Math.ceil(totalNumberOfFoods / pageSize);
 
     const foods = await prisma.menuItem.findMany({
+      where,
       orderBy: {
         createdAt: 'desc',
       },
@@ -35,6 +76,8 @@ export class FoodRepository {
       skip,
       take: pageSize,
     });
+
+    console.log('FOUND FOODS:', foods.length);
 
     return {
       totalNumberOfFoods,

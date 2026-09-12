@@ -1,5 +1,5 @@
 import { ApiResponse, FoodApiResponse } from '@/types/api-responses';
-import { FoodDto, FoodViewModel } from '@/types/food';
+import { FoodDto } from '@/types/food';
 import { FoodRepository } from '../repositories/food';
 import { FoodMapper } from '../mapping/food';
 import { saveImage } from '@/helpers/image-helper';
@@ -69,9 +69,10 @@ export class FoodService {
     }
   }
 
-  async getAll(page: number): Promise<FoodApiResponse> {
+  async getAll(page: number, searchParam: string, categoryParam: string): Promise<FoodApiResponse> {
     try {
-      const result = await foodRepository.getAll(page);
+      console.log('SERVICE SEARCH:', searchParam);
+      const result = await foodRepository.getAll(page, searchParam, categoryParam);
       const viewModel = result.foods.map((item) => FoodMapper.foodDboToViewModel(item));
       return {
         success: true,

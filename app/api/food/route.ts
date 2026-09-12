@@ -21,13 +21,10 @@ export async function GET(request: NextRequest) {
   try {
     const pageParam = request.nextUrl.searchParams.get('page');
     const page = pageParam ? Number(pageParam) : 1;
+    const searchParam = request.nextUrl.searchParams.get('search') ?? '';
+    const categoryParam = request.nextUrl.searchParams.get('category') ?? ';';
 
-    console.log('PAGE FROM URL:', page);
-
-    const result = await foodService.getAll(page);
-
-    console.log('FOODS RETURNED:', result.data.length);
-    console.log('PAGINATION:', result.pagination);
+    const result = await foodService.getAll(page, searchParam, categoryParam);
 
     return NextResponse.json(result, {
       status: 200,
