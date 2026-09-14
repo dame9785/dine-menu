@@ -24,8 +24,9 @@ export async function GET(request: NextRequest) {
     const searchParam = request.nextUrl.searchParams.get('search') ?? '';
     const categoryParam = request.nextUrl.searchParams.get('category') ?? ';';
     const filterParam = request.nextUrl.searchParams.get('filter') ?? '';
+    const sortByParam = request.nextUrl.searchParams.get('sortBy') ?? '';
 
-    const result = await foodService.getAll(page, searchParam, categoryParam, filterParam);
+    const result = await foodService.getAll(page, searchParam, categoryParam, filterParam, sortByParam);
 
     return NextResponse.json(result, {
       status: 200,

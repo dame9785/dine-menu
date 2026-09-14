@@ -15,6 +15,7 @@ type Props = {
     search?: string;
     category?: string;
     filter?: string;
+    sortBy?: string;
   }>;
 };
 
@@ -29,11 +30,12 @@ export default async function MenuPage({ searchParams }: Props) {
   const categoryParam = params.category ?? '';
 
   const filterParam = params.filter ?? '';
-  console.log(filterParam);
+
+  const sortByParam = params.sortBy ?? '';
 
   const [categoryResponse, foodResponse] = await Promise.all([
     categoryService.getAll(1),
-    foodService.getAll(currentPage, searchParam, categoryParam, filterParam),
+    foodService.getAll(currentPage, searchParam, categoryParam, filterParam, sortByParam),
   ]);
 
   const categories = categoryResponse.data;
@@ -104,6 +106,30 @@ export default async function MenuPage({ searchParams }: Props) {
                   {category.name}
                 </option>
               ))}
+            </select>
+            <select
+              name="sortBy"
+              id="sortBy"
+              className="  cursor-pointer
+    rounded-lg
+    border border-slate-800
+    bg-[#0b1120]
+    px-4
+    py-2.5
+    text-sm
+    text-slate-300
+    outline-none
+    transition
+    hover:border-slate-700
+    focus:border-blue-500
+    focus:ring-1
+    focus:ring-blue-500/30"
+            >
+              <option value="">Sort by</option>
+              <option value={'asc'}>Asc</option>
+              <option value={'desc'}>Dec</option>
+              <option value={'lowest'}>Lowest first</option>
+              <option value={'highest'}>Highest first</option>
             </select>
             <button
               type="submit"

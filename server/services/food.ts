@@ -74,9 +74,10 @@ export class FoodService {
     searchParam: string,
     categoryParam: string,
     filterParam: string,
+    sortByParam: string,
   ): Promise<FoodApiResponse> {
     try {
-      const result = await foodRepository.getAll(page, searchParam, categoryParam, filterParam);
+      const result = await foodRepository.getAll(page, searchParam, categoryParam, filterParam, sortByParam);
       const viewModel = result.foods.map((item) => FoodMapper.foodDboToViewModel(item));
       return {
         success: true,

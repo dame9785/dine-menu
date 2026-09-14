@@ -18,7 +18,7 @@ export class FoodRepository {
     });
   }
 
-  async getAll(page: number, searchParam: string, categoryParam: string, filterParam: string) {
+  async getAll(page: number, searchParam: string, categoryParam: string, filterParam: string, sortBy: string) {
     const pageSize = 6;
 
     const currentPage = Number.isFinite(page) && page > 0 ? Math.floor(page) : 1;
@@ -28,14 +28,19 @@ export class FoodRepository {
     const search = searchParam?.trim() ?? '';
     const category = categoryParam?.trim() ?? '';
 
+    const orderBy =
+      sortBy === 'lowest'
+        ? { price: 'asc' as const }
+        : sortBy === 'highest'
+          ? { price: 'desc' as const }
+          : { createdAt: 'desc' as const };
+
     const filterIds = filterParam
       ? filterParam
           .split(',')
           .map(Number)
           .filter((id) => !Number.isNaN(id))
       : [];
-
-    console.log(filterIds);
 
     const where = {
       AND: [
@@ -85,9 +90,7 @@ export class FoodRepository {
 
     const foods = await prisma.menuItem.findMany({
       where,
-      orderBy: {
-        createdAt: 'desc',
-      },
+      orderBy,
       include: {
         category: true,
       },

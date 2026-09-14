@@ -8,10 +8,11 @@ export class FoodService {
     searchParams: string,
     categoryParam: string,
     filterParam: string,
+    sortBy: string,
   ): Promise<FoodApiResponse> {
     try {
       const response = await fetch(
-        `${API_URL}?page=${page}&search=${encodeURIComponent(searchParams)}&category=${encodeURIComponent(categoryParam)}&filter=${encodeURIComponent(filterParam)}`,
+        `${API_URL}?page=${page}&search=${encodeURIComponent(searchParams)}&category=${encodeURIComponent(categoryParam)}&filter=${encodeURIComponent(filterParam)}&sortBy=${encodeURIComponent(sortBy)}`,
         {
           method: 'GET',
         },
