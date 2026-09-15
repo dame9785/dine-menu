@@ -55,6 +55,7 @@ export default async function MenuPage({ searchParams }: Props) {
         searchParam={searchParam}
         categoryParam={categoryParam}
         sortByParam={sortByParam}
+        filterParam={filterParam}
       />
 
       {/* Foods */}

@@ -34,20 +34,25 @@ export default async function FoodList({
   return (
     <>
       {/* Food count */}
-      <div className="mb-6 flex items-center gap-2 justify-between">
-        <div className="flex items-center gap-5 rounded-lg px-3 py-2">
+      <div className="mb-6 flex items-center justify-between rounded-lg px-3 py-2">
+        {/* Food count */}
+        <div className="flex items-center gap-5">
           <span className="h-2 w-2 rounded-full bg-blue-500" />
           <span className="font-medium text-slate-300">{totalFoodsCount}</span>
           <span className="text-slate-500">{totalFoodsCount === 1 ? 'Food' : 'Foods'}</span>
+        </div>
+
+        {/* Actions */}
+        <div className="flex items-center gap-2">
           <ShowFavoriteButton
             currentPage={currentPage}
             searchParam={searchParam}
             sortByParam={sortByParam}
             categoryParam={categoryParam}
           />
-        </div>
 
-        <ResetFilteringButton />
+          <ResetFilteringButton />
+        </div>
       </div>
 
       {/* Foods */}

@@ -41,7 +41,13 @@ export default async function FoodDetail({ params }: Props) {
           {/* IMAGE */}
           <div className="relative min-h-100 md:min-h-150">
             {foodItem.imageUrl ? (
-              <Image fill src={foodItem.imageUrl} alt={foodItem.name} className="object-cover" priority />
+              <Image
+                fill
+                src={foodItem.imageUrl}
+                alt={foodItem.name}
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+              />
             ) : (
               <div className="flex h-full items-center justify-center bg-white/5">
                 <span className="text-gray-500">Ingen bild</span>

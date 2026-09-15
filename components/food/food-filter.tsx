@@ -6,15 +6,21 @@ type Props = {
   searchParam: string;
   categoryParam: string;
   sortByParam: string;
+  filterParam: string;
 };
 
-export default function FoodFilter({ categories, searchParam, categoryParam, sortByParam }: Props) {
+export default function FoodFilter({ categories, searchParam, categoryParam, sortByParam, filterParam }: Props) {
   return (
     <div className="mb-6 flex flex-col gap-4 md:flex-row">
       <div className="relative flex-1">
         <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
 
-        <form key={`${searchParam}-${categoryParam}-${sortByParam}`} action="/" method="GET" className="flex gap-2">
+        <form
+          key={`${searchParam}-${categoryParam}-${sortByParam}-${filterParam}`}
+          action="/"
+          method="GET"
+          className="flex gap-2"
+        >
           {/* Search */}
           <input
             type="search"
@@ -51,6 +57,9 @@ export default function FoodFilter({ categories, searchParam, categoryParam, sor
             <option value="lowest">Lowest first</option>
             <option value="highest">Highest first</option>
           </select>
+
+          {/* Keep favorite filter */}
+          <input type="hidden" name="filter" value={filterParam} />
 
           <button
             type="submit"
