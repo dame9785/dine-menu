@@ -20,7 +20,7 @@ export default function EditFoodButton({ foodItem, categories }: Props) {
       <button
         type="button"
         onClick={() => setIsEditOpen(true)}
-        className="flex cursor-pointer items-center gap-2 rounded-lg border border-orange-500/30 bg-orange-500/10 px-4 py-2 text-sm font-medium text-orange-400 backdrop-blur transition hover:border-orange-500/50 hover:bg-orange-500/20"
+        className="flex cursor-pointer items-center gap-2 rounded-lg border border-orange-500/30 bg-orange-500/10 px-4 py-2 text-sm font-medium  backdrop-blur transition hover:border-orange-500/50 hover:bg-orange-500/20"
       >
         <Pencil size={16} />
         Update food item

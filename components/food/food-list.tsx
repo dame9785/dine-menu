@@ -37,9 +37,35 @@ export default async function FoodList({
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         {/* Food count */}
         <div className="flex items-center gap-3">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#A77F18] bg-[#C09721] px-3 py-1.5">
-            <Utensils size={14} className="text-white" />
-            <span className="text-l font-bold tracking-wider  text-white "> {totalFoodsCount} items</span>
+          <div
+            className="   group
+        flex cursor-pointer items-center gap-3
+        rounded-xl
+        border border-[#C09721]/30
+        bg-white
+        p-3
+        text-sm font-medium text-slate-900
+        shadow-sm
+        outline-none
+
+        transition-all duration-200 ease-out
+
+        hover:-translate-y-0.5
+        hover:border-[#C09721]
+        hover:bg-[#FFFCF5]
+        hover:text-[#A77F18]
+        hover:shadow-md
+        hover:shadow-[#C09721]/15
+
+        focus:border-[#C09721]
+        focus:ring-4
+        focus:ring-[#C09721]/10
+
+        active:translate-y-0
+        active:scale-[0.98]"
+          >
+            <Utensils size={14} />
+            <span className="text-l font-bold tracking-wider  text-black "> {totalFoodsCount} items</span>
           </div>
         </div>
 

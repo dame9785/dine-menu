@@ -78,7 +78,8 @@ export default function FoodCard({ foodItem, categories }: Props) {
                     e.stopPropagation();
                     setIsMenuOpen((prev) => !prev);
                   }}
-                  className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-indigo-100 bg-indigo-50 text-indigo-600 shadow-sm backdrop-blur transition hover:bg-white hover:text-slate-900"
+                  className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-[#C09721]/30
+        bg-white  shadow-sm backdrop-blur transition hover:bg-white hover:text-slate-900"
                   aria-label="Öppna meny"
                 >
                   <MoreVertical size={17} />

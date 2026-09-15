@@ -40,8 +40,8 @@ export default function Header({ categories }: Props) {
             />
           </div>
 
-          <p className="text-xl text-slate-700 font-bold ">Manage your menu</p>
-          <p className="mt-2 max-w-md text-m leading-6 text-slate-700">Here you can find your favorite foods.</p>
+          {/* <p className="text-xl text-slate-700 font-bold ">Manage your menu</p>
+          <p className="mt-2 max-w-md text-m leading-6 text-slate-700">Here you can find your favorite foods.</p> */}
         </div>
 
         {/* Add food */}

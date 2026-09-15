@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import AddFavoritFoodButton from '@/components/food/favorite-button';
 import EditFoodButton from '@/components/food/edit-food-button';
-import { Heart, Utensils } from 'lucide-react';
+import { Heart, Utensils, Euro } from 'lucide-react';
 import { FoodViewModel } from '@/types/food';
 import { CategoryViewModel } from '@/types/category';
 
@@ -58,17 +58,25 @@ export default function DetailCard({ foodItem, categories }: Props) {
               className="
                   inline-flex items-center gap-2
                   rounded-full
-                 border-indigo-100 bg-indigo-50
+                       hover:-translate-y-0.5
+                        border border-[#A77F18]
+            bg-[#C09721]
+            hover:bg-[#A77F18]
+            
+            hover:shadow-lg
+            hover:shadow-[#C09721]/20
+
+            active:translate-y-0
+            active:scale-[0.98]
+
                   px-4 py-2
                   shadow-lg
                   backdrop-blur-md
                 "
             >
-              <Utensils size={15} className="text-indigo-600" />
+              <Utensils size={15} className="text-white" />
 
-              <span className="font-semibold uppercase tracking-wider text-sm text-indigo-600">
-                {foodItem.category}
-              </span>
+              <span className="font-semibold uppercase tracking-wider text-sm text-white">{foodItem.category}</span>
             </div>
           </div>
 
@@ -84,12 +92,12 @@ export default function DetailCard({ foodItem, categories }: Props) {
         <div className="flex flex-col justify-center p-7 md:p-12">
           {/* Label */}
           <div className="mb-4 flex items-center gap-2">
-            <div className="h-1.5 w-1.5 rounded-full bg-indigo-600" />
+            <div className="h-1.5 w-1.5 rounded-full bg-[#C09721]" />
 
             <span
               className="
                   text-xs font-bold uppercase
-                  tracking-[0.2em] text-indigo-600
+                  tracking-[0.2em] text-[#C09721]
                 "
             >
               Our menu
@@ -129,32 +137,35 @@ export default function DetailCard({ foodItem, categories }: Props) {
             <div
               className="
                   rounded-2xl
-                  border border-slate-200
+                  border border-[#C09721]
                   bg-slate-50
                   p-5
                 "
             >
               <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-white shadow-sm">
-                <Utensils size={17} className="text-indigo-600" />
+                <Utensils size={17} className="text-[#C09721]" />
               </div>
 
-              <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">Category</p>
+              <p className="text-xs font-semibold uppercase tracking-wider text-[#C09721]">Category</p>
 
-              <p className="mt-1 text-base font-semibold text-slate-900">{foodItem.category}</p>
+              <p className="mt-1 text-base font-semibold text-[#C09721]">{foodItem.category}</p>
             </div>
 
             {/* Price */}
             <div
               className="
-                  rounded-2xl
-                  border border-indigo-100
-                  bg-indigo-50/60
+                   rounded-2xl
+                  border border-[#C09721]
+                  bg-slate-50
                   p-5
                 "
             >
-              <p className="text-xs font-semibold uppercase tracking-wider text-indigo-400">Price</p>
+              <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-white shadow-sm">
+                <Euro size={17} className="text-[#C09721]" />
+              </div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-[#C09721]">Price</p>
 
-              <p className="mt-2 text-2xl font-bold tracking-tight text-slate-900">
+              <p className="mt-2 text-2xl font-bold tracking-tight text-[#C09721]">
                 {Number(foodItem.price).toFixed(2)} €
               </p>
             </div>

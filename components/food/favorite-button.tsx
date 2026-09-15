@@ -51,10 +51,11 @@ export default function FavoriteButton({ foodId, isDetail }: Props) {
       onClick={addFavorite}
       className={
         isDetail
-          ? 'cursor-pointer text-red-500 gap-2 border border-[#A77F18] bg-[#C09721]'
-          : ` z-10 flex h-10 w-10 cursor-pointer items-center gap-2 justify-center  rounded-full border-[#A77F18] bg-[#C09721] text-red backdrop-blur-sm transition hover:bg-[#C09721] ${
-              isActive ? 'text-red-500' : 'text-white hover:text-red-400'
-            }`
+          ? 'cursor-pointer text-red-500 gap-2  bg-white border border-[#C09721]/30'
+          : ` z-10 flex h-10 w-10 cursor-pointer items-center gap-2 justify-center  rounded-full border border-[#C09721]/30
+        bg-white text-red backdrop-blur-sm transition hover:bg-[#C09721] ${
+          isActive ? 'text-red-500' : 'hover:text-red-400'
+        }`
       }
       aria-label={isActive ? 'Ta bort från favoriter' : 'Lägg till favorit'}
     >

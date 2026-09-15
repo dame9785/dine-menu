@@ -7,7 +7,7 @@ export default function Sidebar() {
       {/* Logo */}
       <div className="border-b border-slate-100 px-6 py-6">
         <Link href="/" className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-lg shadow-indigo-600/20">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl  border  bg-[#A77F18]/30 text-white shadow-lg shadow-indigo-600/20">
             <Utensils size={19} />
           </div>
 
@@ -27,9 +27,14 @@ export default function Sidebar() {
           <li>
             <Link
               href="/"
-              className="group flex items-center gap-3 rounded-xl bg-indigo-50 px-3 py-3 text-sm font-medium text-indigo-700 transition-all hover:bg-indigo-100"
+              className="group flex items-center gap-3 rounded-xl bg-[#A77F18]/30 px-3 py-3 text-sm font-medium text-black transition-all  hover:-translate-y-0.5
+    hover:border-[#C09721]
+    hover:bg-[#FFFCF5]
+    hover:text-[#A77F18]
+    hover:shadow-sm
+    hover:shadow-[#C09721]/15"
             >
-              <House size={18} className="text-indigo-600" />
+              <House size={18} className="text-black" />
 
               <span>Home</span>
             </Link>
@@ -38,9 +43,22 @@ export default function Sidebar() {
           <li>
             <Link
               href="/category"
-              className="group flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-slate-500 transition-all hover:bg-slate-50 hover:text-slate-900"
+              className="group flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-slate-500 transition-all  hover:-translate-y-0.5
+    hover:border-[#C09721]
+    hover:bg-[#FFFCF5]
+    hover:text-[#A77F18]
+    hover:shadow-sm
+    hover:shadow-[#C09721]/15"
             >
-              <Folder size={18} className="text-slate-400 transition-colors group-hover:text-indigo-600" />
+              <Folder
+                size={18}
+                className="text-black transition-colors  hover:-translate-y-0.5
+    hover:border-[#C09721]
+    hover:bg-[#FFFCF5]
+    hover:text-[#A77F18]
+    hover:shadow-sm
+    hover:shadow-[#C09721]/15"
+              />
 
               <span>Categories</span>
             </Link>

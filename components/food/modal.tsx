@@ -65,10 +65,10 @@ export default function FoodModal({ categories, foodItem, open, onOpenChange }: 
                 flex h-9 w-9 shrink-0 cursor-pointer
                 items-center justify-center
                 rounded-lg
-                text-slate-400
+                text-black
                 transition-all duration-200
-                hover:bg-slate-100
-                hover:text-slate-700
+                hover:bg-[#C09721]
+                hover:text-white
                 active:scale-95
               "
               aria-label="Close modal"

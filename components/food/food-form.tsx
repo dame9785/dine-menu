@@ -153,9 +153,9 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
               px-4 py-2.5 text-sm text-slate-900
               shadow-sm outline-none transition-all duration-200
            
-              hover:border-indigo-50
-              focus:border-indigo-500
-              focus:ring-4 focus:ring-indigo-500/10
+              hover:border-[#C09721]
+              focus:border-[#C09721]
+              
                 placeholder:text-base
 
           "
@@ -186,11 +186,11 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
               px-4 py-2.5 text-sm text-slate-900
               shadow-sm outline-none transition-all duration-200
               placeholder:text-slate-400
-              hover:border-indigo-50
-              focus:border-indigo-500
+               hover:border-[#C09721]
+              focus:border-[#C09721]
               focus:ring-4 focus:ring-indigo-500/10
                 placeholder:text-base
-  placeholder:text-slate-400
+ 
           "
         />
 
@@ -209,14 +209,14 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
             flex min-h-48 cursor-pointer flex-col
             items-center justify-center
             overflow-hidden rounded-xl
-              border
+              
             border border-dashed border-indigo-200
             bg-slate-50
             p-4
             transition-all duration-200
             
-             hover:border-indigo-50
-              focus:border-indigo-500
+              hover:border-[#C09721]
+              focus:border-[#C09721]
               focus:ring-4 focus:ring-indigo-500/10
                 placeholder:text-base
   placeholder:text-slate-400
@@ -270,8 +270,8 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
               px-4 py-2.5 text-sm text-slate-900
               shadow-sm outline-none transition-all duration-200
               placeholder:text-slate-400
-              hover:border-indigo-50
-              focus:border-indigo-500
+              hover:border-[#C09721]
+              focus:border-[#C09721]
               focus:ring-4 focus:ring-indigo-500/10
                 placeholder:text-base
   placeholder:text-slate-400
@@ -300,8 +300,8 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
               border border-slate-200 bg-white
               px-4 py-2.5 text-sm text-slate-900
               shadow-sm outline-none transition-all duration-200
-              hover:border-slate-300
-              focus:border-indigo-500
+               hover:border-[#C09721]
+              focus:border-[#C09721]
               focus:ring-4 focus:ring-indigo-500/10
                 placeholder:text-base
   placeholder:text-slate-400
@@ -336,10 +336,18 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
             px-4 py-2.5
             text-sm font-medium text-slate-600
             shadow-sm transition-all duration-200
-            hover:border-slate-300
-            hover:bg-slate-50
-            hover:text-slate-900
-            active:scale-[0.98]
+            hover:border-[#C09721]
+    hover:bg-[#FFFCF5]
+    hover:text-[#A77F18]
+    hover:shadow-md
+    hover:shadow-[#C09721]/15
+
+    focus:border-[#C09721]
+    focus:ring-4
+    focus:ring-[#C09721]/10
+
+    active:translate-y-0
+    active:scale-[0.98]
           "
         >
           Cancel
@@ -351,18 +359,28 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
           disabled={isPending}
           className="
             w-full cursor-pointer rounded-xl
-            border border-indigo-600
-            bg-indigo-600
-            px-4 py-2.5
-            text-sm font-medium text-white
-            shadow-sm transition-all duration-200
-            hover:border-indigo-700
-            hover:bg-indigo-700
-            hover:shadow-lg
-            hover:shadow-indigo-500/20
-            disabled:cursor-not-allowed
-            disabled:opacity-60
-            active:scale-[0.98]
+           border border-[#C09721]/30
+    bg-white
+    p-3
+    text-sm font-medium text-black
+    shadow-sm
+    outline-none
+
+    transition-all duration-200 ease-out
+
+    hover:-translate-y-0.5
+    hover:border-[#C09721]
+    hover:bg-[#FFFCF5]
+    hover:text-[#A77F18]
+    hover:shadow-md
+    hover:shadow-[#C09721]/15
+
+    focus:border-[#C09721]
+    focus:ring-4
+    focus:ring-[#C09721]/10
+
+    active:translate-y-0
+    active:scale-[0.98]
           "
         >
           {isPending ? (isEditMode ? 'Updating...' : 'Adding...') : isEditMode ? 'Update food' : 'Add food'}

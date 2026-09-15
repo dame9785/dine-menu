@@ -25,7 +25,18 @@ export default function EditButton({ category }: Props) {
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="flex cursor-pointer items-center gap-2 rounded-lg border border-indigo-500/30 bg-indigo-500/10 px-4 py-2 text-sm font-medium text-indigo-400 backdrop-blur transition hover:border-orange-500/50 hover:bg-orange-500/20"
+        className="flex cursor-pointer items-center gap-2 
+                       hover:-translate-y-0.5
+                        border border-[#A77F18]
+            bg-[#C09721]
+            hover:bg-[#A77F18]
+            
+            hover:shadow-lg
+            hover:shadow-[#C09721]/20
+
+            active:translate-y-0
+            active:scale-[0.98]
+text-white"
       >
         Edit
       </button>

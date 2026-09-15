@@ -5,7 +5,7 @@ import { ArrowLeft } from 'lucide-react';
 import { FoodService } from '@/services/food';
 import { CategoryService } from '@/services/category';
 
-import DetailCard from '@/components/food/detail-card';
+import DetailCard from '@/components/category/detail-card';
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -39,11 +39,20 @@ export default async function FoodDetailPage({ params }: Props) {
           className="
             group inline-flex items-center gap-2
             rounded-lg px-2 py-1.5
-            text-sm font-medium text-slate-500
+            
+            border border-[#A77F18]
+
+            bg-[#C09721]
+            text-sm font-medium text-white
             transition-all duration-200
-            hover:bg-white
-            hover:text-indigo-600
-            hover:shadow-sm
+                  hover:-translate-y-0.5
+            hover:bg-[#A77F18]
+            hover:shadow-lg
+            hover:shadow-[#C09721]/20
+
+            active:translate-y-0
+            active:scale-[0.98]
+
           "
         >
           <ArrowLeft size={16} className="transition-transform duration-200 group-hover:-translate-x-1" />
