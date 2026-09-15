@@ -4,7 +4,7 @@ import { FoodDto } from '@/types/food';
 
 export class FoodRepository {
   async addFood(dto: FoodDto) {
-    return await prisma.menuItem.create({
+    return await prisma.menuitem.create({
       data: {
         name: dto.name,
         description: dto.description,
@@ -85,11 +85,11 @@ export class FoodRepository {
 
     // Run both database queries at the same time
     const [totalNumberOfFoods, foods] = await Promise.all([
-      prisma.menuItem.count({
+      prisma.menuitem.count({
         where,
       }),
 
-      prisma.menuItem.findMany({
+      prisma.menuitem.findMany({
         where,
         orderBy,
         include: {
@@ -111,7 +111,7 @@ export class FoodRepository {
   }
 
   async delete(foodId: number) {
-    return await prisma.menuItem.delete({
+    return await prisma.menuitem.delete({
       where: {
         id: foodId,
       },
@@ -119,7 +119,7 @@ export class FoodRepository {
   }
 
   async getById(foodId: number) {
-    return await prisma.menuItem.findUnique({
+    return await prisma.menuitem.findUnique({
       where: {
         id: foodId,
       },
@@ -130,7 +130,7 @@ export class FoodRepository {
   }
 
   async update(foodId: number, dto: UpdateFoodDto) {
-    return await prisma.menuItem.update({
+    return await prisma.menuitem.update({
       where: {
         id: foodId,
       },

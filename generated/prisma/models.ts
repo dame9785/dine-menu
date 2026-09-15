@@ -8,6 +8,6 @@
  *
  * 🟢 You can import this file directly.
  */
-export type * from './models/Category'
-export type * from './models/MenuItem'
+export type * from './models/category'
+export type * from './models/menuitem'
 export type * from './commonInputTypes'

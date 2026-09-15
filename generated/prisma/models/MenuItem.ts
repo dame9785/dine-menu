@@ -4,7 +4,7 @@
 // biome-ignore-all lint: generated file
 // @ts-nocheck 
 /*
- * This file exports the `MenuItem` model and its related types.
+ * This file exports the `menuitem` model and its related types.
  *
  * 🟢 You can import this file directly.
  */
@@ -13,43 +13,32 @@ import type * as $Enums from "../enums"
 import type * as Prisma from "../internal/prismaNamespace"
 
 /**
- * Model MenuItem
+ * Model menuitem
  * 
  */
-export type MenuItemModel = runtime.Types.Result.DefaultSelection<Prisma.$MenuItemPayload>
+export type menuitemModel = runtime.Types.Result.DefaultSelection<Prisma.$menuitemPayload>
 
-export type AggregateMenuItem = {
-  _count: MenuItemCountAggregateOutputType | null
-  _avg: MenuItemAvgAggregateOutputType | null
-  _sum: MenuItemSumAggregateOutputType | null
-  _min: MenuItemMinAggregateOutputType | null
-  _max: MenuItemMaxAggregateOutputType | null
+export type AggregateMenuitem = {
+  _count: MenuitemCountAggregateOutputType | null
+  _avg: MenuitemAvgAggregateOutputType | null
+  _sum: MenuitemSumAggregateOutputType | null
+  _min: MenuitemMinAggregateOutputType | null
+  _max: MenuitemMaxAggregateOutputType | null
 }
 
-export type MenuItemAvgAggregateOutputType = {
+export type MenuitemAvgAggregateOutputType = {
   id: number | null
   price: runtime.Decimal | null
   categoryId: number | null
 }
 
-export type MenuItemSumAggregateOutputType = {
+export type MenuitemSumAggregateOutputType = {
   id: number | null
   price: runtime.Decimal | null
   categoryId: number | null
 }
 
-export type MenuItemMinAggregateOutputType = {
-  id: number | null
-  name: string | null
-  description: string | null
-  price: runtime.Decimal | null
-  imageUrl: string | null
-  categoryId: number | null
-  createdAt: Date | null
-  updatedAt: Date | null
-}
-
-export type MenuItemMaxAggregateOutputType = {
+export type MenuitemMinAggregateOutputType = {
   id: number | null
   name: string | null
   description: string | null
@@ -60,7 +49,18 @@ export type MenuItemMaxAggregateOutputType = {
   updatedAt: Date | null
 }
 
-export type MenuItemCountAggregateOutputType = {
+export type MenuitemMaxAggregateOutputType = {
+  id: number | null
+  name: string | null
+  description: string | null
+  price: runtime.Decimal | null
+  imageUrl: string | null
+  categoryId: number | null
+  createdAt: Date | null
+  updatedAt: Date | null
+}
+
+export type MenuitemCountAggregateOutputType = {
   id: number
   name: number
   description: number
@@ -73,30 +73,19 @@ export type MenuItemCountAggregateOutputType = {
 }
 
 
-export type MenuItemAvgAggregateInputType = {
+export type MenuitemAvgAggregateInputType = {
   id?: true
   price?: true
   categoryId?: true
 }
 
-export type MenuItemSumAggregateInputType = {
+export type MenuitemSumAggregateInputType = {
   id?: true
   price?: true
   categoryId?: true
 }
 
-export type MenuItemMinAggregateInputType = {
-  id?: true
-  name?: true
-  description?: true
-  price?: true
-  imageUrl?: true
-  categoryId?: true
-  createdAt?: true
-  updatedAt?: true
-}
-
-export type MenuItemMaxAggregateInputType = {
+export type MenuitemMinAggregateInputType = {
   id?: true
   name?: true
   description?: true
@@ -107,7 +96,18 @@ export type MenuItemMaxAggregateInputType = {
   updatedAt?: true
 }
 
-export type MenuItemCountAggregateInputType = {
+export type MenuitemMaxAggregateInputType = {
+  id?: true
+  name?: true
+  description?: true
+  price?: true
+  imageUrl?: true
+  categoryId?: true
+  createdAt?: true
+  updatedAt?: true
+}
+
+export type MenuitemCountAggregateInputType = {
   id?: true
   name?: true
   description?: true
@@ -119,93 +119,93 @@ export type MenuItemCountAggregateInputType = {
   _all?: true
 }
 
-export type MenuItemAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type MenuitemAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Filter which MenuItem to aggregate.
+   * Filter which menuitem to aggregate.
    */
-  where?: Prisma.MenuItemWhereInput
+  where?: Prisma.menuitemWhereInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
    * 
-   * Determine the order of MenuItems to fetch.
+   * Determine the order of menuitems to fetch.
    */
-  orderBy?: Prisma.MenuItemOrderByWithRelationInput | Prisma.MenuItemOrderByWithRelationInput[]
+  orderBy?: Prisma.menuitemOrderByWithRelationInput | Prisma.menuitemOrderByWithRelationInput[]
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
    * 
    * Sets the start position
    */
-  cursor?: Prisma.MenuItemWhereUniqueInput
+  cursor?: Prisma.menuitemWhereUniqueInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Take `±n` MenuItems from the position of the cursor.
+   * Take `±n` menuitems from the position of the cursor.
    */
   take?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Skip the first `n` MenuItems.
+   * Skip the first `n` menuitems.
    */
   skip?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Count returned MenuItems
+   * Count returned menuitems
   **/
-  _count?: true | MenuItemCountAggregateInputType
+  _count?: true | MenuitemCountAggregateInputType
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
    * Select which fields to average
   **/
-  _avg?: MenuItemAvgAggregateInputType
+  _avg?: MenuitemAvgAggregateInputType
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
    * Select which fields to sum
   **/
-  _sum?: MenuItemSumAggregateInputType
+  _sum?: MenuitemSumAggregateInputType
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
    * Select which fields to find the minimum value
   **/
-  _min?: MenuItemMinAggregateInputType
+  _min?: MenuitemMinAggregateInputType
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
    * Select which fields to find the maximum value
   **/
-  _max?: MenuItemMaxAggregateInputType
+  _max?: MenuitemMaxAggregateInputType
 }
 
-export type GetMenuItemAggregateType<T extends MenuItemAggregateArgs> = {
-      [P in keyof T & keyof AggregateMenuItem]: P extends '_count' | 'count'
+export type GetMenuitemAggregateType<T extends MenuitemAggregateArgs> = {
+      [P in keyof T & keyof AggregateMenuitem]: P extends '_count' | 'count'
     ? T[P] extends true
       ? number
-      : Prisma.GetScalarType<T[P], AggregateMenuItem[P]>
-    : Prisma.GetScalarType<T[P], AggregateMenuItem[P]>
+      : Prisma.GetScalarType<T[P], AggregateMenuitem[P]>
+    : Prisma.GetScalarType<T[P], AggregateMenuitem[P]>
 }
 
 
 
 
-export type MenuItemGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.MenuItemWhereInput
-  orderBy?: Prisma.MenuItemOrderByWithAggregationInput | Prisma.MenuItemOrderByWithAggregationInput[]
-  by: Prisma.MenuItemScalarFieldEnum[] | Prisma.MenuItemScalarFieldEnum
-  having?: Prisma.MenuItemScalarWhereWithAggregatesInput
+export type menuitemGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.menuitemWhereInput
+  orderBy?: Prisma.menuitemOrderByWithAggregationInput | Prisma.menuitemOrderByWithAggregationInput[]
+  by: Prisma.MenuitemScalarFieldEnum[] | Prisma.MenuitemScalarFieldEnum
+  having?: Prisma.menuitemScalarWhereWithAggregatesInput
   take?: number
   skip?: number
-  _count?: MenuItemCountAggregateInputType | true
-  _avg?: MenuItemAvgAggregateInputType
-  _sum?: MenuItemSumAggregateInputType
-  _min?: MenuItemMinAggregateInputType
-  _max?: MenuItemMaxAggregateInputType
+  _count?: MenuitemCountAggregateInputType | true
+  _avg?: MenuitemAvgAggregateInputType
+  _sum?: MenuitemSumAggregateInputType
+  _min?: MenuitemMinAggregateInputType
+  _max?: MenuitemMaxAggregateInputType
 }
 
-export type MenuItemGroupByOutputType = {
+export type MenuitemGroupByOutputType = {
   id: number
   name: string
   description: string
@@ -214,44 +214,44 @@ export type MenuItemGroupByOutputType = {
   categoryId: number
   createdAt: Date
   updatedAt: Date
-  _count: MenuItemCountAggregateOutputType | null
-  _avg: MenuItemAvgAggregateOutputType | null
-  _sum: MenuItemSumAggregateOutputType | null
-  _min: MenuItemMinAggregateOutputType | null
-  _max: MenuItemMaxAggregateOutputType | null
+  _count: MenuitemCountAggregateOutputType | null
+  _avg: MenuitemAvgAggregateOutputType | null
+  _sum: MenuitemSumAggregateOutputType | null
+  _min: MenuitemMinAggregateOutputType | null
+  _max: MenuitemMaxAggregateOutputType | null
 }
 
-export type GetMenuItemGroupByPayload<T extends MenuItemGroupByArgs> = Prisma.PrismaPromise<
+export type GetMenuitemGroupByPayload<T extends menuitemGroupByArgs> = Prisma.PrismaPromise<
   Array<
-    Prisma.PickEnumerable<MenuItemGroupByOutputType, T['by']> &
+    Prisma.PickEnumerable<MenuitemGroupByOutputType, T['by']> &
       {
-        [P in ((keyof T) & (keyof MenuItemGroupByOutputType))]: P extends '_count'
+        [P in ((keyof T) & (keyof MenuitemGroupByOutputType))]: P extends '_count'
           ? T[P] extends boolean
             ? number
-            : Prisma.GetScalarType<T[P], MenuItemGroupByOutputType[P]>
-          : Prisma.GetScalarType<T[P], MenuItemGroupByOutputType[P]>
+            : Prisma.GetScalarType<T[P], MenuitemGroupByOutputType[P]>
+          : Prisma.GetScalarType<T[P], MenuitemGroupByOutputType[P]>
       }
     >
   >
 
 
 
-export type MenuItemWhereInput = {
-  AND?: Prisma.MenuItemWhereInput | Prisma.MenuItemWhereInput[]
-  OR?: Prisma.MenuItemWhereInput[]
-  NOT?: Prisma.MenuItemWhereInput | Prisma.MenuItemWhereInput[]
-  id?: Prisma.IntFilter<"MenuItem"> | number
-  name?: Prisma.StringFilter<"MenuItem"> | string
-  description?: Prisma.StringFilter<"MenuItem"> | string
-  price?: Prisma.DecimalFilter<"MenuItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  imageUrl?: Prisma.StringNullableFilter<"MenuItem"> | string | null
-  categoryId?: Prisma.IntFilter<"MenuItem"> | number
-  createdAt?: Prisma.DateTimeFilter<"MenuItem"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"MenuItem"> | Date | string
-  category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
+export type menuitemWhereInput = {
+  AND?: Prisma.menuitemWhereInput | Prisma.menuitemWhereInput[]
+  OR?: Prisma.menuitemWhereInput[]
+  NOT?: Prisma.menuitemWhereInput | Prisma.menuitemWhereInput[]
+  id?: Prisma.IntFilter<"menuitem"> | number
+  name?: Prisma.StringFilter<"menuitem"> | string
+  description?: Prisma.StringFilter<"menuitem"> | string
+  price?: Prisma.DecimalFilter<"menuitem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  imageUrl?: Prisma.StringNullableFilter<"menuitem"> | string | null
+  categoryId?: Prisma.IntFilter<"menuitem"> | number
+  createdAt?: Prisma.DateTimeFilter<"menuitem"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"menuitem"> | Date | string
+  category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.categoryWhereInput>
 }
 
-export type MenuItemOrderByWithRelationInput = {
+export type menuitemOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -260,26 +260,26 @@ export type MenuItemOrderByWithRelationInput = {
   categoryId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  category?: Prisma.CategoryOrderByWithRelationInput
-  _relevance?: Prisma.MenuItemOrderByRelevanceInput
+  category?: Prisma.categoryOrderByWithRelationInput
+  _relevance?: Prisma.menuitemOrderByRelevanceInput
 }
 
-export type MenuItemWhereUniqueInput = Prisma.AtLeast<{
+export type menuitemWhereUniqueInput = Prisma.AtLeast<{
   id?: number
-  AND?: Prisma.MenuItemWhereInput | Prisma.MenuItemWhereInput[]
-  OR?: Prisma.MenuItemWhereInput[]
-  NOT?: Prisma.MenuItemWhereInput | Prisma.MenuItemWhereInput[]
-  name?: Prisma.StringFilter<"MenuItem"> | string
-  description?: Prisma.StringFilter<"MenuItem"> | string
-  price?: Prisma.DecimalFilter<"MenuItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  imageUrl?: Prisma.StringNullableFilter<"MenuItem"> | string | null
-  categoryId?: Prisma.IntFilter<"MenuItem"> | number
-  createdAt?: Prisma.DateTimeFilter<"MenuItem"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"MenuItem"> | Date | string
-  category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
+  AND?: Prisma.menuitemWhereInput | Prisma.menuitemWhereInput[]
+  OR?: Prisma.menuitemWhereInput[]
+  NOT?: Prisma.menuitemWhereInput | Prisma.menuitemWhereInput[]
+  name?: Prisma.StringFilter<"menuitem"> | string
+  description?: Prisma.StringFilter<"menuitem"> | string
+  price?: Prisma.DecimalFilter<"menuitem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  imageUrl?: Prisma.StringNullableFilter<"menuitem"> | string | null
+  categoryId?: Prisma.IntFilter<"menuitem"> | number
+  createdAt?: Prisma.DateTimeFilter<"menuitem"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"menuitem"> | Date | string
+  category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.categoryWhereInput>
 }, "id">
 
-export type MenuItemOrderByWithAggregationInput = {
+export type menuitemOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -288,38 +288,38 @@ export type MenuItemOrderByWithAggregationInput = {
   categoryId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  _count?: Prisma.MenuItemCountOrderByAggregateInput
-  _avg?: Prisma.MenuItemAvgOrderByAggregateInput
-  _max?: Prisma.MenuItemMaxOrderByAggregateInput
-  _min?: Prisma.MenuItemMinOrderByAggregateInput
-  _sum?: Prisma.MenuItemSumOrderByAggregateInput
+  _count?: Prisma.menuitemCountOrderByAggregateInput
+  _avg?: Prisma.menuitemAvgOrderByAggregateInput
+  _max?: Prisma.menuitemMaxOrderByAggregateInput
+  _min?: Prisma.menuitemMinOrderByAggregateInput
+  _sum?: Prisma.menuitemSumOrderByAggregateInput
 }
 
-export type MenuItemScalarWhereWithAggregatesInput = {
-  AND?: Prisma.MenuItemScalarWhereWithAggregatesInput | Prisma.MenuItemScalarWhereWithAggregatesInput[]
-  OR?: Prisma.MenuItemScalarWhereWithAggregatesInput[]
-  NOT?: Prisma.MenuItemScalarWhereWithAggregatesInput | Prisma.MenuItemScalarWhereWithAggregatesInput[]
-  id?: Prisma.IntWithAggregatesFilter<"MenuItem"> | number
-  name?: Prisma.StringWithAggregatesFilter<"MenuItem"> | string
-  description?: Prisma.StringWithAggregatesFilter<"MenuItem"> | string
-  price?: Prisma.DecimalWithAggregatesFilter<"MenuItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  imageUrl?: Prisma.StringNullableWithAggregatesFilter<"MenuItem"> | string | null
-  categoryId?: Prisma.IntWithAggregatesFilter<"MenuItem"> | number
-  createdAt?: Prisma.DateTimeWithAggregatesFilter<"MenuItem"> | Date | string
-  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"MenuItem"> | Date | string
+export type menuitemScalarWhereWithAggregatesInput = {
+  AND?: Prisma.menuitemScalarWhereWithAggregatesInput | Prisma.menuitemScalarWhereWithAggregatesInput[]
+  OR?: Prisma.menuitemScalarWhereWithAggregatesInput[]
+  NOT?: Prisma.menuitemScalarWhereWithAggregatesInput | Prisma.menuitemScalarWhereWithAggregatesInput[]
+  id?: Prisma.IntWithAggregatesFilter<"menuitem"> | number
+  name?: Prisma.StringWithAggregatesFilter<"menuitem"> | string
+  description?: Prisma.StringWithAggregatesFilter<"menuitem"> | string
+  price?: Prisma.DecimalWithAggregatesFilter<"menuitem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  imageUrl?: Prisma.StringNullableWithAggregatesFilter<"menuitem"> | string | null
+  categoryId?: Prisma.IntWithAggregatesFilter<"menuitem"> | number
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"menuitem"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"menuitem"> | Date | string
 }
 
-export type MenuItemCreateInput = {
+export type menuitemCreateInput = {
   name: string
   description: string
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  category: Prisma.CategoryCreateNestedOneWithoutMenuItemsInput
+  category: Prisma.categoryCreateNestedOneWithoutMenuitemInput
 }
 
-export type MenuItemUncheckedCreateInput = {
+export type menuitemUncheckedCreateInput = {
   id?: number
   name: string
   description: string
@@ -330,17 +330,17 @@ export type MenuItemUncheckedCreateInput = {
   updatedAt?: Date | string
 }
 
-export type MenuItemUpdateInput = {
+export type menuitemUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  category?: Prisma.CategoryUpdateOneRequiredWithoutMenuItemsNestedInput
+  category?: Prisma.categoryUpdateOneRequiredWithoutMenuitemNestedInput
 }
 
-export type MenuItemUncheckedUpdateInput = {
+export type menuitemUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
@@ -351,7 +351,7 @@ export type MenuItemUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type MenuItemCreateManyInput = {
+export type menuitemCreateManyInput = {
   id?: number
   name: string
   description: string
@@ -362,7 +362,7 @@ export type MenuItemCreateManyInput = {
   updatedAt?: Date | string
 }
 
-export type MenuItemUpdateManyMutationInput = {
+export type menuitemUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -371,7 +371,7 @@ export type MenuItemUpdateManyMutationInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type MenuItemUncheckedUpdateManyInput = {
+export type menuitemUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
@@ -382,23 +382,23 @@ export type MenuItemUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type MenuItemListRelationFilter = {
-  every?: Prisma.MenuItemWhereInput
-  some?: Prisma.MenuItemWhereInput
-  none?: Prisma.MenuItemWhereInput
+export type MenuitemListRelationFilter = {
+  every?: Prisma.menuitemWhereInput
+  some?: Prisma.menuitemWhereInput
+  none?: Prisma.menuitemWhereInput
 }
 
-export type MenuItemOrderByRelationAggregateInput = {
+export type menuitemOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type MenuItemOrderByRelevanceInput = {
-  fields: Prisma.MenuItemOrderByRelevanceFieldEnum | Prisma.MenuItemOrderByRelevanceFieldEnum[]
+export type menuitemOrderByRelevanceInput = {
+  fields: Prisma.menuitemOrderByRelevanceFieldEnum | Prisma.menuitemOrderByRelevanceFieldEnum[]
   sort: Prisma.SortOrder
   search: string
 }
 
-export type MenuItemCountOrderByAggregateInput = {
+export type menuitemCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -409,24 +409,13 @@ export type MenuItemCountOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
-export type MenuItemAvgOrderByAggregateInput = {
+export type menuitemAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   price?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
 }
 
-export type MenuItemMaxOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
-  description?: Prisma.SortOrder
-  price?: Prisma.SortOrder
-  imageUrl?: Prisma.SortOrder
-  categoryId?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
-}
-
-export type MenuItemMinOrderByAggregateInput = {
+export type menuitemMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -437,52 +426,63 @@ export type MenuItemMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
-export type MenuItemSumOrderByAggregateInput = {
+export type menuitemMinOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  name?: Prisma.SortOrder
+  description?: Prisma.SortOrder
+  price?: Prisma.SortOrder
+  imageUrl?: Prisma.SortOrder
+  categoryId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+}
+
+export type menuitemSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   price?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
 }
 
-export type MenuItemCreateNestedManyWithoutCategoryInput = {
-  create?: Prisma.XOR<Prisma.MenuItemCreateWithoutCategoryInput, Prisma.MenuItemUncheckedCreateWithoutCategoryInput> | Prisma.MenuItemCreateWithoutCategoryInput[] | Prisma.MenuItemUncheckedCreateWithoutCategoryInput[]
-  connectOrCreate?: Prisma.MenuItemCreateOrConnectWithoutCategoryInput | Prisma.MenuItemCreateOrConnectWithoutCategoryInput[]
-  createMany?: Prisma.MenuItemCreateManyCategoryInputEnvelope
-  connect?: Prisma.MenuItemWhereUniqueInput | Prisma.MenuItemWhereUniqueInput[]
+export type menuitemCreateNestedManyWithoutCategoryInput = {
+  create?: Prisma.XOR<Prisma.menuitemCreateWithoutCategoryInput, Prisma.menuitemUncheckedCreateWithoutCategoryInput> | Prisma.menuitemCreateWithoutCategoryInput[] | Prisma.menuitemUncheckedCreateWithoutCategoryInput[]
+  connectOrCreate?: Prisma.menuitemCreateOrConnectWithoutCategoryInput | Prisma.menuitemCreateOrConnectWithoutCategoryInput[]
+  createMany?: Prisma.menuitemCreateManyCategoryInputEnvelope
+  connect?: Prisma.menuitemWhereUniqueInput | Prisma.menuitemWhereUniqueInput[]
 }
 
-export type MenuItemUncheckedCreateNestedManyWithoutCategoryInput = {
-  create?: Prisma.XOR<Prisma.MenuItemCreateWithoutCategoryInput, Prisma.MenuItemUncheckedCreateWithoutCategoryInput> | Prisma.MenuItemCreateWithoutCategoryInput[] | Prisma.MenuItemUncheckedCreateWithoutCategoryInput[]
-  connectOrCreate?: Prisma.MenuItemCreateOrConnectWithoutCategoryInput | Prisma.MenuItemCreateOrConnectWithoutCategoryInput[]
-  createMany?: Prisma.MenuItemCreateManyCategoryInputEnvelope
-  connect?: Prisma.MenuItemWhereUniqueInput | Prisma.MenuItemWhereUniqueInput[]
+export type menuitemUncheckedCreateNestedManyWithoutCategoryInput = {
+  create?: Prisma.XOR<Prisma.menuitemCreateWithoutCategoryInput, Prisma.menuitemUncheckedCreateWithoutCategoryInput> | Prisma.menuitemCreateWithoutCategoryInput[] | Prisma.menuitemUncheckedCreateWithoutCategoryInput[]
+  connectOrCreate?: Prisma.menuitemCreateOrConnectWithoutCategoryInput | Prisma.menuitemCreateOrConnectWithoutCategoryInput[]
+  createMany?: Prisma.menuitemCreateManyCategoryInputEnvelope
+  connect?: Prisma.menuitemWhereUniqueInput | Prisma.menuitemWhereUniqueInput[]
 }
 
-export type MenuItemUpdateManyWithoutCategoryNestedInput = {
-  create?: Prisma.XOR<Prisma.MenuItemCreateWithoutCategoryInput, Prisma.MenuItemUncheckedCreateWithoutCategoryInput> | Prisma.MenuItemCreateWithoutCategoryInput[] | Prisma.MenuItemUncheckedCreateWithoutCategoryInput[]
-  connectOrCreate?: Prisma.MenuItemCreateOrConnectWithoutCategoryInput | Prisma.MenuItemCreateOrConnectWithoutCategoryInput[]
-  upsert?: Prisma.MenuItemUpsertWithWhereUniqueWithoutCategoryInput | Prisma.MenuItemUpsertWithWhereUniqueWithoutCategoryInput[]
-  createMany?: Prisma.MenuItemCreateManyCategoryInputEnvelope
-  set?: Prisma.MenuItemWhereUniqueInput | Prisma.MenuItemWhereUniqueInput[]
-  disconnect?: Prisma.MenuItemWhereUniqueInput | Prisma.MenuItemWhereUniqueInput[]
-  delete?: Prisma.MenuItemWhereUniqueInput | Prisma.MenuItemWhereUniqueInput[]
-  connect?: Prisma.MenuItemWhereUniqueInput | Prisma.MenuItemWhereUniqueInput[]
-  update?: Prisma.MenuItemUpdateWithWhereUniqueWithoutCategoryInput | Prisma.MenuItemUpdateWithWhereUniqueWithoutCategoryInput[]
-  updateMany?: Prisma.MenuItemUpdateManyWithWhereWithoutCategoryInput | Prisma.MenuItemUpdateManyWithWhereWithoutCategoryInput[]
-  deleteMany?: Prisma.MenuItemScalarWhereInput | Prisma.MenuItemScalarWhereInput[]
+export type menuitemUpdateManyWithoutCategoryNestedInput = {
+  create?: Prisma.XOR<Prisma.menuitemCreateWithoutCategoryInput, Prisma.menuitemUncheckedCreateWithoutCategoryInput> | Prisma.menuitemCreateWithoutCategoryInput[] | Prisma.menuitemUncheckedCreateWithoutCategoryInput[]
+  connectOrCreate?: Prisma.menuitemCreateOrConnectWithoutCategoryInput | Prisma.menuitemCreateOrConnectWithoutCategoryInput[]
+  upsert?: Prisma.menuitemUpsertWithWhereUniqueWithoutCategoryInput | Prisma.menuitemUpsertWithWhereUniqueWithoutCategoryInput[]
+  createMany?: Prisma.menuitemCreateManyCategoryInputEnvelope
+  set?: Prisma.menuitemWhereUniqueInput | Prisma.menuitemWhereUniqueInput[]
+  disconnect?: Prisma.menuitemWhereUniqueInput | Prisma.menuitemWhereUniqueInput[]
+  delete?: Prisma.menuitemWhereUniqueInput | Prisma.menuitemWhereUniqueInput[]
+  connect?: Prisma.menuitemWhereUniqueInput | Prisma.menuitemWhereUniqueInput[]
+  update?: Prisma.menuitemUpdateWithWhereUniqueWithoutCategoryInput | Prisma.menuitemUpdateWithWhereUniqueWithoutCategoryInput[]
+  updateMany?: Prisma.menuitemUpdateManyWithWhereWithoutCategoryInput | Prisma.menuitemUpdateManyWithWhereWithoutCategoryInput[]
+  deleteMany?: Prisma.menuitemScalarWhereInput | Prisma.menuitemScalarWhereInput[]
 }
 
-export type MenuItemUncheckedUpdateManyWithoutCategoryNestedInput = {
-  create?: Prisma.XOR<Prisma.MenuItemCreateWithoutCategoryInput, Prisma.MenuItemUncheckedCreateWithoutCategoryInput> | Prisma.MenuItemCreateWithoutCategoryInput[] | Prisma.MenuItemUncheckedCreateWithoutCategoryInput[]
-  connectOrCreate?: Prisma.MenuItemCreateOrConnectWithoutCategoryInput | Prisma.MenuItemCreateOrConnectWithoutCategoryInput[]
-  upsert?: Prisma.MenuItemUpsertWithWhereUniqueWithoutCategoryInput | Prisma.MenuItemUpsertWithWhereUniqueWithoutCategoryInput[]
-  createMany?: Prisma.MenuItemCreateManyCategoryInputEnvelope
-  set?: Prisma.MenuItemWhereUniqueInput | Prisma.MenuItemWhereUniqueInput[]
-  disconnect?: Prisma.MenuItemWhereUniqueInput | Prisma.MenuItemWhereUniqueInput[]
-  delete?: Prisma.MenuItemWhereUniqueInput | Prisma.MenuItemWhereUniqueInput[]
-  connect?: Prisma.MenuItemWhereUniqueInput | Prisma.MenuItemWhereUniqueInput[]
-  update?: Prisma.MenuItemUpdateWithWhereUniqueWithoutCategoryInput | Prisma.MenuItemUpdateWithWhereUniqueWithoutCategoryInput[]
-  updateMany?: Prisma.MenuItemUpdateManyWithWhereWithoutCategoryInput | Prisma.MenuItemUpdateManyWithWhereWithoutCategoryInput[]
-  deleteMany?: Prisma.MenuItemScalarWhereInput | Prisma.MenuItemScalarWhereInput[]
+export type menuitemUncheckedUpdateManyWithoutCategoryNestedInput = {
+  create?: Prisma.XOR<Prisma.menuitemCreateWithoutCategoryInput, Prisma.menuitemUncheckedCreateWithoutCategoryInput> | Prisma.menuitemCreateWithoutCategoryInput[] | Prisma.menuitemUncheckedCreateWithoutCategoryInput[]
+  connectOrCreate?: Prisma.menuitemCreateOrConnectWithoutCategoryInput | Prisma.menuitemCreateOrConnectWithoutCategoryInput[]
+  upsert?: Prisma.menuitemUpsertWithWhereUniqueWithoutCategoryInput | Prisma.menuitemUpsertWithWhereUniqueWithoutCategoryInput[]
+  createMany?: Prisma.menuitemCreateManyCategoryInputEnvelope
+  set?: Prisma.menuitemWhereUniqueInput | Prisma.menuitemWhereUniqueInput[]
+  disconnect?: Prisma.menuitemWhereUniqueInput | Prisma.menuitemWhereUniqueInput[]
+  delete?: Prisma.menuitemWhereUniqueInput | Prisma.menuitemWhereUniqueInput[]
+  connect?: Prisma.menuitemWhereUniqueInput | Prisma.menuitemWhereUniqueInput[]
+  update?: Prisma.menuitemUpdateWithWhereUniqueWithoutCategoryInput | Prisma.menuitemUpdateWithWhereUniqueWithoutCategoryInput[]
+  updateMany?: Prisma.menuitemUpdateManyWithWhereWithoutCategoryInput | Prisma.menuitemUpdateManyWithWhereWithoutCategoryInput[]
+  deleteMany?: Prisma.menuitemScalarWhereInput | Prisma.menuitemScalarWhereInput[]
 }
 
 export type DecimalFieldUpdateOperationsInput = {
@@ -497,7 +497,7 @@ export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
 }
 
-export type MenuItemCreateWithoutCategoryInput = {
+export type menuitemCreateWithoutCategoryInput = {
   name: string
   description: string
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -506,7 +506,7 @@ export type MenuItemCreateWithoutCategoryInput = {
   updatedAt?: Date | string
 }
 
-export type MenuItemUncheckedCreateWithoutCategoryInput = {
+export type menuitemUncheckedCreateWithoutCategoryInput = {
   id?: number
   name: string
   description: string
@@ -516,47 +516,47 @@ export type MenuItemUncheckedCreateWithoutCategoryInput = {
   updatedAt?: Date | string
 }
 
-export type MenuItemCreateOrConnectWithoutCategoryInput = {
-  where: Prisma.MenuItemWhereUniqueInput
-  create: Prisma.XOR<Prisma.MenuItemCreateWithoutCategoryInput, Prisma.MenuItemUncheckedCreateWithoutCategoryInput>
+export type menuitemCreateOrConnectWithoutCategoryInput = {
+  where: Prisma.menuitemWhereUniqueInput
+  create: Prisma.XOR<Prisma.menuitemCreateWithoutCategoryInput, Prisma.menuitemUncheckedCreateWithoutCategoryInput>
 }
 
-export type MenuItemCreateManyCategoryInputEnvelope = {
-  data: Prisma.MenuItemCreateManyCategoryInput | Prisma.MenuItemCreateManyCategoryInput[]
+export type menuitemCreateManyCategoryInputEnvelope = {
+  data: Prisma.menuitemCreateManyCategoryInput | Prisma.menuitemCreateManyCategoryInput[]
   skipDuplicates?: boolean
 }
 
-export type MenuItemUpsertWithWhereUniqueWithoutCategoryInput = {
-  where: Prisma.MenuItemWhereUniqueInput
-  update: Prisma.XOR<Prisma.MenuItemUpdateWithoutCategoryInput, Prisma.MenuItemUncheckedUpdateWithoutCategoryInput>
-  create: Prisma.XOR<Prisma.MenuItemCreateWithoutCategoryInput, Prisma.MenuItemUncheckedCreateWithoutCategoryInput>
+export type menuitemUpsertWithWhereUniqueWithoutCategoryInput = {
+  where: Prisma.menuitemWhereUniqueInput
+  update: Prisma.XOR<Prisma.menuitemUpdateWithoutCategoryInput, Prisma.menuitemUncheckedUpdateWithoutCategoryInput>
+  create: Prisma.XOR<Prisma.menuitemCreateWithoutCategoryInput, Prisma.menuitemUncheckedCreateWithoutCategoryInput>
 }
 
-export type MenuItemUpdateWithWhereUniqueWithoutCategoryInput = {
-  where: Prisma.MenuItemWhereUniqueInput
-  data: Prisma.XOR<Prisma.MenuItemUpdateWithoutCategoryInput, Prisma.MenuItemUncheckedUpdateWithoutCategoryInput>
+export type menuitemUpdateWithWhereUniqueWithoutCategoryInput = {
+  where: Prisma.menuitemWhereUniqueInput
+  data: Prisma.XOR<Prisma.menuitemUpdateWithoutCategoryInput, Prisma.menuitemUncheckedUpdateWithoutCategoryInput>
 }
 
-export type MenuItemUpdateManyWithWhereWithoutCategoryInput = {
-  where: Prisma.MenuItemScalarWhereInput
-  data: Prisma.XOR<Prisma.MenuItemUpdateManyMutationInput, Prisma.MenuItemUncheckedUpdateManyWithoutCategoryInput>
+export type menuitemUpdateManyWithWhereWithoutCategoryInput = {
+  where: Prisma.menuitemScalarWhereInput
+  data: Prisma.XOR<Prisma.menuitemUpdateManyMutationInput, Prisma.menuitemUncheckedUpdateManyWithoutCategoryInput>
 }
 
-export type MenuItemScalarWhereInput = {
-  AND?: Prisma.MenuItemScalarWhereInput | Prisma.MenuItemScalarWhereInput[]
-  OR?: Prisma.MenuItemScalarWhereInput[]
-  NOT?: Prisma.MenuItemScalarWhereInput | Prisma.MenuItemScalarWhereInput[]
-  id?: Prisma.IntFilter<"MenuItem"> | number
-  name?: Prisma.StringFilter<"MenuItem"> | string
-  description?: Prisma.StringFilter<"MenuItem"> | string
-  price?: Prisma.DecimalFilter<"MenuItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  imageUrl?: Prisma.StringNullableFilter<"MenuItem"> | string | null
-  categoryId?: Prisma.IntFilter<"MenuItem"> | number
-  createdAt?: Prisma.DateTimeFilter<"MenuItem"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"MenuItem"> | Date | string
+export type menuitemScalarWhereInput = {
+  AND?: Prisma.menuitemScalarWhereInput | Prisma.menuitemScalarWhereInput[]
+  OR?: Prisma.menuitemScalarWhereInput[]
+  NOT?: Prisma.menuitemScalarWhereInput | Prisma.menuitemScalarWhereInput[]
+  id?: Prisma.IntFilter<"menuitem"> | number
+  name?: Prisma.StringFilter<"menuitem"> | string
+  description?: Prisma.StringFilter<"menuitem"> | string
+  price?: Prisma.DecimalFilter<"menuitem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  imageUrl?: Prisma.StringNullableFilter<"menuitem"> | string | null
+  categoryId?: Prisma.IntFilter<"menuitem"> | number
+  createdAt?: Prisma.DateTimeFilter<"menuitem"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"menuitem"> | Date | string
 }
 
-export type MenuItemCreateManyCategoryInput = {
+export type menuitemCreateManyCategoryInput = {
   id?: number
   name: string
   description: string
@@ -566,7 +566,7 @@ export type MenuItemCreateManyCategoryInput = {
   updatedAt?: Date | string
 }
 
-export type MenuItemUpdateWithoutCategoryInput = {
+export type menuitemUpdateWithoutCategoryInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -575,7 +575,7 @@ export type MenuItemUpdateWithoutCategoryInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type MenuItemUncheckedUpdateWithoutCategoryInput = {
+export type menuitemUncheckedUpdateWithoutCategoryInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
@@ -585,7 +585,7 @@ export type MenuItemUncheckedUpdateWithoutCategoryInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type MenuItemUncheckedUpdateManyWithoutCategoryInput = {
+export type menuitemUncheckedUpdateManyWithoutCategoryInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
@@ -597,7 +597,7 @@ export type MenuItemUncheckedUpdateManyWithoutCategoryInput = {
 
 
 
-export type MenuItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+export type menuitemSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
   description?: boolean
@@ -606,12 +606,12 @@ export type MenuItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   categoryId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
-}, ExtArgs["result"]["menuItem"]>
+  category?: boolean | Prisma.categoryDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["menuitem"]>
 
 
 
-export type MenuItemSelectScalar = {
+export type menuitemSelectScalar = {
   id?: boolean
   name?: boolean
   description?: boolean
@@ -622,15 +622,15 @@ export type MenuItemSelectScalar = {
   updatedAt?: boolean
 }
 
-export type MenuItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "price" | "imageUrl" | "categoryId" | "createdAt" | "updatedAt", ExtArgs["result"]["menuItem"]>
-export type MenuItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
+export type menuitemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "price" | "imageUrl" | "categoryId" | "createdAt" | "updatedAt", ExtArgs["result"]["menuitem"]>
+export type menuitemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  category?: boolean | Prisma.categoryDefaultArgs<ExtArgs>
 }
 
-export type $MenuItemPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  name: "MenuItem"
+export type $menuitemPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  name: "menuitem"
   objects: {
-    category: Prisma.$CategoryPayload<ExtArgs>
+    category: Prisma.$categoryPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -641,143 +641,143 @@ export type $MenuItemPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     categoryId: number
     createdAt: Date
     updatedAt: Date
-  }, ExtArgs["result"]["menuItem"]>
+  }, ExtArgs["result"]["menuitem"]>
   composites: {}
 }
 
-export type MenuItemGetPayload<S extends boolean | null | undefined | MenuItemDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$MenuItemPayload, S>
+export type menuitemGetPayload<S extends boolean | null | undefined | menuitemDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$menuitemPayload, S>
 
-export type MenuItemCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<MenuItemFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-    select?: MenuItemCountAggregateInputType | true
+export type menuitemCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
+  Omit<menuitemFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    select?: MenuitemCountAggregateInputType | true
   }
 
-export interface MenuItemDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-  [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MenuItem'], meta: { name: 'MenuItem' } }
+export interface menuitemDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+  [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['menuitem'], meta: { name: 'menuitem' } }
   /**
-   * Find zero or one MenuItem that matches the filter.
-   * @param {MenuItemFindUniqueArgs} args - Arguments to find a MenuItem
+   * Find zero or one Menuitem that matches the filter.
+   * @param {menuitemFindUniqueArgs} args - Arguments to find a Menuitem
    * @example
-   * // Get one MenuItem
-   * const menuItem = await prisma.menuItem.findUnique({
+   * // Get one Menuitem
+   * const menuitem = await prisma.menuitem.findUnique({
    *   where: {
    *     // ... provide filter here
    *   }
    * })
    */
-  findUnique<T extends MenuItemFindUniqueArgs>(args: Prisma.SelectSubset<T, MenuItemFindUniqueArgs<ExtArgs>>): Prisma.Prisma__MenuItemClient<runtime.Types.Result.GetResult<Prisma.$MenuItemPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  findUnique<T extends menuitemFindUniqueArgs>(args: Prisma.SelectSubset<T, menuitemFindUniqueArgs<ExtArgs>>): Prisma.Prisma__menuitemClient<runtime.Types.Result.GetResult<Prisma.$menuitemPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
   /**
-   * Find one MenuItem that matches the filter or throw an error with `error.code='P2025'`
+   * Find one Menuitem that matches the filter or throw an error with `error.code='P2025'`
    * if no matches were found.
-   * @param {MenuItemFindUniqueOrThrowArgs} args - Arguments to find a MenuItem
+   * @param {menuitemFindUniqueOrThrowArgs} args - Arguments to find a Menuitem
    * @example
-   * // Get one MenuItem
-   * const menuItem = await prisma.menuItem.findUniqueOrThrow({
+   * // Get one Menuitem
+   * const menuitem = await prisma.menuitem.findUniqueOrThrow({
    *   where: {
    *     // ... provide filter here
    *   }
    * })
    */
-  findUniqueOrThrow<T extends MenuItemFindUniqueOrThrowArgs>(args: Prisma.SelectSubset<T, MenuItemFindUniqueOrThrowArgs<ExtArgs>>): Prisma.Prisma__MenuItemClient<runtime.Types.Result.GetResult<Prisma.$MenuItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  findUniqueOrThrow<T extends menuitemFindUniqueOrThrowArgs>(args: Prisma.SelectSubset<T, menuitemFindUniqueOrThrowArgs<ExtArgs>>): Prisma.Prisma__menuitemClient<runtime.Types.Result.GetResult<Prisma.$menuitemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
   /**
-   * Find the first MenuItem that matches the filter.
+   * Find the first Menuitem that matches the filter.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {MenuItemFindFirstArgs} args - Arguments to find a MenuItem
+   * @param {menuitemFindFirstArgs} args - Arguments to find a Menuitem
    * @example
-   * // Get one MenuItem
-   * const menuItem = await prisma.menuItem.findFirst({
+   * // Get one Menuitem
+   * const menuitem = await prisma.menuitem.findFirst({
    *   where: {
    *     // ... provide filter here
    *   }
    * })
    */
-  findFirst<T extends MenuItemFindFirstArgs>(args?: Prisma.SelectSubset<T, MenuItemFindFirstArgs<ExtArgs>>): Prisma.Prisma__MenuItemClient<runtime.Types.Result.GetResult<Prisma.$MenuItemPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  findFirst<T extends menuitemFindFirstArgs>(args?: Prisma.SelectSubset<T, menuitemFindFirstArgs<ExtArgs>>): Prisma.Prisma__menuitemClient<runtime.Types.Result.GetResult<Prisma.$menuitemPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
   /**
-   * Find the first MenuItem that matches the filter or
+   * Find the first Menuitem that matches the filter or
    * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {MenuItemFindFirstOrThrowArgs} args - Arguments to find a MenuItem
+   * @param {menuitemFindFirstOrThrowArgs} args - Arguments to find a Menuitem
    * @example
-   * // Get one MenuItem
-   * const menuItem = await prisma.menuItem.findFirstOrThrow({
+   * // Get one Menuitem
+   * const menuitem = await prisma.menuitem.findFirstOrThrow({
    *   where: {
    *     // ... provide filter here
    *   }
    * })
    */
-  findFirstOrThrow<T extends MenuItemFindFirstOrThrowArgs>(args?: Prisma.SelectSubset<T, MenuItemFindFirstOrThrowArgs<ExtArgs>>): Prisma.Prisma__MenuItemClient<runtime.Types.Result.GetResult<Prisma.$MenuItemPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  findFirstOrThrow<T extends menuitemFindFirstOrThrowArgs>(args?: Prisma.SelectSubset<T, menuitemFindFirstOrThrowArgs<ExtArgs>>): Prisma.Prisma__menuitemClient<runtime.Types.Result.GetResult<Prisma.$menuitemPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
   /**
-   * Find zero or more MenuItems that matches the filter.
+   * Find zero or more Menuitems that matches the filter.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {MenuItemFindManyArgs} args - Arguments to filter and select certain fields only.
+   * @param {menuitemFindManyArgs} args - Arguments to filter and select certain fields only.
    * @example
-   * // Get all MenuItems
-   * const menuItems = await prisma.menuItem.findMany()
+   * // Get all Menuitems
+   * const menuitems = await prisma.menuitem.findMany()
    * 
-   * // Get first 10 MenuItems
-   * const menuItems = await prisma.menuItem.findMany({ take: 10 })
+   * // Get first 10 Menuitems
+   * const menuitems = await prisma.menuitem.findMany({ take: 10 })
    * 
    * // Only select the `id`
-   * const menuItemWithIdOnly = await prisma.menuItem.findMany({ select: { id: true } })
+   * const menuitemWithIdOnly = await prisma.menuitem.findMany({ select: { id: true } })
    * 
    */
-  findMany<T extends MenuItemFindManyArgs>(args?: Prisma.SelectSubset<T, MenuItemFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MenuItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+  findMany<T extends menuitemFindManyArgs>(args?: Prisma.SelectSubset<T, menuitemFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$menuitemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
   /**
-   * Create a MenuItem.
-   * @param {MenuItemCreateArgs} args - Arguments to create a MenuItem.
+   * Create a Menuitem.
+   * @param {menuitemCreateArgs} args - Arguments to create a Menuitem.
    * @example
-   * // Create one MenuItem
-   * const MenuItem = await prisma.menuItem.create({
+   * // Create one Menuitem
+   * const Menuitem = await prisma.menuitem.create({
    *   data: {
-   *     // ... data to create a MenuItem
+   *     // ... data to create a Menuitem
    *   }
    * })
    * 
    */
-  create<T extends MenuItemCreateArgs>(args: Prisma.SelectSubset<T, MenuItemCreateArgs<ExtArgs>>): Prisma.Prisma__MenuItemClient<runtime.Types.Result.GetResult<Prisma.$MenuItemPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  create<T extends menuitemCreateArgs>(args: Prisma.SelectSubset<T, menuitemCreateArgs<ExtArgs>>): Prisma.Prisma__menuitemClient<runtime.Types.Result.GetResult<Prisma.$menuitemPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
   /**
-   * Create many MenuItems.
-   * @param {MenuItemCreateManyArgs} args - Arguments to create many MenuItems.
+   * Create many Menuitems.
+   * @param {menuitemCreateManyArgs} args - Arguments to create many Menuitems.
    * @example
-   * // Create many MenuItems
-   * const menuItem = await prisma.menuItem.createMany({
+   * // Create many Menuitems
+   * const menuitem = await prisma.menuitem.createMany({
    *   data: [
    *     // ... provide data here
    *   ]
    * })
    *     
    */
-  createMany<T extends MenuItemCreateManyArgs>(args?: Prisma.SelectSubset<T, MenuItemCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+  createMany<T extends menuitemCreateManyArgs>(args?: Prisma.SelectSubset<T, menuitemCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
-   * Delete a MenuItem.
-   * @param {MenuItemDeleteArgs} args - Arguments to delete one MenuItem.
+   * Delete a Menuitem.
+   * @param {menuitemDeleteArgs} args - Arguments to delete one Menuitem.
    * @example
-   * // Delete one MenuItem
-   * const MenuItem = await prisma.menuItem.delete({
+   * // Delete one Menuitem
+   * const Menuitem = await prisma.menuitem.delete({
    *   where: {
-   *     // ... filter to delete one MenuItem
+   *     // ... filter to delete one Menuitem
    *   }
    * })
    * 
    */
-  delete<T extends MenuItemDeleteArgs>(args: Prisma.SelectSubset<T, MenuItemDeleteArgs<ExtArgs>>): Prisma.Prisma__MenuItemClient<runtime.Types.Result.GetResult<Prisma.$MenuItemPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  delete<T extends menuitemDeleteArgs>(args: Prisma.SelectSubset<T, menuitemDeleteArgs<ExtArgs>>): Prisma.Prisma__menuitemClient<runtime.Types.Result.GetResult<Prisma.$menuitemPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
   /**
-   * Update one MenuItem.
-   * @param {MenuItemUpdateArgs} args - Arguments to update one MenuItem.
+   * Update one Menuitem.
+   * @param {menuitemUpdateArgs} args - Arguments to update one Menuitem.
    * @example
-   * // Update one MenuItem
-   * const menuItem = await prisma.menuItem.update({
+   * // Update one Menuitem
+   * const menuitem = await prisma.menuitem.update({
    *   where: {
    *     // ... provide filter here
    *   },
@@ -787,30 +787,30 @@ export interface MenuItemDelegate<ExtArgs extends runtime.Types.Extensions.Inter
    * })
    * 
    */
-  update<T extends MenuItemUpdateArgs>(args: Prisma.SelectSubset<T, MenuItemUpdateArgs<ExtArgs>>): Prisma.Prisma__MenuItemClient<runtime.Types.Result.GetResult<Prisma.$MenuItemPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  update<T extends menuitemUpdateArgs>(args: Prisma.SelectSubset<T, menuitemUpdateArgs<ExtArgs>>): Prisma.Prisma__menuitemClient<runtime.Types.Result.GetResult<Prisma.$menuitemPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
   /**
-   * Delete zero or more MenuItems.
-   * @param {MenuItemDeleteManyArgs} args - Arguments to filter MenuItems to delete.
+   * Delete zero or more Menuitems.
+   * @param {menuitemDeleteManyArgs} args - Arguments to filter Menuitems to delete.
    * @example
-   * // Delete a few MenuItems
-   * const { count } = await prisma.menuItem.deleteMany({
+   * // Delete a few Menuitems
+   * const { count } = await prisma.menuitem.deleteMany({
    *   where: {
    *     // ... provide filter here
    *   }
    * })
    * 
    */
-  deleteMany<T extends MenuItemDeleteManyArgs>(args?: Prisma.SelectSubset<T, MenuItemDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+  deleteMany<T extends menuitemDeleteManyArgs>(args?: Prisma.SelectSubset<T, menuitemDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
-   * Update zero or more MenuItems.
+   * Update zero or more Menuitems.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {MenuItemUpdateManyArgs} args - Arguments to update one or more rows.
+   * @param {menuitemUpdateManyArgs} args - Arguments to update one or more rows.
    * @example
-   * // Update many MenuItems
-   * const menuItem = await prisma.menuItem.updateMany({
+   * // Update many Menuitems
+   * const menuitem = await prisma.menuitem.updateMany({
    *   where: {
    *     // ... provide filter here
    *   },
@@ -820,56 +820,56 @@ export interface MenuItemDelegate<ExtArgs extends runtime.Types.Extensions.Inter
    * })
    * 
    */
-  updateMany<T extends MenuItemUpdateManyArgs>(args: Prisma.SelectSubset<T, MenuItemUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+  updateMany<T extends menuitemUpdateManyArgs>(args: Prisma.SelectSubset<T, menuitemUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
-   * Create or update one MenuItem.
-   * @param {MenuItemUpsertArgs} args - Arguments to update or create a MenuItem.
+   * Create or update one Menuitem.
+   * @param {menuitemUpsertArgs} args - Arguments to update or create a Menuitem.
    * @example
-   * // Update or create a MenuItem
-   * const menuItem = await prisma.menuItem.upsert({
+   * // Update or create a Menuitem
+   * const menuitem = await prisma.menuitem.upsert({
    *   create: {
-   *     // ... data to create a MenuItem
+   *     // ... data to create a Menuitem
    *   },
    *   update: {
    *     // ... in case it already exists, update
    *   },
    *   where: {
-   *     // ... the filter for the MenuItem we want to update
+   *     // ... the filter for the Menuitem we want to update
    *   }
    * })
    */
-  upsert<T extends MenuItemUpsertArgs>(args: Prisma.SelectSubset<T, MenuItemUpsertArgs<ExtArgs>>): Prisma.Prisma__MenuItemClient<runtime.Types.Result.GetResult<Prisma.$MenuItemPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  upsert<T extends menuitemUpsertArgs>(args: Prisma.SelectSubset<T, menuitemUpsertArgs<ExtArgs>>): Prisma.Prisma__menuitemClient<runtime.Types.Result.GetResult<Prisma.$menuitemPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
   /**
-   * Count the number of MenuItems.
+   * Count the number of Menuitems.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {MenuItemCountArgs} args - Arguments to filter MenuItems to count.
+   * @param {menuitemCountArgs} args - Arguments to filter Menuitems to count.
    * @example
-   * // Count the number of MenuItems
-   * const count = await prisma.menuItem.count({
+   * // Count the number of Menuitems
+   * const count = await prisma.menuitem.count({
    *   where: {
-   *     // ... the filter for the MenuItems we want to count
+   *     // ... the filter for the Menuitems we want to count
    *   }
    * })
   **/
-  count<T extends MenuItemCountArgs>(
-    args?: Prisma.Subset<T, MenuItemCountArgs>,
+  count<T extends menuitemCountArgs>(
+    args?: Prisma.Subset<T, menuitemCountArgs>,
   ): Prisma.PrismaPromise<
     T extends runtime.Types.Utils.Record<'select', any>
       ? T['select'] extends true
         ? number
-        : Prisma.GetScalarType<T['select'], MenuItemCountAggregateOutputType>
+        : Prisma.GetScalarType<T['select'], MenuitemCountAggregateOutputType>
       : number
   >
 
   /**
-   * Allows you to perform aggregations operations on a MenuItem.
+   * Allows you to perform aggregations operations on a Menuitem.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {MenuItemAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+   * @param {MenuitemAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
    * @example
    * // Ordered by age ascending
    * // Where email contains prisma.io
@@ -889,13 +889,13 @@ export interface MenuItemDelegate<ExtArgs extends runtime.Types.Extensions.Inter
    *   take: 10,
    * })
   **/
-  aggregate<T extends MenuItemAggregateArgs>(args: Prisma.Subset<T, MenuItemAggregateArgs>): Prisma.PrismaPromise<GetMenuItemAggregateType<T>>
+  aggregate<T extends MenuitemAggregateArgs>(args: Prisma.Subset<T, MenuitemAggregateArgs>): Prisma.PrismaPromise<GetMenuitemAggregateType<T>>
 
   /**
-   * Group by MenuItem.
+   * Group by Menuitem.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {MenuItemGroupByArgs} args - Group by arguments.
+   * @param {menuitemGroupByArgs} args - Group by arguments.
    * @example
    * // Group by city, order by createdAt, get count
    * const result = await prisma.user.groupBy({
@@ -910,14 +910,14 @@ export interface MenuItemDelegate<ExtArgs extends runtime.Types.Extensions.Inter
    * 
   **/
   groupBy<
-    T extends MenuItemGroupByArgs,
+    T extends menuitemGroupByArgs,
     HasSelectOrTake extends Prisma.Or<
       Prisma.Extends<'skip', Prisma.Keys<T>>,
       Prisma.Extends<'take', Prisma.Keys<T>>
     >,
     OrderByArg extends Prisma.True extends HasSelectOrTake
-      ? { orderBy: MenuItemGroupByArgs['orderBy'] }
-      : { orderBy?: MenuItemGroupByArgs['orderBy'] },
+      ? { orderBy: menuitemGroupByArgs['orderBy'] }
+      : { orderBy?: menuitemGroupByArgs['orderBy'] },
     OrderFields extends Prisma.ExcludeUnderscoreKeys<Prisma.Keys<Prisma.MaybeTupleToUnion<T['orderBy']>>>,
     ByFields extends Prisma.MaybeTupleToUnion<T['by']>,
     ByValid extends Prisma.Has<ByFields, OrderFields>,
@@ -966,22 +966,22 @@ export interface MenuItemDelegate<ExtArgs extends runtime.Types.Extensions.Inter
           ? never
           : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
       }[OrderFields]
-  >(args: Prisma.SubsetIntersection<T, MenuItemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMenuItemGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  >(args: Prisma.SubsetIntersection<T, menuitemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMenuitemGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
 /**
- * Fields of the MenuItem model
+ * Fields of the menuitem model
  */
-readonly fields: MenuItemFieldRefs;
+readonly fields: menuitemFieldRefs;
 }
 
 /**
- * The delegate class that acts as a "Promise-like" for MenuItem.
+ * The delegate class that acts as a "Promise-like" for menuitem.
  * Why is this prefixed with `Prisma__`?
  * Because we want to prevent naming conflicts as mentioned in
  * https://github.com/prisma/prisma-client-js/issues/707
  */
-export interface Prisma__MenuItemClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+export interface Prisma__menuitemClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  category<T extends Prisma.CategoryDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CategoryDefaultArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  category<T extends Prisma.categoryDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.categoryDefaultArgs<ExtArgs>>): Prisma.Prisma__categoryClient<runtime.Types.Result.GetResult<Prisma.$categoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1008,378 +1008,378 @@ export interface Prisma__MenuItemClient<T, Null = never, ExtArgs extends runtime
 
 
 /**
- * Fields of the MenuItem model
+ * Fields of the menuitem model
  */
-export interface MenuItemFieldRefs {
-  readonly id: Prisma.FieldRef<"MenuItem", 'Int'>
-  readonly name: Prisma.FieldRef<"MenuItem", 'String'>
-  readonly description: Prisma.FieldRef<"MenuItem", 'String'>
-  readonly price: Prisma.FieldRef<"MenuItem", 'Decimal'>
-  readonly imageUrl: Prisma.FieldRef<"MenuItem", 'String'>
-  readonly categoryId: Prisma.FieldRef<"MenuItem", 'Int'>
-  readonly createdAt: Prisma.FieldRef<"MenuItem", 'DateTime'>
-  readonly updatedAt: Prisma.FieldRef<"MenuItem", 'DateTime'>
+export interface menuitemFieldRefs {
+  readonly id: Prisma.FieldRef<"menuitem", 'Int'>
+  readonly name: Prisma.FieldRef<"menuitem", 'String'>
+  readonly description: Prisma.FieldRef<"menuitem", 'String'>
+  readonly price: Prisma.FieldRef<"menuitem", 'Decimal'>
+  readonly imageUrl: Prisma.FieldRef<"menuitem", 'String'>
+  readonly categoryId: Prisma.FieldRef<"menuitem", 'Int'>
+  readonly createdAt: Prisma.FieldRef<"menuitem", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"menuitem", 'DateTime'>
 }
     
 
 // Custom InputTypes
 /**
- * MenuItem findUnique
+ * menuitem findUnique
  */
-export type MenuItemFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type menuitemFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the MenuItem
+   * Select specific fields to fetch from the menuitem
    */
-  select?: Prisma.MenuItemSelect<ExtArgs> | null
+  select?: Prisma.menuitemSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the MenuItem
+   * Omit specific fields from the menuitem
    */
-  omit?: Prisma.MenuItemOmit<ExtArgs> | null
+  omit?: Prisma.menuitemOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.MenuItemInclude<ExtArgs> | null
+  include?: Prisma.menuitemInclude<ExtArgs> | null
   /**
-   * Filter, which MenuItem to fetch.
+   * Filter, which menuitem to fetch.
    */
-  where: Prisma.MenuItemWhereUniqueInput
+  where: Prisma.menuitemWhereUniqueInput
 }
 
 /**
- * MenuItem findUniqueOrThrow
+ * menuitem findUniqueOrThrow
  */
-export type MenuItemFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type menuitemFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the MenuItem
+   * Select specific fields to fetch from the menuitem
    */
-  select?: Prisma.MenuItemSelect<ExtArgs> | null
+  select?: Prisma.menuitemSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the MenuItem
+   * Omit specific fields from the menuitem
    */
-  omit?: Prisma.MenuItemOmit<ExtArgs> | null
+  omit?: Prisma.menuitemOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.MenuItemInclude<ExtArgs> | null
+  include?: Prisma.menuitemInclude<ExtArgs> | null
   /**
-   * Filter, which MenuItem to fetch.
+   * Filter, which menuitem to fetch.
    */
-  where: Prisma.MenuItemWhereUniqueInput
+  where: Prisma.menuitemWhereUniqueInput
 }
 
 /**
- * MenuItem findFirst
+ * menuitem findFirst
  */
-export type MenuItemFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type menuitemFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the MenuItem
+   * Select specific fields to fetch from the menuitem
    */
-  select?: Prisma.MenuItemSelect<ExtArgs> | null
+  select?: Prisma.menuitemSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the MenuItem
+   * Omit specific fields from the menuitem
    */
-  omit?: Prisma.MenuItemOmit<ExtArgs> | null
+  omit?: Prisma.menuitemOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.MenuItemInclude<ExtArgs> | null
+  include?: Prisma.menuitemInclude<ExtArgs> | null
   /**
-   * Filter, which MenuItem to fetch.
+   * Filter, which menuitem to fetch.
    */
-  where?: Prisma.MenuItemWhereInput
+  where?: Prisma.menuitemWhereInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
    * 
-   * Determine the order of MenuItems to fetch.
+   * Determine the order of menuitems to fetch.
    */
-  orderBy?: Prisma.MenuItemOrderByWithRelationInput | Prisma.MenuItemOrderByWithRelationInput[]
+  orderBy?: Prisma.menuitemOrderByWithRelationInput | Prisma.menuitemOrderByWithRelationInput[]
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
    * 
-   * Sets the position for searching for MenuItems.
+   * Sets the position for searching for menuitems.
    */
-  cursor?: Prisma.MenuItemWhereUniqueInput
+  cursor?: Prisma.menuitemWhereUniqueInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Take `±n` MenuItems from the position of the cursor.
+   * Take `±n` menuitems from the position of the cursor.
    */
   take?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Skip the first `n` MenuItems.
+   * Skip the first `n` menuitems.
    */
   skip?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
    * 
-   * Filter by unique combinations of MenuItems.
+   * Filter by unique combinations of menuitems.
    */
-  distinct?: Prisma.MenuItemScalarFieldEnum | Prisma.MenuItemScalarFieldEnum[]
+  distinct?: Prisma.MenuitemScalarFieldEnum | Prisma.MenuitemScalarFieldEnum[]
 }
 
 /**
- * MenuItem findFirstOrThrow
+ * menuitem findFirstOrThrow
  */
-export type MenuItemFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type menuitemFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the MenuItem
+   * Select specific fields to fetch from the menuitem
    */
-  select?: Prisma.MenuItemSelect<ExtArgs> | null
+  select?: Prisma.menuitemSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the MenuItem
+   * Omit specific fields from the menuitem
    */
-  omit?: Prisma.MenuItemOmit<ExtArgs> | null
+  omit?: Prisma.menuitemOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.MenuItemInclude<ExtArgs> | null
+  include?: Prisma.menuitemInclude<ExtArgs> | null
   /**
-   * Filter, which MenuItem to fetch.
+   * Filter, which menuitem to fetch.
    */
-  where?: Prisma.MenuItemWhereInput
+  where?: Prisma.menuitemWhereInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
    * 
-   * Determine the order of MenuItems to fetch.
+   * Determine the order of menuitems to fetch.
    */
-  orderBy?: Prisma.MenuItemOrderByWithRelationInput | Prisma.MenuItemOrderByWithRelationInput[]
+  orderBy?: Prisma.menuitemOrderByWithRelationInput | Prisma.menuitemOrderByWithRelationInput[]
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
    * 
-   * Sets the position for searching for MenuItems.
+   * Sets the position for searching for menuitems.
    */
-  cursor?: Prisma.MenuItemWhereUniqueInput
+  cursor?: Prisma.menuitemWhereUniqueInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Take `±n` MenuItems from the position of the cursor.
+   * Take `±n` menuitems from the position of the cursor.
    */
   take?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Skip the first `n` MenuItems.
+   * Skip the first `n` menuitems.
    */
   skip?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
    * 
-   * Filter by unique combinations of MenuItems.
+   * Filter by unique combinations of menuitems.
    */
-  distinct?: Prisma.MenuItemScalarFieldEnum | Prisma.MenuItemScalarFieldEnum[]
+  distinct?: Prisma.MenuitemScalarFieldEnum | Prisma.MenuitemScalarFieldEnum[]
 }
 
 /**
- * MenuItem findMany
+ * menuitem findMany
  */
-export type MenuItemFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type menuitemFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the MenuItem
+   * Select specific fields to fetch from the menuitem
    */
-  select?: Prisma.MenuItemSelect<ExtArgs> | null
+  select?: Prisma.menuitemSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the MenuItem
+   * Omit specific fields from the menuitem
    */
-  omit?: Prisma.MenuItemOmit<ExtArgs> | null
+  omit?: Prisma.menuitemOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.MenuItemInclude<ExtArgs> | null
+  include?: Prisma.menuitemInclude<ExtArgs> | null
   /**
-   * Filter, which MenuItems to fetch.
+   * Filter, which menuitems to fetch.
    */
-  where?: Prisma.MenuItemWhereInput
+  where?: Prisma.menuitemWhereInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
    * 
-   * Determine the order of MenuItems to fetch.
+   * Determine the order of menuitems to fetch.
    */
-  orderBy?: Prisma.MenuItemOrderByWithRelationInput | Prisma.MenuItemOrderByWithRelationInput[]
+  orderBy?: Prisma.menuitemOrderByWithRelationInput | Prisma.menuitemOrderByWithRelationInput[]
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
    * 
-   * Sets the position for listing MenuItems.
+   * Sets the position for listing menuitems.
    */
-  cursor?: Prisma.MenuItemWhereUniqueInput
+  cursor?: Prisma.menuitemWhereUniqueInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Take `±n` MenuItems from the position of the cursor.
+   * Take `±n` menuitems from the position of the cursor.
    */
   take?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Skip the first `n` MenuItems.
+   * Skip the first `n` menuitems.
    */
   skip?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
    * 
-   * Filter by unique combinations of MenuItems.
+   * Filter by unique combinations of menuitems.
    */
-  distinct?: Prisma.MenuItemScalarFieldEnum | Prisma.MenuItemScalarFieldEnum[]
+  distinct?: Prisma.MenuitemScalarFieldEnum | Prisma.MenuitemScalarFieldEnum[]
 }
 
 /**
- * MenuItem create
+ * menuitem create
  */
-export type MenuItemCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type menuitemCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the MenuItem
+   * Select specific fields to fetch from the menuitem
    */
-  select?: Prisma.MenuItemSelect<ExtArgs> | null
+  select?: Prisma.menuitemSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the MenuItem
+   * Omit specific fields from the menuitem
    */
-  omit?: Prisma.MenuItemOmit<ExtArgs> | null
+  omit?: Prisma.menuitemOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.MenuItemInclude<ExtArgs> | null
+  include?: Prisma.menuitemInclude<ExtArgs> | null
   /**
-   * The data needed to create a MenuItem.
+   * The data needed to create a menuitem.
    */
-  data: Prisma.XOR<Prisma.MenuItemCreateInput, Prisma.MenuItemUncheckedCreateInput>
+  data: Prisma.XOR<Prisma.menuitemCreateInput, Prisma.menuitemUncheckedCreateInput>
 }
 
 /**
- * MenuItem createMany
+ * menuitem createMany
  */
-export type MenuItemCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type menuitemCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * The data used to create many MenuItems.
+   * The data used to create many menuitems.
    */
-  data: Prisma.MenuItemCreateManyInput | Prisma.MenuItemCreateManyInput[]
+  data: Prisma.menuitemCreateManyInput | Prisma.menuitemCreateManyInput[]
   skipDuplicates?: boolean
 }
 
 /**
- * MenuItem update
+ * menuitem update
  */
-export type MenuItemUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type menuitemUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the MenuItem
+   * Select specific fields to fetch from the menuitem
    */
-  select?: Prisma.MenuItemSelect<ExtArgs> | null
+  select?: Prisma.menuitemSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the MenuItem
+   * Omit specific fields from the menuitem
    */
-  omit?: Prisma.MenuItemOmit<ExtArgs> | null
+  omit?: Prisma.menuitemOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.MenuItemInclude<ExtArgs> | null
+  include?: Prisma.menuitemInclude<ExtArgs> | null
   /**
-   * The data needed to update a MenuItem.
+   * The data needed to update a menuitem.
    */
-  data: Prisma.XOR<Prisma.MenuItemUpdateInput, Prisma.MenuItemUncheckedUpdateInput>
+  data: Prisma.XOR<Prisma.menuitemUpdateInput, Prisma.menuitemUncheckedUpdateInput>
   /**
-   * Choose, which MenuItem to update.
+   * Choose, which menuitem to update.
    */
-  where: Prisma.MenuItemWhereUniqueInput
+  where: Prisma.menuitemWhereUniqueInput
 }
 
 /**
- * MenuItem updateMany
+ * menuitem updateMany
  */
-export type MenuItemUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type menuitemUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * The data used to update MenuItems.
+   * The data used to update menuitems.
    */
-  data: Prisma.XOR<Prisma.MenuItemUpdateManyMutationInput, Prisma.MenuItemUncheckedUpdateManyInput>
+  data: Prisma.XOR<Prisma.menuitemUpdateManyMutationInput, Prisma.menuitemUncheckedUpdateManyInput>
   /**
-   * Filter which MenuItems to update
+   * Filter which menuitems to update
    */
-  where?: Prisma.MenuItemWhereInput
+  where?: Prisma.menuitemWhereInput
   /**
-   * Limit how many MenuItems to update.
+   * Limit how many menuitems to update.
    */
   limit?: number
 }
 
 /**
- * MenuItem upsert
+ * menuitem upsert
  */
-export type MenuItemUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type menuitemUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the MenuItem
+   * Select specific fields to fetch from the menuitem
    */
-  select?: Prisma.MenuItemSelect<ExtArgs> | null
+  select?: Prisma.menuitemSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the MenuItem
+   * Omit specific fields from the menuitem
    */
-  omit?: Prisma.MenuItemOmit<ExtArgs> | null
+  omit?: Prisma.menuitemOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.MenuItemInclude<ExtArgs> | null
+  include?: Prisma.menuitemInclude<ExtArgs> | null
   /**
-   * The filter to search for the MenuItem to update in case it exists.
+   * The filter to search for the menuitem to update in case it exists.
    */
-  where: Prisma.MenuItemWhereUniqueInput
+  where: Prisma.menuitemWhereUniqueInput
   /**
-   * In case the MenuItem found by the `where` argument doesn't exist, create a new MenuItem with this data.
+   * In case the menuitem found by the `where` argument doesn't exist, create a new menuitem with this data.
    */
-  create: Prisma.XOR<Prisma.MenuItemCreateInput, Prisma.MenuItemUncheckedCreateInput>
+  create: Prisma.XOR<Prisma.menuitemCreateInput, Prisma.menuitemUncheckedCreateInput>
   /**
-   * In case the MenuItem was found with the provided `where` argument, update it with this data.
+   * In case the menuitem was found with the provided `where` argument, update it with this data.
    */
-  update: Prisma.XOR<Prisma.MenuItemUpdateInput, Prisma.MenuItemUncheckedUpdateInput>
+  update: Prisma.XOR<Prisma.menuitemUpdateInput, Prisma.menuitemUncheckedUpdateInput>
 }
 
 /**
- * MenuItem delete
+ * menuitem delete
  */
-export type MenuItemDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type menuitemDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the MenuItem
+   * Select specific fields to fetch from the menuitem
    */
-  select?: Prisma.MenuItemSelect<ExtArgs> | null
+  select?: Prisma.menuitemSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the MenuItem
+   * Omit specific fields from the menuitem
    */
-  omit?: Prisma.MenuItemOmit<ExtArgs> | null
+  omit?: Prisma.menuitemOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.MenuItemInclude<ExtArgs> | null
+  include?: Prisma.menuitemInclude<ExtArgs> | null
   /**
-   * Filter which MenuItem to delete.
+   * Filter which menuitem to delete.
    */
-  where: Prisma.MenuItemWhereUniqueInput
+  where: Prisma.menuitemWhereUniqueInput
 }
 
 /**
- * MenuItem deleteMany
+ * menuitem deleteMany
  */
-export type MenuItemDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type menuitemDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Filter which MenuItems to delete
+   * Filter which menuitems to delete
    */
-  where?: Prisma.MenuItemWhereInput
+  where?: Prisma.menuitemWhereInput
   /**
-   * Limit how many MenuItems to delete.
+   * Limit how many menuitems to delete.
    */
   limit?: number
 }
 
 /**
- * MenuItem without action
+ * menuitem without action
  */
-export type MenuItemDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type menuitemDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the MenuItem
+   * Select specific fields to fetch from the menuitem
    */
-  select?: Prisma.MenuItemSelect<ExtArgs> | null
+  select?: Prisma.menuitemSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the MenuItem
+   * Omit specific fields from the menuitem
    */
-  omit?: Prisma.MenuItemOmit<ExtArgs> | null
+  omit?: Prisma.menuitemOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.MenuItemInclude<ExtArgs> | null
+  include?: Prisma.menuitemInclude<ExtArgs> | null
 }

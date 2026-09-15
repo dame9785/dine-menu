@@ -44,6 +44,8 @@ export async function PUT(request: Request, { params }: RouteParams) {
   try {
     const { id } = await params;
     const formData = await request.formData();
+    console.log(id);
+    console.log(formData);
     const result = await foodService.update(Number(id), formData);
     return NextResponse.json(result, { status: result.success ? 202 : 404 });
   } catch (error) {

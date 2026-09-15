@@ -1,4 +1,4 @@
-import { Search } from 'lucide-react';
+import { Search, Utensils } from 'lucide-react';
 
 import { FoodService } from '@/services/food';
 import FoodCard from '@/components/food/food-card';
@@ -37,16 +37,9 @@ export default async function FoodList({
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         {/* Food count */}
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-indigo-100 bg-indigo-50">
-            <span className="h-2.5 w-2.5 rounded-full bg-indigo-600" />
-          </div>
-
-          <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-bold tracking-tight text-slate-900">{totalFoodsCount}</span>
-
-            <span className="text-sm font-medium text-slate-500">
-              {totalFoodsCount === 1 ? 'Food item' : 'Food items'}
-            </span>
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-indigo-100 bg-indigo-50 px-3 py-1.5">
+            <Utensils size={14} className="text-indigo-600" />
+            <span className="text-l font-bold tracking-wider text-indigo-600"> {totalFoodsCount} items</span>
           </div>
         </div>
 

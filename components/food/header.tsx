@@ -29,21 +29,15 @@ export default function Header({ categories }: Props) {
       <div className="relative z-10 flex min-h-65 items-center justify-between px-8 py-8 md:px-10">
         {/* Text */}
         <div>
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-indigo-100 bg-indigo-50 px-3 py-1.5">
-            <Utensils size={14} className="text-indigo-600" />
-
-            <span className="text-xs font-semibold uppercase tracking-wider text-indigo-600">Dine Menu</span>
-          </div>
-
           <div className="flex items-center gap-3">
-            <h1 className="text-4xl font-bold tracking-tight text-slate-900">Menu</h1>
+            <h1 className="text-4xl font-bold tracking-tight text-slate-900">Dine menu</h1>
 
             <Utensils size={30} strokeWidth={2} className="text-indigo-600" />
           </div>
 
-          <p className="mt-2 text-sm text-slate-500">Manage your restaurant menu</p>
+          <p className="mt-2 text-l text-slate-500">Manage your restaurant menu</p>
 
-          <p className="mt-4 max-w-md text-sm leading-6 text-slate-500">
+          <p className="mt-4 max-w-md text-l leading-6 text-slate-500">
             Add, edit and organize your dishes. Keep your menu fresh and delicious for your customers.
           </p>
         </div>

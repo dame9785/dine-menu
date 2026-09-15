@@ -51,8 +51,8 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  Category: 'Category',
-  MenuItem: 'MenuItem'
+  category: 'category',
+  menuitem: 'menuitem'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -81,7 +81,7 @@ export const CategoryScalarFieldEnum = {
 export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
 
 
-export const MenuItemScalarFieldEnum = {
+export const MenuitemScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
@@ -92,7 +92,7 @@ export const MenuItemScalarFieldEnum = {
   updatedAt: 'updatedAt'
 } as const
 
-export type MenuItemScalarFieldEnum = (typeof MenuItemScalarFieldEnum)[keyof typeof MenuItemScalarFieldEnum]
+export type MenuitemScalarFieldEnum = (typeof MenuitemScalarFieldEnum)[keyof typeof MenuitemScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -103,11 +103,11 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
-export const CategoryOrderByRelevanceFieldEnum = {
+export const categoryOrderByRelevanceFieldEnum = {
   name: 'name'
 } as const
 
-export type CategoryOrderByRelevanceFieldEnum = (typeof CategoryOrderByRelevanceFieldEnum)[keyof typeof CategoryOrderByRelevanceFieldEnum]
+export type categoryOrderByRelevanceFieldEnum = (typeof categoryOrderByRelevanceFieldEnum)[keyof typeof categoryOrderByRelevanceFieldEnum]
 
 
 export const NullsOrder = {
@@ -118,11 +118,11 @@ export const NullsOrder = {
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
-export const MenuItemOrderByRelevanceFieldEnum = {
+export const menuitemOrderByRelevanceFieldEnum = {
   name: 'name',
   description: 'description',
   imageUrl: 'imageUrl'
 } as const
 
-export type MenuItemOrderByRelevanceFieldEnum = (typeof MenuItemOrderByRelevanceFieldEnum)[keyof typeof MenuItemOrderByRelevanceFieldEnum]
+export type menuitemOrderByRelevanceFieldEnum = (typeof menuitemOrderByRelevanceFieldEnum)[keyof typeof menuitemOrderByRelevanceFieldEnum]
 
