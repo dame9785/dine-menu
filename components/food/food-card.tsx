@@ -9,11 +9,10 @@ import { FoodViewModel } from '@/types/food';
 import { CategoryViewModel } from '@/types/category';
 
 import DeleteFoodButton from '@/components/food/delete-food-button';
-import FavoriteButton from '@/components/food/add-food-favorite.button';
+import FavoriteButton from '@/components/food/favorite-button';
 import FoodModal from '@/components/food/modal';
 
 import { deleteFood } from '@/actions/food';
-import AddFoodButton from './add-food-button';
 import UpdateFoodButton from './update-food-button';
 
 type Props = {
@@ -79,21 +78,19 @@ export default function FoodCard({ foodItem, categories }: Props) {
           </div>
         </Link>
 
-        {/* Favorite */}
-        <div className="absolute right-12 top-3 z-20">
-          <FavoriteButton foodId={foodItem.id} isDetail={isDetail} />
-        </div>
-
         {/* More menu */}
-        <div className="absolute right-3 top-3 z-20">
-          <button
-            type="button"
-            onClick={() => setIsMenuOpen((prev) => !prev)}
-            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg border border-white/60 bg-white/90 text-slate-500 shadow-sm backdrop-blur transition hover:bg-white hover:text-slate-900"
-            aria-label="Öppna meny"
-          >
-            <MoreVertical size={17} />
-          </button>
+        <div className="absolute right-3 top-3">
+          <div className="flex gap-3 items-center">
+            <FavoriteButton foodId={foodItem.id} isDetail={isDetail} />
+            <button
+              type="button"
+              onClick={() => setIsMenuOpen((prev) => !prev)}
+              className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg border border-white/60 bg-white/90 text-slate-500 shadow-sm backdrop-blur transition hover:bg-white hover:text-slate-900"
+              aria-label="Öppna meny"
+            >
+              <MoreVertical size={17} />
+            </button>
+          </div>
 
           {/* Dropdown */}
           {isMenuOpen && (

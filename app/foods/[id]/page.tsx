@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import AddFavoritFoodButton from '@/components/food/add-food-favorite.button';
+import AddFavoritFoodButton from '@/components/food/favorite-button';
 import EditFoodButton from '@/components/food/edit-food-button';
 
 import { FoodService } from '@/services/food';

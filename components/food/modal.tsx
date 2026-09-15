@@ -36,7 +36,7 @@ export default function FoodModal({ categories, foodItem, open, onOpenChange }: 
 
   return createPortal(
     <div
-      className="fixed inset-0 z-[9999] flex items-center justify-center bg-slate-900/60 px-4 py-6 backdrop-blur-md"
+      className="fixed inset-0 z-9999 flex items-center justify-center bg-slate-900/60 px-4 py-6 backdrop-blur-md"
       onMouseDown={handleClose}
     >
       {/* Modal */}
