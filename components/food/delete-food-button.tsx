@@ -9,7 +9,7 @@ type Props = {
   }>;
 };
 
-export default function deleteFoodButton({ foodId, deleteFoodAction }: Props) {
+export default function DeleteFoodButton({ foodId, deleteFoodAction }: Props) {
   const handleDelete = () => {
     toast('Are you sure you want to delete the food?', {
       action: {
@@ -36,15 +36,13 @@ export default function deleteFoodButton({ foodId, deleteFoodAction }: Props) {
   };
 
   return (
-    <div className="absolute right-0 top-9 z-50 w-36 overflow-hidden rounded-lg border border-slate-700 bg-[#111827] shadow-xl shadow-black/30">
-      <button
-        type="button"
-        onClick={handleDelete}
-        className="flex w-full items-center gap-2 px-3 py-2.5 text-sm text-red-400 transition hover:bg-red-500/10 hover:text-red-300"
-      >
-        <Trash2 size={16} />
-        Delete
-      </button>
-    </div>
+    <button
+      type="button"
+      onClick={handleDelete}
+      className="cursor-pointer flex w-full items-center gap-2 px-3 py-2.5 text-left text-sm text-red-400 transition hover:bg-red-500/10 hover:text-red-300"
+    >
+      <Trash2 size={16} />
+      Delete
+    </button>
   );
 }

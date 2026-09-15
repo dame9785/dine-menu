@@ -14,9 +14,20 @@ type Props = {
   categoryParam: string;
   filterParam: string;
   sortByParam: string;
+  categories: {
+    id: number;
+    name: string;
+  }[];
 };
 
-export default async function FoodList({ currentPage, searchParam, categoryParam, filterParam, sortByParam }: Props) {
+export default async function FoodList({
+  currentPage,
+  searchParam,
+  categoryParam,
+  filterParam,
+  sortByParam,
+  categories,
+}: Props) {
   const foodResponse = await foodService.getAll(currentPage, searchParam, categoryParam, filterParam, sortByParam);
 
   const foods = foodResponse.data ?? [];
@@ -28,7 +39,6 @@ export default async function FoodList({ currentPage, searchParam, categoryParam
       <div className="mb-6 flex items-center gap-2">
         <div className="flex items-center gap-2 rounded-lg border border-slate-800 bg-[#0b1120] px-3 py-2">
           <span className="h-2 w-2 rounded-full bg-blue-500" />
-
           <span className="font-medium text-slate-300">{totalFoodsCount}</span>
           <span className="text-slate-500">{totalFoodsCount === 1 ? 'Food' : 'Foods'}</span>
         </div>
@@ -54,7 +64,7 @@ export default async function FoodList({ currentPage, searchParam, categoryParam
             <span className="mt-1 text-sm text-slate-500">No food items match your filter</span>
           </div>
         ) : (
-          foods.map((item) => <FoodCard key={item.id} foodItem={item} />)
+          foods.map((item) => <FoodCard key={item.id} foodItem={item} categories={categories} />)
         )}
       </div>
 

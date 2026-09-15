@@ -4,43 +4,58 @@ import { useState, useTransition } from 'react';
 import { X } from 'lucide-react';
 import { toast } from 'sonner';
 
-import { addFood } from '@/actions/food';
+import { addFood, updateFood } from '@/actions/food';
 import { addFoodSchema } from '@/schemas/food';
+import { FoodViewModel } from '@/types/food';
 
 type Props = {
   categories: {
     id: number;
     name: string;
   }[];
+  foodItem?: FoodViewModel;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 };
 
-export default function FoodModal({ categories }: Props) {
+export default function FoodModal({ categories, foodItem, open, onOpenChange }: Props) {
   const [errors, setErrors] = useState<Record<string, string[]>>({});
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [internalIsOpen, setInternalIsOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const isEditMode = !!foodItem;
 
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState('');
-  const [categoryId, setCategoryId] = useState('');
+  const isOpen = open ?? internalIsOpen;
+
+  const [name, setName] = useState(foodItem?.name ?? '');
+  const [description, setDescription] = useState(foodItem?.description ?? '');
+  const [price, setPrice] = useState(foodItem ? String(foodItem.price) : '');
+  const [categoryId, setCategoryId] = useState(foodItem ? String(foodItem.categoryId) : '');
 
   const [image, setImage] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(foodItem?.imageUrl ?? null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
     if (!file) return;
 
+    // Revoke previous object URL if there is one
+    if (imagePreview?.startsWith('blob:')) {
+      URL.revokeObjectURL(imagePreview);
+    }
+
     setImage(file);
     setImagePreview(URL.createObjectURL(file));
+
+    clearError('image');
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData();
+
     formData.append('name', name);
     formData.append('description', description);
     formData.append('price', price);
@@ -64,7 +79,8 @@ export default function FoodModal({ categories }: Props) {
         return;
       }
 
-      const response = await addFood(formData);
+      const response = isEditMode ? await updateFood(foodItem.id, formData) : await addFood(formData);
+
       if (!response.success) {
         toast.error(response.message);
         return;
@@ -72,50 +88,48 @@ export default function FoodModal({ categories }: Props) {
 
       toast.success(response.message);
 
-      setName('');
-      setDescription('');
-      setPrice('');
-      setCategoryId('');
-      setImage(null);
-
-      if (imagePreview) {
-        URL.revokeObjectURL(imagePreview);
-      }
-
-      setImagePreview(null);
-      setIsOpen(false);
+      handleClose();
     });
   };
 
   const handleOpen = () => {
     resetForm();
-    setIsOpen(true);
+    setInternalIsOpen(true);
+    onOpenChange?.(true);
   };
 
   const handleClose = () => {
     resetForm();
-    setIsOpen(false);
+    setInternalIsOpen(false);
+    onOpenChange?.(false);
   };
 
   const resetForm = () => {
-    setName('');
-    setDescription('');
-    setPrice('');
-    setCategoryId('');
-    setImage(null);
-
-    if (imagePreview) {
-      URL.revokeObjectURL(imagePreview);
+    if (foodItem) {
+      setName(foodItem.name);
+      setDescription(foodItem.description);
+      setPrice(String(foodItem.price));
+      setCategoryId(String(foodItem.categoryId));
+      setImage(null);
+      setImagePreview(foodItem.imageUrl);
+    } else {
+      setName('');
+      setDescription('');
+      setPrice('');
+      setCategoryId('');
+      setImage(null);
+      setImagePreview(null);
     }
 
-    setImagePreview(null);
     setErrors({});
   };
 
   const clearError = (field: string) => {
     setErrors((prev) => {
       const newErrors = { ...prev };
+
       delete newErrors[field];
+
       return newErrors;
     });
   };
@@ -123,14 +137,16 @@ export default function FoodModal({ categories }: Props) {
   return (
     <>
       {/* Add food button */}
-      <button
-        type="button"
-        onClick={handleOpen}
-        className="flex cursor-pointer items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-500"
-      >
-        <span>+</span>
-        Add food
-      </button>
+      {!isEditMode && (
+        <button
+          type="button"
+          onClick={handleOpen}
+          className="flex cursor-pointer items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-500"
+        >
+          <span>+</span>
+          Add food
+        </button>
+      )}
 
       {/* Modal */}
       {isOpen && (
@@ -139,8 +155,11 @@ export default function FoodModal({ categories }: Props) {
             {/* Header */}
             <div className="flex items-center justify-between border-b border-slate-800 px-6 py-4">
               <div>
-                <h2 className="text-lg font-semibold text-white">Add food</h2>
-                <p className="mt-1 text-sm text-slate-400">Add a new dish to your menu.</p>
+                <h2 className="text-lg font-semibold text-white">{isEditMode ? 'Edit food' : 'Add food'}</h2>
+
+                <p className="mt-1 text-sm text-slate-400">
+                  {isEditMode ? 'Update the information for this dish.' : 'Add a new dish to your menu.'}
+                </p>
               </div>
 
               <button
@@ -168,6 +187,7 @@ export default function FoodModal({ categories }: Props) {
                   placeholder="e.g. Margherita Pizza"
                   className="w-full rounded-lg border border-slate-800 bg-[#05070d] px-4 py-2.5 text-sm text-white outline-none placeholder:text-slate-500 focus:border-blue-500"
                 />
+
                 {errors.name?.[0] && (
                   <p id="name-error" className="text-red-500" role="alert">
                     {errors.name[0]}
@@ -178,6 +198,7 @@ export default function FoodModal({ categories }: Props) {
               {/* Description */}
               <div className="form-group">
                 <label className="mb-2 block text-sm font-medium text-slate-300">Description</label>
+
                 <textarea
                   value={description}
                   onChange={(e) => {
@@ -188,15 +209,18 @@ export default function FoodModal({ categories }: Props) {
                   rows={3}
                   className="w-full resize-none rounded-lg border border-slate-800 bg-[#05070d] px-4 py-2.5 text-sm text-white outline-none placeholder:text-slate-500 focus:border-blue-500"
                 />
+
                 {errors.description?.[0] && (
                   <p id="description-error" className="text-red-500" role="alert">
                     {errors.description[0]}
                   </p>
                 )}
               </div>
+
+              {/* Image */}
               <div className="form-group">
                 <label
-                  htmlFor="image"
+                  htmlFor={`image-${foodItem?.id ?? 'new'}`}
                   className="flex cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-slate-700 bg-[#05070d] p-6 transition hover:border-blue-500 hover:bg-blue-500/5"
                 >
                   {imagePreview ? (
@@ -204,19 +228,22 @@ export default function FoodModal({ categories }: Props) {
                   ) : (
                     <>
                       <div className="mb-3 rounded-full bg-blue-500/10 p-3 text-blue-400">📷</div>
+
                       <p className="text-sm font-medium text-white">Upload food image</p>
+
                       <p className="mt-1 text-xs text-slate-500">PNG, JPG or WEBP</p>
                     </>
                   )}
                 </label>
 
                 <input
-                  id="image"
+                  id={`image-${foodItem?.id ?? 'new'}`}
                   type="file"
                   accept="image/png,image/jpeg,image/webp"
                   onChange={handleImageChange}
                   className="hidden"
                 />
+
                 {errors.image?.[0] && (
                   <p id="image-error" className="text-red-500" role="alert">
                     {errors.image[0]}
@@ -229,6 +256,7 @@ export default function FoodModal({ categories }: Props) {
                 {/* Price */}
                 <div>
                   <label className="mb-2 block text-sm font-medium text-slate-300">Price</label>
+
                   <input
                     value={price}
                     onChange={(e) => {
@@ -241,8 +269,9 @@ export default function FoodModal({ categories }: Props) {
                     placeholder="129"
                     className="w-full rounded-lg border border-slate-800 bg-[#05070d] px-4 py-2.5 text-sm text-white outline-none placeholder:text-slate-500 focus:border-blue-500"
                   />
+
                   {errors.price?.[0] && (
-                    <p id="number-error" className="text-red-500" role="alert">
+                    <p id="price-error" className="text-red-500" role="alert">
                       {errors.price[0]}
                     </p>
                   )}
@@ -251,6 +280,7 @@ export default function FoodModal({ categories }: Props) {
                 {/* Category */}
                 <div>
                   <label className="mb-2 block text-sm font-medium text-slate-300">Category</label>
+
                   <select
                     value={categoryId}
                     onChange={(e) => {
@@ -267,6 +297,7 @@ export default function FoodModal({ categories }: Props) {
                       </option>
                     ))}
                   </select>
+
                   {errors.categoryId?.[0] && (
                     <p id="categoryId-error" className="text-red-500" role="alert">
                       {errors.categoryId[0]}
@@ -279,7 +310,7 @@ export default function FoodModal({ categories }: Props) {
               <div className="flex justify-end gap-3 border-t border-slate-800 pt-5">
                 <button
                   type="button"
-                  onClick={() => setIsOpen(false)}
+                  onClick={handleClose}
                   className="rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-300 transition hover:bg-slate-800 hover:text-white"
                 >
                   Cancel
@@ -290,7 +321,7 @@ export default function FoodModal({ categories }: Props) {
                   disabled={isPending}
                   className="rounded-lg bg-blue-600 px-5 py-2 text-sm font-medium text-white transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  {isPending ? 'Adding...' : 'Add food'}
+                  {isPending ? (isEditMode ? 'Updating...' : 'Adding...') : isEditMode ? 'Update food' : 'Add food'}
                 </button>
               </div>
             </form>
