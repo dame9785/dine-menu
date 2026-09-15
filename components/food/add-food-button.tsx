@@ -20,20 +20,14 @@ export default function AddFoodButton({ categories }: Props) {
         className="
           flex cursor-pointer items-center gap-2
           rounded-xl
-          border border-indigo-600
-          bg-indigo-600
-          px-4 py-2.5
-          text-sm font-medium
-          text-white
-          shadow-sm
+        border-indigo-100 bg-indigo-50 px-3 py-1.5
+           shadow-sm
           transition-all duration-200
           hover:-translate-y-0.5
-          hover:border-indigo-700
-          hover:bg-indigo-700
-          hover:shadow-lg
-          hover:shadow-indigo-500/25
+     
           active:translate-y-0
           active:scale-[0.98]
+          text-xs font-semibold uppercase tracking-wider text-indigo-600
         "
       >
         <span className="text-lg leading-none">+</span>

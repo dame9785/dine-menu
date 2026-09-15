@@ -3,11 +3,8 @@ import { Suspense } from 'react';
 import { CategoryService } from '@/services/category';
 import FoodFilter from '@/components/food/food-filter';
 import FoodList from '@/components/food/food-list';
-
 import LoadingSpinner from '@/components/loading-spinner';
 import Header from '@/components/food/header';
-import FoodModal from '@/components/food/modal';
-import AddFoodButton from '@/components/food/add-food-button';
 
 const categoryService = new CategoryService();
 
@@ -35,13 +32,8 @@ export default async function MenuPage({ searchParams }: Props) {
 
   return (
     <div className="mx-auto max-w-7xl">
-      {/* Add button */}
-      <div className="relative z-20 pb-5 self-start">
-        <AddFoodButton categories={categories} />
-      </div>
-
       {/* Header */}
-      <Header categories={categories} />
+      <Header categories={categories ?? []} />
 
       {/* Filter */}
       <FoodFilter

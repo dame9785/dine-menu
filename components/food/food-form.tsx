@@ -1,9 +1,13 @@
-import { addFood, updateFood } from '@/actions/food';
-import { addFoodSchema, updateFoodDataSchema } from '@/schemas/food';
-import { CategoryViewModel } from '@/types/category';
-import { FoodViewModel } from '@/types/food';
+'use client';
+
 import { useState, useTransition } from 'react';
 import { toast } from 'sonner';
+
+import { addFood, updateFood } from '@/actions/food';
+import { updateFoodDataSchema, addFoodSchema } from '@/schemas/food';
+
+import { CategoryViewModel } from '@/types/category';
+import { FoodViewModel } from '@/types/food';
 
 type Props = {
   categories: CategoryViewModel[];
@@ -26,12 +30,47 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
 
   const isEditMode = !!foodItem;
 
+  const clearError = (field: string) => {
+    setErrors((prev) => {
+      const newErrors = { ...prev };
+
+      delete newErrors[field];
+
+      return newErrors;
+    });
+  };
+
+  const resetForm = () => {
+    if (foodItem) {
+      setName(foodItem.name);
+      setDescription(foodItem.description);
+      setPrice(String(foodItem.price));
+      setCategoryId(String(foodItem.categoryId));
+      setImage(null);
+      setImagePreview(foodItem.imageUrl);
+    } else {
+      setName('');
+      setDescription('');
+      setPrice('');
+      setCategoryId('');
+      setImage(null);
+      setImagePreview(null);
+    }
+
+    setErrors({});
+  };
+
+  const handleClose = () => {
+    resetForm();
+    onOpenChange?.(false);
+  };
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
     if (!file) return;
 
-    // Revoke previous object URL if there is one
+    // Revoke previous object URL
     if (imagePreview?.startsWith('blob:')) {
       URL.revokeObjectURL(imagePreview);
     }
@@ -85,51 +124,19 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
         return;
       }
 
-      toast.success(response.message, { duration: 1000 });
+      toast.success(response.message, {
+        duration: 1000,
+      });
+
       handleClose();
     });
-  };
-
-  const clearError = (field: string) => {
-    setErrors((prev) => {
-      const newErrors = { ...prev };
-
-      delete newErrors[field];
-
-      return newErrors;
-    });
-  };
-
-  const resetForm = () => {
-    if (foodItem) {
-      setName(foodItem.name);
-      setDescription(foodItem.description);
-      setPrice(String(foodItem.price));
-      setCategoryId(String(foodItem.categoryId));
-      setImage(null);
-      setImagePreview(foodItem.imageUrl);
-    } else {
-      setName('');
-      setDescription('');
-      setPrice('');
-      setCategoryId('');
-      setImage(null);
-      setImagePreview(null);
-    }
-
-    setErrors({});
-  };
-
-  const handleClose = () => {
-    resetForm();
-    onOpenChange?.(false);
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5 p-6">
       {/* Name */}
-      <div className="form-group">
-        <label className="mb-2 block text-sm font-medium text-slate-300">Name</label>
+      <div>
+        <label className="mb-2 block text-sm font-medium text-slate-700">Name</label>
 
         <input
           value={name}
@@ -139,19 +146,30 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
           }}
           type="text"
           placeholder="e.g. Margherita Pizza"
-          className="w-full rounded-lg border border-slate-800 bg-[#05070d] px-4 py-2.5 text-sm text-white outline-none placeholder:text-slate-500 focus:border-blue-500"
+          className="
+           w-full cursor-text rounded-xl
+              border border-slate-200 bg-white
+              px-4 py-2.5 text-sm text-slate-900
+              shadow-sm outline-none transition-all duration-200
+              placeholder:text-slate-400
+              hover:border-indigo-50
+              focus:border-indigo-500
+              focus:ring-4 focus:ring-indigo-500/10
+                placeholder:text-base
+  placeholder:text-slate-400
+          "
         />
 
         {errors.name?.[0] && (
-          <p id="name-error" className="text-red-500" role="alert">
+          <p id="name-error" className="mt-1.5 text-sm text-red-500" role="alert">
             {errors.name[0]}
           </p>
         )}
       </div>
 
       {/* Description */}
-      <div className="form-group">
-        <label className="mb-2 block text-sm font-medium text-slate-300">Description</label>
+      <div>
+        <label className="mb-2 block text-sm font-medium text-slate-700">Description</label>
 
         <textarea
           value={description}
@@ -161,31 +179,55 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
           }}
           placeholder="Describe the dish..."
           rows={3}
-          className="w-full resize-none rounded-lg border border-indigo-800 bg-[#05070d] px-4 py-2.5 text-sm text-white outline-none placeholder:text-slate-500 focus:border-blue-500"
+          className="
+            w-full cursor-text rounded-xl
+              border border-slate-200 bg-white
+              px-4 py-2.5 text-sm text-slate-900
+              shadow-sm outline-none transition-all duration-200
+              placeholder:text-slate-400
+              hover:border-indigo-50
+              focus:border-indigo-500
+              focus:ring-4 focus:ring-indigo-500/10
+                placeholder:text-base
+  placeholder:text-slate-400
+          "
         />
 
         {errors.description?.[0] && (
-          <p id="description-error" className="text-red-500" role="alert">
+          <p id="description-error" className="mt-1.5 text-sm text-red-500" role="alert">
             {errors.description[0]}
           </p>
         )}
       </div>
 
       {/* Image */}
-      <div className="form-group">
+      <div>
         <label
           htmlFor={`image-${foodItem?.id ?? 'new'}`}
-          className="flex cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-slate-700 bg-[#05070d] p-6 transition hover:border-blue-500 hover:bg-blue-500/5"
+          className="
+            flex min-h-48 cursor-pointer flex-col
+            items-center justify-center
+            overflow-hidden rounded-xl
+              border
+            border border-dashed border-indigo-200
+            bg-slate-50
+            p-4
+            transition-all duration-200
+            
+             hover:border-indigo-50
+              focus:border-indigo-500
+              focus:ring-4 focus:ring-indigo-500/10
+                placeholder:text-base
+  placeholder:text-slate-400
+          "
         >
           {imagePreview ? (
             <img src={imagePreview} alt="Food preview" className="h-48 w-full rounded-lg object-cover" />
           ) : (
             <>
-              <div className="mb-3 rounded-full bg-blue-500/10 p-3 text-blue-400">📷</div>
-
-              <p className="text-sm font-medium text-white">Upload food image</p>
-
-              <p className="mt-1 text-xs text-slate-500">PNG, JPG or WEBP</p>
+              <div className="mb-3 rounded-full bg-indigo-50 p-3 text-indigo-600">📷</div>
+              <p className="text-sm font-medium text-slate-700">Upload food image</p>
+              <p className="mt-1 text-xs text-slate-400">PNG, JPG or WEBP</p>
             </>
           )}
         </label>
@@ -199,7 +241,7 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
         />
 
         {errors.image?.[0] && (
-          <p id="image-error" className="text-red-500" role="alert">
+          <p id="image-error" className="mt-1.5 text-sm text-red-500" role="alert">
             {errors.image[0]}
           </p>
         )}
@@ -209,7 +251,7 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
       <div className="grid grid-cols-2 gap-4">
         {/* Price */}
         <div>
-          <label className="mb-2 block text-sm font-medium text-slate-300">Price</label>
+          <label className="mb-2 block text-sm font-medium text-slate-700">Price</label>
 
           <input
             value={price}
@@ -221,11 +263,22 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
             min="0"
             step="0.01"
             placeholder="129"
-            className="w-full rounded-lg border border-slate-800 bg-[#05070d] px-4 py-2.5 text-sm text-white outline-none placeholder:text-slate-500 focus:border-blue-500"
+            className="
+              w-full cursor-text rounded-xl
+              border border-slate-200 bg-white
+              px-4 py-2.5 text-sm text-slate-900
+              shadow-sm outline-none transition-all duration-200
+              placeholder:text-slate-400
+              hover:border-indigo-50
+              focus:border-indigo-500
+              focus:ring-4 focus:ring-indigo-500/10
+                placeholder:text-base
+  placeholder:text-slate-400
+            "
           />
 
           {errors.price?.[0] && (
-            <p id="price-error" className="text-red-500" role="alert">
+            <p id="price-error" className="mt-1.5 text-sm text-red-500" role="alert">
               {errors.price[0]}
             </p>
           )}
@@ -233,7 +286,7 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
 
         {/* Category */}
         <div>
-          <label className="mb-2 block text-sm font-medium text-slate-300">Category</label>
+          <label className="mb-2 block text-sm font-medium text-slate-700">Category</label>
 
           <select
             value={categoryId}
@@ -241,7 +294,17 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
               setCategoryId(e.target.value);
               clearError('categoryId');
             }}
-            className="w-full rounded-lg border border-slate-800 bg-[#05070d] px-4 py-2.5 text-sm text-white outline-none focus:border-blue-500"
+            className="
+              w-full cursor-pointer rounded-xl
+              border border-slate-200 bg-white
+              px-4 py-2.5 text-sm text-slate-900
+              shadow-sm outline-none transition-all duration-200
+              hover:border-slate-300
+              focus:border-indigo-500
+              focus:ring-4 focus:ring-indigo-500/10
+                placeholder:text-base
+  placeholder:text-slate-400
+            "
           >
             <option value="">Select</option>
 
@@ -253,7 +316,7 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
           </select>
 
           {errors.categoryId?.[0] && (
-            <p id="categoryId-error" className="text-red-500" role="alert">
+            <p id="categoryId-error" className="mt-1.5 text-sm text-red-500" role="alert">
               {errors.categoryId[0]}
             </p>
           )}
@@ -261,19 +324,45 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
       </div>
 
       {/* Buttons */}
-      <div className="flex justify-end gap-3 border-t border-slate-800 pt-5">
+      <div className="flex gap-3 border-t border-slate-100 pt-5">
+        {/* Cancel */}
         <button
           type="button"
           onClick={handleClose}
-          className="rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-300 transition hover:bg-slate-800 hover:text-white"
+          className="
+            w-full cursor-pointer rounded-xl
+            border border-slate-200 bg-white
+            px-4 py-2.5
+            text-sm font-medium text-slate-600
+            shadow-sm transition-all duration-200
+            hover:border-slate-300
+            hover:bg-slate-50
+            hover:text-slate-900
+            active:scale-[0.98]
+          "
         >
           Cancel
         </button>
 
+        {/* Submit */}
         <button
           type="submit"
           disabled={isPending}
-          className="rounded-lg bg-blue-600 px-5 py-2 text-sm font-medium text-white transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-50"
+          className="
+            w-full cursor-pointer rounded-xl
+            border border-indigo-600
+            bg-indigo-600
+            px-4 py-2.5
+            text-sm font-medium text-white
+            shadow-sm transition-all duration-200
+            hover:border-indigo-700
+            hover:bg-indigo-700
+            hover:shadow-lg
+            hover:shadow-indigo-500/20
+            disabled:cursor-not-allowed
+            disabled:opacity-60
+            active:scale-[0.98]
+          "
         >
           {isPending ? (isEditMode ? 'Updating...' : 'Adding...') : isEditMode ? 'Update food' : 'Add food'}
         </button>

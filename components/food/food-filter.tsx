@@ -26,25 +26,21 @@ export default function FoodFilter({ categories, searchParam, categoryParam, sor
             type="search"
             name="search"
             defaultValue={searchParam}
-            placeholder="Search pasta..."
+            placeholder="Search..."
             className="
     w-full
-    rounded-xl
-    border border-slate-200
-    bg-indigo-100
-    py-2.5
+       py-2.5
     pl-10
     pr-4
-    text-sm
-    text-slate-900
-    outline-none
-    shadow-sm
-    transition-all duration-200
-    placeholder:text-slate-400
-    hover:border-slate-300
-    focus:border-indigo-500
-    focus:ring-4
-    focus:ring-indigo-500/10
+   cursor-pointer rounded-xl
+              border border-slate-200 bg-white
+              px-4 text-sm text-slate-900
+              shadow-sm outline-none transition-all duration-200
+              hover:border-slate-300
+              focus:border-indigo-500
+              focus:ring-4 focus:ring-indigo-500/10
+                placeholder:text-base
+  placeholder:text-slate-400
   "
           />
 
@@ -53,21 +49,15 @@ export default function FoodFilter({ categories, searchParam, categoryParam, sor
             name="category"
             defaultValue={categoryParam}
             className="
-    cursor-pointer
-    rounded-xl
-    border border-slate-200
-  bg-indigo-100
-    px-4
-    py-2.5
-    text-sm
-    text-slate-700
-    outline-none
-    shadow-sm
-    transition-all duration-200
-    hover:border-slate-300
-    focus:border-indigo-500
-    focus:ring-4
-    focus:ring-indigo-500/10
+           cursor-pointer rounded-xl
+              border border-slate-200 bg-white
+              px-4 py-2.5 text-sm text-slate-900
+              shadow-sm outline-none transition-all duration-200
+              hover:border-slate-300
+              focus:border-indigo-500
+              focus:ring-4 focus:ring-indigo-500/10
+                placeholder:text-base
+  placeholder:text-slate-400
   "
           >
             <option value="">All Categories</option>
@@ -83,21 +73,15 @@ export default function FoodFilter({ categories, searchParam, categoryParam, sor
           <select
             name="sortBy"
             defaultValue={sortByParam}
-            className="  cursor-pointer
-    rounded-xl
-    border border-slate-100
-   bg-indigo-100
-    px-4
-    py-2.5
-    text-sm
-    text-slate-700
-    outline-none
-    shadow-sm
-    transition-all duration-200
-    hover:border-slate-300
-    focus:border-indigo-500
-    focus:ring-4
-    focus:ring-indigo-500/10"
+            className=" cursor-pointer rounded-xl
+              border border-slate-200 bg-white
+              px-4 py-2.5 text-sm text-slate-900
+              shadow-sm outline-none transition-all duration-200
+              hover:border-slate-300
+              focus:border-indigo-500
+              focus:ring-4 focus:ring-indigo-500/10
+                placeholder:text-base
+  placeholder:text-slate-400"
           >
             <option value="">Sort by</option>
             <option value="asc">Ascending</option>
@@ -112,20 +96,16 @@ export default function FoodFilter({ categories, searchParam, categoryParam, sor
           <button
             type="submit"
             className="
-    cursor-pointer
-    rounded-lg
-    border border-indigo-200
-   bg-indigo-100
-    px-4 py-2
-    text-sm font-medium
-    text-black
-    shadow-sm
-    transition-all duration-200
-    hover:bg-indigo-700
-    hover:border-indigo-700
-    hover:shadow-md
-    hover:shadow-indigo-500/20
-    active:scale-95
+           flex cursor-pointer items-center gap-2
+          rounded-xl
+        border-indigo-100 bg-indigo-50 px-3 py-1.5
+           shadow-sm
+          transition-all duration-200
+          hover:-translate-y-0.5
+     
+          active:translate-y-0
+          active:scale-[0.98]
+          text-xs font-semibold uppercase tracking-wider text-indigo-600
   "
           >
             Sök
