@@ -2,12 +2,24 @@
 
 import { Heart } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import Swal from 'sweetalert2';
 
 export default function FavoriteFilterButton() {
   const router = useRouter();
+  const [isFavorite, setIsFavorit] = useState(false);
+
+  const showAllFavorites = () => {
+    setIsFavorit(false);
+    router.push('/');
+  };
 
   const showFavorites = () => {
+    if (isFavorite) {
+      showAllFavorites();
+      return;
+    }
+
     const favoriteIds: number[] = [];
 
     for (let i = 0; i < localStorage.length; i++) {
@@ -20,6 +32,7 @@ export default function FavoriteFilterButton() {
           favoriteIds.push(foodId);
         }
       }
+      setIsFavorit(true);
     }
 
     const filter = favoriteIds.join(',');
@@ -43,8 +56,8 @@ export default function FavoriteFilterButton() {
       type="button"
       className="flex cursor-pointer items-center gap-2 rounded-lg border border-slate-800 bg-[#0b1120] p-2 text-slate-500 hover:border-slate-700 hover:text-white"
     >
-      <Heart className="text-red-600" />
-      Show all favorites
+      <Heart className={isFavorite ? '' : 'text-red-600 fill-current'} />
+      {isFavorite ? 'Show all' : 'Show all favorites'}
     </button>
   );
 }
