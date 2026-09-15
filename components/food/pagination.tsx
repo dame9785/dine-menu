@@ -4,9 +4,20 @@ import Link from 'next/link';
 type Props = {
   currentPage: number;
   totalPages: number;
+  searchParam: string;
+  sortByParam: string;
+  filterParam: string;
+  categoryParam: string;
 };
 
-export default function Pagination({ currentPage, totalPages }: Props) {
+export default function Pagination({
+  currentPage,
+  totalPages,
+  searchParam,
+  sortByParam,
+  filterParam,
+  categoryParam,
+}: Props) {
   return (
     <nav aria-label="Category pagination" className="flex items-center justify-center py-6">
       <div className="flex items-center gap-1.5 rounded-lg border border-neutral-800 bg-neutral-900/80 p-1.5 shadow-lg">
@@ -15,7 +26,7 @@ export default function Pagination({ currentPage, totalPages }: Props) {
           <Link
             scroll={false}
             aria-label="Previous page"
-            href={`/?page=${currentPage - 1}`}
+            href={`/?page=${currentPage - 1}&search=${searchParam}&category=${categoryParam}&sortBy=${sortByParam}&=filter${filterParam}`}
             className="flex h-9 w-9 items-center justify-center rounded-md border border-transparent text-neutral-400 transition hover:border-blue-500/40 hover:bg-blue-500/10 hover:text-blue-400"
           >
             <ChevronLeft size={18} />
@@ -32,7 +43,7 @@ export default function Pagination({ currentPage, totalPages }: Props) {
             <Link
               scroll={false}
               aria-label="Page 1"
-              href="/?page=1"
+              href={`/?page=${currentPage - 1}&search=${searchParam}&category=${categoryParam}&sortBy=${sortByParam}&=filter${filterParam}`}
               className="flex h-9 min-w-9 items-center justify-center rounded-md border border-transparent px-2 text-sm text-neutral-400 transition hover:border-blue-500/40 hover:bg-blue-500/10 hover:text-blue-400"
             >
               1
@@ -55,7 +66,7 @@ export default function Pagination({ currentPage, totalPages }: Props) {
           <Link
             scroll={false}
             aria-label={`Page ${currentPage + 1}`}
-            href={`/?page=${currentPage + 1}`}
+            href={`/?page=${currentPage + 1}&search=${searchParam}&category=${categoryParam}&sortBy=${sortByParam}&=filter${filterParam}`}
             className="flex h-9 min-w-9 items-center justify-center rounded-md border border-transparent px-2 text-sm text-neutral-400 transition hover:border-blue-500/40 hover:bg-blue-500/10 hover:text-blue-400"
           >
             {currentPage + 1}
@@ -67,7 +78,7 @@ export default function Pagination({ currentPage, totalPages }: Props) {
           <Link
             scroll={false}
             aria-label={`Page ${currentPage + 2}`}
-            href={`/?page=${currentPage + 2}`}
+            href={`/?page=${currentPage + 2}&search=${searchParam}&category=${categoryParam}&sortBy=${sortByParam}&=filter${filterParam}`}
             className="flex h-9 min-w-9 items-center justify-center rounded-md border border-transparent px-2 text-sm text-neutral-400 transition hover:border-blue-500/40 hover:bg-blue-500/10 hover:text-blue-400"
           >
             {currentPage + 2}
@@ -82,7 +93,7 @@ export default function Pagination({ currentPage, totalPages }: Props) {
             <Link
               scroll={false}
               aria-label={`Page ${totalPages}`}
-              href={`/?page=${totalPages}`}
+              href={`/?page=${totalPages}&search=${searchParam}&category=${categoryParam}&sortBy=${sortByParam}&=filter${filterParam}`}
               className="flex h-9 min-w-9 items-center justify-center rounded-md border border-transparent px-2 text-sm text-neutral-400 transition hover:border-blue-500/40 hover:bg-blue-500/10 hover:text-blue-400"
             >
               {totalPages}
@@ -95,7 +106,7 @@ export default function Pagination({ currentPage, totalPages }: Props) {
           <Link
             scroll={false}
             aria-label="Next page"
-            href={`/?page=${currentPage + 1}`}
+            href={`/?page=${currentPage + 1}&search=${searchParam}&category=${categoryParam}&sortBy=${sortByParam}&=filter${filterParam}`}
             className="flex h-9 w-9 items-center justify-center rounded-md border border-transparent text-neutral-400 transition hover:border-blue-500/40 hover:bg-blue-500/10 hover:text-blue-400"
           >
             <ChevronRight size={18} />

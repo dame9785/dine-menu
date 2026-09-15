@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { MoreVertical } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 import { FoodViewModel } from '@/types/food';
 
@@ -23,14 +24,16 @@ export default function FoodCard({ foodItem }: Props) {
       {/* Detail link */}
       <Link href={`/foods/${foodItem.id}`}>
         {/* Image */}
-        <div className="relative h-48 overflow-hidden rounded-t-2xl bg-slate-900">
-          <img
+        <div className="relative h-40 overflow-hidden rounded-t-2xl bg-slate-900">
+          <Image
+            fill
             src={foodItem.imageUrl}
             alt={foodItem.name}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            className="object-cover"
+            priority
+            sizes="(max-width: 768px) 100vw, 33vw"
           />
 
-          {/* Image overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
 
           {/* Category */}
@@ -40,19 +43,19 @@ export default function FoodCard({ foodItem }: Props) {
         </div>
 
         {/* Content */}
-        <div className="p-5">
+        <div className="p-4">
           {/* Title */}
-          <div className="mb-3">
+          <div className="mb-2">
             <h2 className="font-semibold text-white">{foodItem.name}</h2>
 
             <p className="mt-1 text-xs text-slate-500">{foodItem.category}</p>
           </div>
 
           {/* Description */}
-          <p className="mb-6 line-clamp-2 text-sm leading-6 text-slate-400">{foodItem.description}</p>
+          <p className="mb-4 line-clamp-2 text-sm leading-5 text-slate-400">{foodItem.description}</p>
 
           {/* Price */}
-          <div className="flex items-center justify-between border-t border-slate-800/80 pt-4">
+          <div className="flex items-center justify-between border-t border-slate-800/80 pt-3">
             <span className="text-lg font-semibold text-white">{Number(foodItem.price)} kr</span>
 
             <span className="text-xs text-slate-500">Visa detaljer →</span>
@@ -64,7 +67,7 @@ export default function FoodCard({ foodItem }: Props) {
       <FavoriteButton foodId={foodItem.id} />
 
       {/* More menu */}
-      <div className="absolute right-4 top-[215px] z-20">
+      <div className="absolute right-4 top-[185px] z-20">
         <button
           type="button"
           onClick={() => setIsMenuOpen((prev) => !prev)}
@@ -74,7 +77,6 @@ export default function FoodCard({ foodItem }: Props) {
           <MoreVertical size={18} />
         </button>
 
-        {/* Dropdown */}
         {isMenuOpen && <DeleteFoodButton foodId={foodItem.id} deleteFoodAction={deleteFood} />}
       </div>
     </div>

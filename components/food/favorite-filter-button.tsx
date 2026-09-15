@@ -1,11 +1,18 @@
 'use client';
 
-import { Heart } from 'lucide-react';
+import { Heart, LayoutList } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import Swal from 'sweetalert2';
 
-export default function FavoriteFilterButton() {
+type Props = {
+  currentPage: number;
+  searchParam: string;
+  sortByParam: string;
+  categoryParam: string;
+};
+
+export default function FavoriteFilterButton({ currentPage, searchParam, sortByParam, categoryParam }: Props) {
   const router = useRouter();
   const [isFavorite, setIsFavorit] = useState(false);
 
@@ -47,7 +54,9 @@ export default function FavoriteFilterButton() {
       });
     }
 
-    router.push(`/?filter=${filter}`);
+    router.push(
+      `/?filter=${filter}&page=${currentPage}&search=${searchParam}&category=${categoryParam}&sortBy=${sortByParam}`,
+    );
   };
 
   return (
@@ -56,8 +65,17 @@ export default function FavoriteFilterButton() {
       type="button"
       className="flex cursor-pointer items-center gap-2 rounded-lg border border-slate-800 bg-[#0b1120] p-2 text-slate-500 hover:border-slate-700 hover:text-white"
     >
-      <Heart className={isFavorite ? '' : 'text-red-600 fill-current'} />
-      {isFavorite ? 'Show all' : 'Show all favorites'}
+      {isFavorite ? (
+        <>
+          <LayoutList />
+          <p>Visa alla</p>
+        </>
+      ) : (
+        <>
+          <Heart className="fill-current text-red-600" />
+          <p>Visa alla favoriter</p>
+        </>
+      )}
     </button>
   );
 }

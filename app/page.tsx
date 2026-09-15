@@ -1,4 +1,4 @@
-import { Search, Utensils } from 'lucide-react';
+import { Search, Utensils, Trash } from 'lucide-react';
 import { CategoryService } from '@/services/category';
 import { FoodService } from '@/services/food';
 import FoodCard from '@/components/food/food-card';
@@ -6,6 +6,7 @@ import FoodModal from '@/components/food/add-food-modal';
 import Pagination from '@/components/food/pagination';
 import FavoriteFilterButton from '@/components/food/favorite-filter-button';
 import FoodFilter from '@/components/food/filter-foods';
+import ResetFilteringButton from '@/components/food/reset-filter-button';
 
 const categoryService = new CategoryService();
 const foodService = new FoodService();
@@ -68,7 +69,14 @@ export default async function MenuPage({ searchParams }: Props) {
           <span className="text-l font-medium text-slate-300">{totalFoodsCount}</span>
           <span className="text-l text-slate-500">{totalFoodsCount === 1 ? 'Food' : 'Foods'}</span>
         </div>
-        <FavoriteFilterButton />
+
+        <FavoriteFilterButton
+          currentPage={currentPage}
+          searchParam={searchParam}
+          sortByParam={sortByParam}
+          categoryParam={categoryParam}
+        />
+        <ResetFilteringButton />
       </div>
 
       {/* Foods */}
@@ -76,10 +84,8 @@ export default async function MenuPage({ searchParams }: Props) {
         {foods.length === 0 ? (
           <div className="col-span-full flex min-h-60 flex-col items-center justify-center rounded-2xl border border-slate-800 bg-[#0b1120]">
             <Search className="mb-3 text-slate-600" size={32} />
-
-            <h2 className="text-lg font-semibold text-indigo-300">Inga maträtter hittades</h2>
-
-            <span className="mt-1 text-sm text-slate-500">Ingen maträtt matchar din filtrering.</span>
+            <h2 className="text-lg font-semibold text-indigo-300">No food items found</h2>
+            <span className="mt-1 text-sm text-slate-500">no food items matches your filter</span>
           </div>
         ) : (
           foods.map((item) => <FoodCard key={item.id} foodItem={item} />)
@@ -88,7 +94,14 @@ export default async function MenuPage({ searchParams }: Props) {
 
       {/* Pagination */}
       {foods.length > 0 && (
-        <Pagination currentPage={currentPage} totalPages={foodResponse.pagination?.totalPages ?? 1} />
+        <Pagination
+          currentPage={currentPage}
+          searchParam={searchParam}
+          sortByParam={sortByParam}
+          filterParam={filterParam}
+          categoryParam={categoryParam}
+          totalPages={foodResponse.pagination?.totalPages ?? 1}
+        />
       )}
     </main>
   );
