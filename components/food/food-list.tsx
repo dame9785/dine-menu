@@ -3,8 +3,9 @@ import { Search } from 'lucide-react';
 import { FoodService } from '@/services/food';
 import FoodCard from '@/components/food/food-card';
 import Pagination from '@/components/food/pagination';
-import FavoriteFilterButton from '@/components/food/favorite-filter-button';
+import ShowFavoriteButton from '@/components/food/show-favorit-button';
 import ResetFilteringButton from '@/components/food/reset-filter-button';
+import { CategoryViewModel } from '@/types/category';
 
 const foodService = new FoodService();
 
@@ -14,10 +15,7 @@ type Props = {
   categoryParam: string;
   filterParam: string;
   sortByParam: string;
-  categories: {
-    id: number;
-    name: string;
-  }[];
+  categories: CategoryViewModel[];
 };
 
 export default async function FoodList({
@@ -41,7 +39,7 @@ export default async function FoodList({
           <span className="h-2 w-2 rounded-full bg-blue-500" />
           <span className="font-medium text-slate-300">{totalFoodsCount}</span>
           <span className="text-slate-500">{totalFoodsCount === 1 ? 'Food' : 'Foods'}</span>
-          <FavoriteFilterButton
+          <ShowFavoriteButton
             currentPage={currentPage}
             searchParam={searchParam}
             sortByParam={sortByParam}

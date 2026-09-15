@@ -39,11 +39,9 @@ export default function FavoriteFilterButton({ currentPage, searchParam, sortByP
           favoriteIds.push(foodId);
         }
       }
-      setIsFavorit(true);
     }
 
-    const filter = favoriteIds.join(',');
-    if (favoriteIds.length <= 0) {
+    if (favoriteIds.length === 0) {
       Swal.fire({
         icon: 'info',
         title: 'No favorites yet',
@@ -52,11 +50,15 @@ export default function FavoriteFilterButton({ currentPage, searchParam, sortByP
         color: '#ffffff',
         confirmButtonColor: '#2563eb',
       });
+
+      return;
     }
 
-    router.push(
-      `/?filter=${filter}&page=${currentPage}&search=${searchParam}&category=${categoryParam}&sortBy=${sortByParam}`,
-    );
+    setIsFavorit(true);
+
+    const filter = favoriteIds.join(',');
+
+    router.push(`/?filter=${filter}&page=1&search=${searchParam}&category=${categoryParam}&sortBy=${sortByParam}`);
   };
 
   return (

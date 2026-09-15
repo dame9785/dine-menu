@@ -5,7 +5,7 @@ type Props = {
   categories: CategoryViewModel[];
 };
 
-export default function FilterFoods({ categories }: Props) {
+export default function FoodFilter({ categories }: Props) {
   return (
     <div className="mb-6 flex flex-col gap-4 md:flex-row">
       {/* Search */}

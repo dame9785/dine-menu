@@ -3,7 +3,7 @@ import { Suspense } from 'react';
 
 import { CategoryService } from '@/services/category';
 import FoodModal from '@/components/food/food-modal';
-import FoodFilter from '@/components/food/filter-foods';
+import FoodFilter from '@/components/food/food-filter';
 import FoodList from '@/components/food/food-list';
 
 import LoadingSpinner from '@/components/loading-spinner';
