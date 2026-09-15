@@ -27,14 +27,48 @@ export default function FoodFilter({ categories, searchParam, categoryParam, sor
             name="search"
             defaultValue={searchParam}
             placeholder="Search pasta..."
-            className="w-full rounded-lg border border-slate-800 bg-[#0b1120] py-2.5 pl-10 pr-4 text-sm text-white outline-none placeholder:text-slate-500 focus:border-blue-500"
+            className="
+    w-full
+    rounded-xl
+    border border-slate-200
+    bg-indigo-100
+    py-2.5
+    pl-10
+    pr-4
+    text-sm
+    text-slate-900
+    outline-none
+    shadow-sm
+    transition-all duration-200
+    placeholder:text-slate-400
+    hover:border-slate-300
+    focus:border-indigo-500
+    focus:ring-4
+    focus:ring-indigo-500/10
+  "
           />
 
           {/* Category */}
           <select
             name="category"
             defaultValue={categoryParam}
-            className="cursor-pointer rounded-lg border border-slate-800 bg-[#0b1120] px-4 py-2.5 text-sm text-slate-300 outline-none transition hover:border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500/30"
+            className="
+    cursor-pointer
+    rounded-xl
+    border border-slate-200
+  bg-indigo-100
+    px-4
+    py-2.5
+    text-sm
+    text-slate-700
+    outline-none
+    shadow-sm
+    transition-all duration-200
+    hover:border-slate-300
+    focus:border-indigo-500
+    focus:ring-4
+    focus:ring-indigo-500/10
+  "
           >
             <option value="">All Categories</option>
 
@@ -49,7 +83,21 @@ export default function FoodFilter({ categories, searchParam, categoryParam, sor
           <select
             name="sortBy"
             defaultValue={sortByParam}
-            className="cursor-pointer rounded-lg border border-slate-800 bg-[#0b1120] px-4 py-2.5 text-sm text-slate-300 outline-none transition hover:border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500/30"
+            className="  cursor-pointer
+    rounded-xl
+    border border-slate-100
+   bg-indigo-100
+    px-4
+    py-2.5
+    text-sm
+    text-slate-700
+    outline-none
+    shadow-sm
+    transition-all duration-200
+    hover:border-slate-300
+    focus:border-indigo-500
+    focus:ring-4
+    focus:ring-indigo-500/10"
           >
             <option value="">Sort by</option>
             <option value="asc">Ascending</option>
@@ -63,7 +111,22 @@ export default function FoodFilter({ categories, searchParam, categoryParam, sor
 
           <button
             type="submit"
-            className="cursor-pointer rounded-lg border border-slate-800 bg-blue-600 px-4 py-2 text-sm transition hover:bg-blue-500 hover:text-white"
+            className="
+    cursor-pointer
+    rounded-lg
+    border border-indigo-200
+   bg-indigo-100
+    px-4 py-2
+    text-sm font-medium
+    text-black
+    shadow-sm
+    transition-all duration-200
+    hover:bg-indigo-700
+    hover:border-indigo-700
+    hover:shadow-md
+    hover:shadow-indigo-500/20
+    active:scale-95
+  "
           >
             Sök
           </button>

@@ -33,13 +33,21 @@ export default async function FoodList({
 
   return (
     <>
-      {/* Food count */}
-      <div className="mb-6 flex items-center justify-between rounded-lg px-3 py-2">
+      {/* Food count + actions */}
+      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         {/* Food count */}
-        <div className="flex items-center gap-5">
-          <span className="h-2 w-2 rounded-full bg-blue-500" />
-          <span className="font-medium text-slate-300">{totalFoodsCount}</span>
-          <span className="text-slate-500">{totalFoodsCount === 1 ? 'Food' : 'Foods'}</span>
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-indigo-100 bg-indigo-50">
+            <span className="h-2.5 w-2.5 rounded-full bg-indigo-600" />
+          </div>
+
+          <div className="flex items-baseline gap-2">
+            <span className="text-2xl font-bold tracking-tight text-slate-900">{totalFoodsCount}</span>
+
+            <span className="text-sm font-medium text-slate-500">
+              {totalFoodsCount === 1 ? 'Food item' : 'Food items'}
+            </span>
+          </div>
         </div>
 
         {/* Actions */}
@@ -58,11 +66,14 @@ export default async function FoodList({
       {/* Foods */}
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
         {foods.length === 0 ? (
-          <div className="col-span-full flex min-h-60 flex-col items-center justify-center rounded-2xl border border-slate-800 bg-[#0b1120]">
-            <Search className="mb-3 text-slate-600" size={32} />
+          <div className="col-span-full flex min-h-72 flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-50">
+              <Search className="text-slate-400" size={26} />
+            </div>
 
-            <h2 className="text-lg font-semibold text-indigo-300">No food items found</h2>
-            <span className="mt-1 text-sm text-slate-500">No food items match your filter</span>
+            <h2 className="text-lg font-semibold text-slate-900">No food items found</h2>
+
+            <span className="mt-1 text-sm text-slate-500">No food items match your current filter</span>
           </div>
         ) : (
           foods.map((item) => <FoodCard key={item.id} foodItem={item} categories={categories} />)

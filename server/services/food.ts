@@ -3,6 +3,7 @@ import { FoodDto, FoodViewModel } from '@/types/food';
 import { FoodRepository } from '../repositories/food';
 import { FoodMapper } from '../mapping/food';
 import { saveImage } from '@/helpers/image-helper';
+import { updateFoodDataSchema } from '@/schemas/food';
 
 const foodRepository = new FoodRepository();
 
@@ -89,26 +90,39 @@ export class FoodService {
         } satisfies ApiResponse<[]>;
       }
 
-      let imageUrl = '';
-      if (image instanceof File) {
-        imageUrl = await saveImage(image);
+      const validation = updateFoodDataSchema.safeParse({
+        name,
+        description,
+        price: Number(price),
+        categoryId: Number(categoryId),
+        ...(image instanceof File && image.size > 0 ? { image } : {}),
+      });
+
+      if (!validation.success) {
+        return {
+          success: false,
+          message: 'Invalid food data.',
+        };
+      }
+
+      const dto = validation.data;
+
+      // Bara uppdatera bilden om användaren valt en ny
+      if (image instanceof File && image.size > 0) {
+        const imageUrl = await saveImage(image);
+
         if (!imageUrl) {
           return {
             success: false,
             message: 'Could not upload the image',
           } satisfies ApiResponse<[]>;
         }
+
+        dto.imageUrl = imageUrl;
       }
 
-      const dto: FoodDto = {
-        name,
-        description,
-        price: Number(price),
-        categoryId: Number(categoryId),
-        imageUrl: imageUrl,
-      };
-
       const foodData = await foodRepository.update(foodId, dto);
+
       const viewModel = FoodMapper.foodDboToViewModel(foodData);
 
       return {

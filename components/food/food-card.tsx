@@ -6,13 +6,15 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 import { FoodViewModel } from '@/types/food';
+import { CategoryViewModel } from '@/types/category';
 
 import DeleteFoodButton from '@/components/food/delete-food-button';
 import FavoriteButton from '@/components/food/add-food-favorite.button';
-import FoodModal from '@/components/food/food-modal';
+import FoodModal from '@/components/food/modal';
 
 import { deleteFood } from '@/actions/food';
-import { CategoryViewModel } from '@/types/category';
+import AddFoodButton from './add-food-button';
+import UpdateFoodButton from './update-food-button';
 
 type Props = {
   foodItem: FoodViewModel;
@@ -28,77 +30,75 @@ export default function FoodCard({ foodItem, categories }: Props) {
   return (
     <>
       {/* Food card */}
-      <div className="group relative overflow-visible rounded-2xl border border-slate-800/80 bg-[#0b1120] shadow-lg shadow-black/20 transition-all duration-300 hover:-translate-y-1 hover:border-slate-600 hover:shadow-xl hover:shadow-black/40">
+      <div className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl hover:shadow-slate-200/60">
         {/* Detail link */}
-        <Link href={`/foods/${foodItem.id}`}>
+        <Link href={`/foods/${foodItem.id}`} className="block">
           {/* Image */}
-          <div className="relative h-40 overflow-hidden rounded-t-2xl bg-slate-900">
+          <div className="relative h-40 overflow-hidden bg-slate-100">
             <Image
               fill
               src={foodItem.imageUrl}
               alt={foodItem.name}
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 33vw"
+              className="object-cover transition duration-500 group-hover:scale-105"
+              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
             />
 
             <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent" />
 
             {/* Category */}
-            <div className="absolute left-3 top-3 rounded-full border border-white/10 bg-black/60 px-3 py-1 text-xs font-medium text-white backdrop-blur-md">
-              {foodItem.category}
+            <div className="absolute left-3 top-3">
+              <span className="rounded-full border border-white/30 bg-white/90 px-3 py-1 text-xs font-semibold text-slate-700 shadow-sm backdrop-blur-md">
+                {foodItem.category}
+              </span>
             </div>
           </div>
 
           {/* Content */}
-          <div className="p-4">
-            <div className="mb-2">
-              <h2 className="font-semibold text-white">{foodItem.name}</h2>
-
-              <p className="mt-1 text-xs text-slate-500">{foodItem.category}</p>
+          <div className="p-5">
+            {/* Title */}
+            <div className="mb-3">
+              <h2 className="text-lg font-bold tracking-tight text-slate-900">{foodItem.name}</h2>
+              <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-slate-400">{foodItem.category}</p>
             </div>
 
             {/* Description */}
-            <p className="mb-4 line-clamp-2 text-sm leading-5 text-slate-400">{foodItem.description}</p>
+            <p className="mb-5 line-clamp-2 min-h-10 text-sm leading-5 text-slate-600">{foodItem.description}</p>
 
             {/* Price */}
-            <div className="flex items-center justify-between border-t border-slate-800/80 pt-3">
-              <span className="text-lg font-semibold text-white">{Number(foodItem.price)} kr</span>
+            <div className="flex items-end justify-between border-t border-slate-100 pt-4">
+              <div>
+                <p className="mb-0.5 text-[10px] font-semibold uppercase tracking-wider text-slate-400">Price</p>
 
-              <span className="text-xs text-slate-500">Visa detaljer →</span>
+                <span className="text-xl font-bold text-slate-900">{Number(foodItem.price).toFixed(2)} kr</span>
+              </div>
+
+              <span className="pb-0.5 text-xs font-semibold text-indigo-600 transition-colors group-hover:text-indigo-700">
+                Visa detaljer →
+              </span>
             </div>
           </div>
         </Link>
 
         {/* Favorite */}
-        <FavoriteButton foodId={foodItem.id} isDetail={isDetail} />
+        <div className="absolute right-12 top-3 z-20">
+          <FavoriteButton foodId={foodItem.id} isDetail={isDetail} />
+        </div>
 
         {/* More menu */}
-        <div className="absolute right-4 top-46.25 z-20">
+        <div className="absolute right-3 top-3 z-20">
           <button
             type="button"
             onClick={() => setIsMenuOpen((prev) => !prev)}
-            className="rounded-lg p-1.5 text-slate-500 transition hover:bg-slate-800 hover:text-white"
+            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg border border-white/60 bg-white/90 text-slate-500 shadow-sm backdrop-blur transition hover:bg-white hover:text-slate-900"
             aria-label="Öppna meny"
           >
-            <MoreVertical size={18} />
+            <MoreVertical size={17} />
           </button>
 
           {/* Dropdown */}
           {isMenuOpen && (
-            <div className="absolute right-0 top-8 z-50 flex w-32 flex-col overflow-hidden rounded-lg border border-slate-800 bg-[#0b1120] shadow-xl">
-              {/* Edit */}
-
-              <button
-                type="button"
-                onClick={() => {
-                  setIsEditOpen(true);
-                  setIsMenuOpen(false);
-                }}
-                className="cursor-pointer flex w-full items-center gap-2 px-3 py-2.5 text-left text-sm text-orange-400 transition hover:bg-red-500/10 hover:text-red-300"
-              >
-                <Pencil size={16} />
-                edit
-              </button>
+            <div className="absolute right-0 top-10 z-50 flex w-36 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl shadow-slate-300/40">
+              <UpdateFoodButton onEdit={() => setIsEditOpen(true)} onCloseMenu={() => setIsMenuOpen(false)} />
 
               {/* Delete */}
               <DeleteFoodButton foodId={foodItem.id} deleteFoodAction={deleteFood} />

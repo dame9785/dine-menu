@@ -1,13 +1,24 @@
 import Link from 'next/link';
-import { Trash } from 'lucide-react';
+import { RotateCcw } from 'lucide-react';
 
 export default function ResetFilteringButton() {
   return (
     <Link
       href="/"
-      className="flex cursor-pointer items-center gap-2 rounded-lg border border-slate-800 bg-[#0b1120] p-2 text-slate-400 transition hover:border-red-500/40 hover:bg-red-500/10 hover:text-red-400"
+      className="
+        group flex cursor-pointer items-center gap-2
+        rounded-xl border border-slate-200
+        bg-white px-4 py-2.5
+        text-sm font-medium text-slate-500
+        shadow-sm
+        transition-all duration-200
+        hover:border-red-200
+        hover:bg-red-50
+        hover:text-red-600
+      "
     >
-      <Trash size={18} />
+      <RotateCcw size={17} className="transition-transform duration-300 group-hover:-rotate-45" />
+
       <span>Reset filtering</span>
     </Link>
   );

@@ -1,12 +1,13 @@
-import { Utensils } from 'lucide-react';
 import { Suspense } from 'react';
 
 import { CategoryService } from '@/services/category';
-import FoodModal from '@/components/food/food-modal';
 import FoodFilter from '@/components/food/food-filter';
 import FoodList from '@/components/food/food-list';
 
 import LoadingSpinner from '@/components/loading-spinner';
+import Header from '@/components/food/header';
+import FoodModal from '@/components/food/modal';
+import AddFoodButton from '@/components/food/add-food-button';
 
 const categoryService = new CategoryService();
 
@@ -33,23 +34,16 @@ export default async function MenuPage({ searchParams }: Props) {
   const categories = categoryResponse.data;
 
   return (
-    <main className="min-h-screen bg-[#05070d] p-8 text-white">
-      {/* Header */}
-      <div className="mb-8 flex items-center justify-between">
-        <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-semibold">Menu</h1>
-            <Utensils />
-          </div>
-
-          <p className="mt-1 text-sm text-slate-400">Manage your dishes, categories and availability.</p>
-        </div>
-
-        {/* Add food */}
-        <FoodModal categories={categories ?? []} />
+    <div className="mx-auto max-w-7xl">
+      {/* Add button */}
+      <div className="relative z-20 pb-5 self-start">
+        <AddFoodButton categories={categories} />
       </div>
 
-      {/* Filter foods */}
+      {/* Header */}
+      <Header categories={categories} />
+
+      {/* Filter */}
       <FoodFilter
         categories={categories ?? []}
         searchParam={searchParam}
@@ -69,6 +63,6 @@ export default async function MenuPage({ searchParams }: Props) {
           categories={categories ?? []}
         />
       </Suspense>
-    </main>
+    </div>
   );
 }

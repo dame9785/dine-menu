@@ -67,7 +67,17 @@ export default function FavoriteFilterButton({ currentPage, searchParam, sortByP
     <button
       onClick={showFavorites}
       type="button"
-      className="flex cursor-pointer items-center gap-2 rounded-lg border border-slate-800 bg-[#0b1120] p-2 text-slate-500 hover:border-slate-700 hover:text-white"
+      className="
+        group flex cursor-pointer items-center gap-2
+        rounded-xl border border-slate-200
+        bg-white px-4 py-2.5
+        text-sm font-medium text-slate-500
+        shadow-sm
+        transition-all duration-200
+        hover:border-red-200
+        hover:bg-red-50
+        hover:text-red-600
+      "
     >
       {isFavorite ? (
         <>

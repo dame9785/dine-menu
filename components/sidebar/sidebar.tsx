@@ -1,37 +1,61 @@
-import Link from "next/link";
-import { House, Utensils, Folder } from "lucide-react";
+import Link from 'next/link';
+import { House, Utensils, Folder } from 'lucide-react';
 
 export default function Sidebar() {
   return (
-    <aside className="fixed flex h-screen w-64 flex-col border-r border-slate-700/50 bg-linear-to-b from-slate-900 via-slate-950 to-indigo-950/40 text-white shadow-2xl">
-      <div className="border-b border-slate-700/50 px-6 py-6">
-        <h3 className="text-lg font-semibold tracking-wide text-indigo-300 flex gap-4 items-center">
-          <Utensils size={20} />
-          Dine menu
-        </h3>
+    <aside className="fixed left-0 top-0 flex h-screen w-64 flex-col border-r border-slate-200 bg-white shadow-[4px_0_24px_rgba(15,23,42,0.04)]">
+      {/* Logo */}
+      <div className="border-b border-slate-100 px-6 py-6">
+        <Link href="/" className="flex items-center gap-3">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-lg shadow-indigo-600/20">
+            <Utensils size={19} />
+          </div>
+
+          <div>
+            <h3 className="text-base font-bold tracking-tight text-slate-900">Dine</h3>
+
+            <p className="text-xs font-medium text-slate-400">MENU</p>
+          </div>
+        </Link>
       </div>
-      <nav className="px-3 py-5">
-        <ul className="space-y-2">
-          <li className="flex items-center gap-1">
-            <House size={20} />
+
+      {/* Navigation */}
+      <nav className="flex-1 px-4 py-6">
+        <p className="mb-3 px-3 text-[10px] font-semibold uppercase tracking-[0.15em] text-slate-400">Navigation</p>
+
+        <ul className="space-y-1">
+          <li>
             <Link
               href="/"
-              className="block rounded-lg px-4 py-3 text-slate-300 transition-all hover:bg-indigo-500/10 hover:text-indigo-300"
+              className="group flex items-center gap-3 rounded-xl bg-indigo-50 px-3 py-3 text-sm font-medium text-indigo-700 transition-all hover:bg-indigo-100"
             >
-              Home
+              <House size={18} className="text-indigo-600" />
+
+              <span>Home</span>
             </Link>
           </li>
-          <li className="flex items-center gap-1">
-            <Folder size={20} />
+
+          <li>
             <Link
               href="/category"
-              className="block rounded-lg px-4 py-3 text-slate-300 transition-all hover:bg-indigo-500/10 hover:text-indigo-300"
+              className="group flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-slate-500 transition-all hover:bg-slate-50 hover:text-slate-900"
             >
-              Categories
+              <Folder size={18} className="text-slate-400 transition-colors group-hover:text-indigo-600" />
+
+              <span>Categories</span>
             </Link>
           </li>
         </ul>
       </nav>
+
+      {/* Footer */}
+      <div className="border-t border-slate-100 p-4">
+        <div className="rounded-xl bg-slate-50 px-4 py-3">
+          <p className="text-xs font-medium text-slate-500">Dine Menu</p>
+
+          <p className="mt-1 text-[11px] text-slate-400">Restaurant management</p>
+        </div>
+      </div>
     </aside>
   );
 }

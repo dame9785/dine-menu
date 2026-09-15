@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma';
+import { UpdateFoodDto } from '@/schemas/food';
 import { FoodDto } from '@/types/food';
 
 export class FoodRepository {
@@ -128,7 +129,7 @@ export class FoodRepository {
     });
   }
 
-  async update(foodId: number, dto: FoodDto) {
+  async update(foodId: number, dto: UpdateFoodDto) {
     return await prisma.menuItem.update({
       where: {
         id: foodId,

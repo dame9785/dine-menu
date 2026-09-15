@@ -1,5 +1,5 @@
 import { addFood, updateFood } from '@/actions/food';
-import { addFoodSchema } from '@/schemas/food';
+import { addFoodSchema, updateFoodDataSchema } from '@/schemas/food';
 import { CategoryViewModel } from '@/types/category';
 import { FoodViewModel } from '@/types/food';
 import { useState, useTransition } from 'react';
@@ -57,13 +57,21 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
     }
 
     startTransition(async () => {
-      const validate = addFoodSchema.safeParse({
-        name,
-        description,
-        price: Number(price),
-        categoryId: Number(categoryId),
-        image,
-      });
+      const validate = isEditMode
+        ? updateFoodDataSchema.safeParse({
+            name,
+            description,
+            price: Number(price),
+            categoryId: Number(categoryId),
+            ...(image ? { image } : {}),
+          })
+        : addFoodSchema.safeParse({
+            name,
+            description,
+            price: Number(price),
+            categoryId: Number(categoryId),
+            image,
+          });
 
       if (!validate.success) {
         setErrors(validate.error.flatten().fieldErrors);
@@ -77,7 +85,7 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
         return;
       }
 
-      toast.success(response.message);
+      toast.success(response.message, { duration: 1000 });
       handleClose();
     });
   };
@@ -153,7 +161,7 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
           }}
           placeholder="Describe the dish..."
           rows={3}
-          className="w-full resize-none rounded-lg border border-slate-800 bg-[#05070d] px-4 py-2.5 text-sm text-white outline-none placeholder:text-slate-500 focus:border-blue-500"
+          className="w-full resize-none rounded-lg border border-indigo-800 bg-[#05070d] px-4 py-2.5 text-sm text-white outline-none placeholder:text-slate-500 focus:border-blue-500"
         />
 
         {errors.description?.[0] && (

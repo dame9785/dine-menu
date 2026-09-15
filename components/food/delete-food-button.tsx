@@ -39,7 +39,7 @@ export default function DeleteFoodButton({ foodId, deleteFoodAction }: Props) {
     <button
       type="button"
       onClick={handleDelete}
-      className="cursor-pointer flex w-full items-center gap-2 px-3 py-2.5 text-left text-sm text-red-400 transition hover:bg-red-500/10 hover:text-red-300"
+      className="cursor-pointer flex w-full items-center gap-2 px-3 py-2.5 text-left text-sm  text-red-600  transition hover:bg-red-50"
     >
       <Trash2 size={16} />
       Delete
