@@ -59,7 +59,6 @@ export default async function FoodList({
             <Search className="mb-3 text-slate-600" size={32} />
 
             <h2 className="text-lg font-semibold text-indigo-300">No food items found</h2>
-
             <span className="mt-1 text-sm text-slate-500">No food items match your filter</span>
           </div>
         ) : (

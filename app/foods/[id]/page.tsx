@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import { FoodService } from '@/services/food';
 import Image from 'next/image';
 import Link from 'next/link';
-import FavoriteDetailButton from '@/components/food/food-detail-favorite-button';
+import AddFavoritFoodButton from '@/components/food/add-food-favorite.button';
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -28,7 +28,7 @@ export default async function FoodDetail({ params }: Props) {
     <section className="mx-auto max-w-6xl">
       {/* Back / breadcrumb */}
       <div className="mb-8">
-        <Link href="/" className="inline-flex items-center gap-2 text-sm text-gray-400 transition hover:text-pink-400">
+        <Link href="/" className="inline-flex items-center gap-2 text-sm text-gray-400 transition hover:text-blue-400">
           ← Tillbaka till menyn
         </Link>
       </div>
@@ -84,7 +84,7 @@ export default async function FoodDetail({ params }: Props) {
 
             {/* Actions */}
             <div className="flex justify-center z-10 relative ">
-              <FavoriteDetailButton foodId={foodItem.id} />
+              <AddFavoritFoodButton foodId={foodItem.id} />
             </div>
           </div>
         </div>

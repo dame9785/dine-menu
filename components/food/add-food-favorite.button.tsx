@@ -41,7 +41,7 @@ export default function FavoriteButton({ foodId }: Props) {
 
     localStorage.setItem(keyName, foodId.toString());
     setIsActive(true);
-    toast.success('Tillagd bland favoriterna', { duration: 1000 });
+    toast.success('Tillagd bland favoriterna', { duration: 5000 });
   };
 
   return (
