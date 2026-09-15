@@ -50,7 +50,12 @@ export default async function MenuPage({ searchParams }: Props) {
       </div>
 
       {/* Filter foods */}
-      <FoodFilter categories={categories} />
+      <FoodFilter
+        categories={categories ?? []}
+        searchParam={searchParam}
+        categoryParam={categoryParam}
+        sortByParam={sortByParam}
+      />
 
       {/* Foods */}
       <Suspense fallback={<LoadingSpinner />}>

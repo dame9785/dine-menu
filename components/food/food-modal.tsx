@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { X } from 'lucide-react';
 
 import { FoodViewModel } from '@/types/food';
-import FoodForm from '@/components/food/form/food-form';
+import FoodForm from '@/components/food/food-form';
 import { CategoryViewModel } from '@/types/category';
 
 type Props = {

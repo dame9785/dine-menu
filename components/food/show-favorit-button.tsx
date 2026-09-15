@@ -58,7 +58,9 @@ export default function FavoriteFilterButton({ currentPage, searchParam, sortByP
 
     const filter = favoriteIds.join(',');
 
-    router.push(`/?filter=${filter}&page=1&search=${searchParam}&category=${categoryParam}&sortBy=${sortByParam}`);
+    router.push(
+      `/?filter=${filter}&page=${currentPage}&search=${searchParam}&category=${categoryParam}&sortBy=${sortByParam}`,
+    );
   };
 
   return (
