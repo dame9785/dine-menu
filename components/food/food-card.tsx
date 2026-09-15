@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { MoreVertical, Pen, Pencil } from 'lucide-react';
+import { MoreVertical, Pencil } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -12,18 +12,18 @@ import FavoriteButton from '@/components/food/add-food-favorite.button';
 import FoodModal from '@/components/food/food-modal';
 
 import { deleteFood } from '@/actions/food';
+import { CategoryViewModel } from '@/types/category';
 
 type Props = {
   foodItem: FoodViewModel;
-  categories: {
-    id: number;
-    name: string;
-  }[];
+  categories: CategoryViewModel[];
 };
 
 export default function FoodCard({ foodItem, categories }: Props) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
+
+  const isDetail = false;
 
   return (
     <>
@@ -38,7 +38,6 @@ export default function FoodCard({ foodItem, categories }: Props) {
               src={foodItem.imageUrl}
               alt={foodItem.name}
               className="object-cover"
-              priority
               sizes="(max-width: 768px) 100vw, 33vw"
             />
 
@@ -71,7 +70,7 @@ export default function FoodCard({ foodItem, categories }: Props) {
         </Link>
 
         {/* Favorite */}
-        <FavoriteButton foodId={foodItem.id} />
+        <FavoriteButton foodId={foodItem.id} isDetail={isDetail} />
 
         {/* More menu */}
         <div className="absolute right-4 top-46.25 z-20">

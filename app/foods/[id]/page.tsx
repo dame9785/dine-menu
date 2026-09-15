@@ -24,6 +24,8 @@ export default async function FoodDetail({ params }: Props) {
 
   const foodItem = response.data;
 
+  const isDetail = true;
+
   return (
     <section className="mx-auto max-w-6xl">
       {/* Back / breadcrumb */}
@@ -84,7 +86,7 @@ export default async function FoodDetail({ params }: Props) {
 
             {/* Actions */}
             <div className="flex justify-center z-10 relative ">
-              <AddFavoritFoodButton foodId={foodItem.id} />
+              <AddFavoritFoodButton foodId={foodItem.id} isDetail={isDetail} />
             </div>
           </div>
         </div>

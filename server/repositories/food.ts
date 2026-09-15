@@ -82,21 +82,24 @@ export class FoodRepository {
       ],
     };
 
-    const totalNumberOfFoods = await prisma.menuItem.count({
-      where,
-    });
+    // Run both database queries at the same time
+    const [totalNumberOfFoods, foods] = await Promise.all([
+      prisma.menuItem.count({
+        where,
+      }),
+
+      prisma.menuItem.findMany({
+        where,
+        orderBy,
+        include: {
+          category: true,
+        },
+        skip,
+        take: pageSize,
+      }),
+    ]);
 
     const totalPages = Math.ceil(totalNumberOfFoods / pageSize);
-
-    const foods = await prisma.menuItem.findMany({
-      where,
-      orderBy,
-      include: {
-        category: true,
-      },
-      skip,
-      take: pageSize,
-    });
 
     return {
       totalNumberOfFoods,

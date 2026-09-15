@@ -6,9 +6,10 @@ import { toast } from 'sonner';
 
 type Props = {
   foodId: number;
+  isDetail: boolean;
 };
 
-export default function FavoriteButton({ foodId }: Props) {
+export default function FavoriteButton({ foodId, isDetail }: Props) {
   const [isActive, setIsActive] = useState(false);
 
   const keyName = `food-${foodId}`;
@@ -48,9 +49,13 @@ export default function FavoriteButton({ foodId }: Props) {
     <button
       type="button"
       onClick={addFavorite}
-      className={`absolute right-3 top-3 z-10 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-black/40 backdrop-blur-sm transition hover:bg-black/60 ${
-        isActive ? 'text-red-500' : 'text-white hover:text-red-400'
-      }`}
+      className={
+        isDetail
+          ? 'flex items-center justify-center cursor-pointer text-red-500'
+          : `absolute right-3 top-3 z-10 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-black/40 backdrop-blur-sm transition hover:bg-black/60 ${
+              isActive ? 'text-red-500' : 'text-white hover:text-red-400'
+            }`
+      }
       aria-label={isActive ? 'Ta bort från favoriter' : 'Lägg till favorit'}
     >
       <Heart size={22} className={isActive ? 'fill-current' : ''} />
