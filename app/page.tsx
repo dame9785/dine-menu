@@ -1,15 +1,14 @@
-import { Search, Utensils, Trash } from 'lucide-react';
+import { Utensils } from 'lucide-react';
+import { Suspense } from 'react';
+
 import { CategoryService } from '@/services/category';
-import { FoodService } from '@/services/food';
-import FoodCard from '@/components/food/food-card';
 import FoodModal from '@/components/food/add-food-modal';
-import Pagination from '@/components/food/pagination';
-import FavoriteFilterButton from '@/components/food/favorite-filter-button';
 import FoodFilter from '@/components/food/filter-foods';
-import ResetFilteringButton from '@/components/food/reset-filter-button';
+import FoodList from '@/components/food/food-list';
+
+import LoadingSpinner from '@/components/loading-spinner';
 
 const categoryService = new CategoryService();
-const foodService = new FoodService();
 
 type Props = {
   searchParams: Promise<{
@@ -35,15 +34,9 @@ export default async function MenuPage({ searchParams }: Props) {
 
   const sortByParam = params.sortBy ?? '';
 
-  const [categoryResponse, foodResponse] = await Promise.all([
-    categoryService.getAll(1),
-    foodService.getAll(currentPage, searchParam, categoryParam, filterParam, sortByParam),
-  ]);
+  const categoryResponse = await categoryService.getAll(1);
 
   const categories = categoryResponse.data;
-  const foods = foodResponse.data;
-
-  const totalFoodsCount = foodResponse.pagination?.totalItems;
 
   return (
     <main className="min-h-screen bg-[#05070d] p-8 text-white">
@@ -62,47 +55,16 @@ export default async function MenuPage({ searchParams }: Props) {
       {/* Filter on fooods */}
       <FoodFilter categories={categories} />
 
-      {/* Food count */}
-      <div className="mb-6 flex items-center gap-2">
-        <div className="flex items-center gap-2 rounded-lg border border-slate-800 bg-[#0b1120] px-3 py-2">
-          <span className="h-2 w-2 rounded-full bg-blue-500" />
-          <span className="text-l font-medium text-slate-300">{totalFoodsCount}</span>
-          <span className="text-l text-slate-500">{totalFoodsCount === 1 ? 'Food' : 'Foods'}</span>
-        </div>
-
-        <FavoriteFilterButton
-          currentPage={currentPage}
-          searchParam={searchParam}
-          sortByParam={sortByParam}
-          categoryParam={categoryParam}
-        />
-        <ResetFilteringButton />
-      </div>
-
       {/* Foods */}
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
-        {foods.length === 0 ? (
-          <div className="col-span-full flex min-h-60 flex-col items-center justify-center rounded-2xl border border-slate-800 bg-[#0b1120]">
-            <Search className="mb-3 text-slate-600" size={32} />
-            <h2 className="text-lg font-semibold text-indigo-300">No food items found</h2>
-            <span className="mt-1 text-sm text-slate-500">no food items matches your filter</span>
-          </div>
-        ) : (
-          foods.map((item) => <FoodCard key={item.id} foodItem={item} />)
-        )}
-      </div>
-
-      {/* Pagination */}
-      {foods.length > 0 && (
-        <Pagination
+      <Suspense fallback={<LoadingSpinner />}>
+        <FoodList
           currentPage={currentPage}
           searchParam={searchParam}
           sortByParam={sortByParam}
           filterParam={filterParam}
           categoryParam={categoryParam}
-          totalPages={foodResponse.pagination?.totalPages ?? 1}
         />
-      )}
+      </Suspense>
     </main>
   );
 }
