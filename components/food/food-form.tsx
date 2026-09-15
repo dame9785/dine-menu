@@ -163,7 +163,7 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
             transition-all duration-200
 
             placeholder:text-base
-            placeholder:text-slate-400
+            placeholder:text-slate-700
 
             hover:border-slate-300
             hover:bg-white
@@ -213,7 +213,7 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
             transition-all duration-200
 
             placeholder:text-base
-            placeholder:text-slate-400
+             placeholder:text-slate-700
 
             hover:border-slate-300
             hover:bg-white
@@ -353,7 +353,7 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
               type="number"
               min="0"
               step="0.01"
-              placeholder="129"
+              placeholder="129 €"
               className="
                 w-full
                 cursor-text
@@ -368,8 +368,9 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
                 outline-none
                 transition-all duration-200
 
-                placeholder:text-base
-                placeholder:text-slate-400
+                 placeholder:text-base
+             placeholder:text-slate-700
+
 
                 hover:border-slate-300
                 hover:bg-white
@@ -430,6 +431,8 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
               shadow-sm
               outline-none
               transition-all duration-200
+  placeholder:text-base
+             placeholder:text-slate-700
 
               hover:border-slate-300
               hover:bg-white

@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 
 import { CategoryService } from '@/services/category';
-import FoodFilter from '@/components/food/food-filter';
+import Filtering from '@/components/food/filtering';
 import FoodList from '@/components/food/food-list';
 import LoadingSpinner from '@/components/loading-spinner';
 import Header from '@/components/food/header';
@@ -36,7 +36,7 @@ export default async function MenuPage({ searchParams }: Props) {
       <Header categories={categories ?? []} />
 
       {/* Filter */}
-      <FoodFilter
+      <Filtering
         categories={categories ?? []}
         searchParam={searchParam}
         categoryParam={categoryParam}

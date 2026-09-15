@@ -1,6 +1,6 @@
 import { CategoryService } from '@/services/category';
 import CategoryTable from '@/components/category/categories-table';
-import CategoryModal from '@/components/category/category-modal';
+import CategoryModal from '@/components/category/modal';
 import Pagination from '@/components/category/pagination';
 
 const categoryService = new CategoryService();

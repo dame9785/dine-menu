@@ -27,12 +27,12 @@ export default function Pagination({
             scroll={false}
             aria-label="Previous page"
             href={`/?page=${currentPage - 1}&search=${searchParam}&category=${categoryParam}&sortBy=${sortByParam}&filter=${filterParam}`}
-            className="flex h-9 w-9 items-center justify-center rounded-md border border-transparent text-neutral-400 transition hover:border-blue-500/40 hover:bg-blue-500/10 hover:text-blue-400"
+            className="flex h-9 w-9 items-center justify-center rounded-md border border-transparent text-xl transition hover:border-blue-500/40 hover:bg-blue-500/10 hover:text-blue-400"
           >
             <ChevronLeft size={18} />
           </Link>
         ) : (
-          <span className="flex h-9 w-9 items-center justify-center rounded-md text-neutral-700" aria-hidden="true">
+          <span className="flex h-9 w-9 items-center justify-center rounded-md text-xl" aria-hidden="true">
             <ChevronLeft size={18} />
           </span>
         )}
@@ -44,19 +44,19 @@ export default function Pagination({
               scroll={false}
               aria-label="Page 1"
               href={`/?page=1&search=${searchParam}&category=${categoryParam}&sortBy=${sortByParam}&filter=${filterParam}`}
-              className="flex h-9 min-w-9 items-center justify-center rounded-md border border-transparent px-2 text-sm text-neutral-400 transition hover:border-blue-500/40 hover:bg-blue-500/10 hover:text-blue-400"
+              className="flex h-9 min-w-9 items-center justify-center rounded-md border border-transparent px-2 text-xl text-neutral-400 transition hover:border-blue-500/40 hover:bg-blue-500/10 hover:text-blue-400"
             >
               1
             </Link>
 
-            {currentPage > 3 && <span className="px-1 text-sm text-neutral-600">...</span>}
+            {currentPage > 3 && <span className="px-1 text-xl text-neutral-600">...</span>}
           </>
         )}
 
         {/* Current page */}
         <span
           aria-current="page"
-          className="flex h-9 min-w-9 items-center justify-center rounded-md border border-blue-500/50 bg-blue-600 px-2 text-sm font-semibold text-white shadow-md shadow-blue-500/10"
+          className="flex h-9 min-w-9 items-center justify-center rounded-md border border-blue-500/50 bg-blue-600 px-2 text-xl font-semibold text-white shadow-md shadow-blue-500/10"
         >
           {currentPage}
         </span>
@@ -67,7 +67,7 @@ export default function Pagination({
             scroll={false}
             aria-label={`Page ${currentPage + 1}`}
             href={`/?page=${currentPage + 1}&search=${searchParam}&category=${categoryParam}&sortBy=${sortByParam}&filter=${filterParam}`}
-            className="flex h-9 min-w-9 items-center justify-center rounded-md border border-transparent px-2 text-sm text-neutral-400 transition hover:border-blue-500/40 hover:bg-blue-500/10 hover:text-blue-400"
+            className="flex h-9 min-w-9 items-center justify-center rounded-md border border-transparent px-2 text-xl text-neutral-400 transition hover:border-blue-500/40 hover:bg-blue-500/10 hover:text-blue-400"
           >
             {currentPage + 1}
           </Link>
@@ -79,7 +79,7 @@ export default function Pagination({
             scroll={false}
             aria-label={`Page ${currentPage + 2}`}
             href={`/?page=${currentPage + 2}&search=${searchParam}&category=${categoryParam}&sortBy=${sortByParam}&filter=${filterParam}`}
-            className="flex h-9 min-w-9 items-center justify-center rounded-md border border-transparent px-2 text-sm text-neutral-400 transition hover:border-blue-500/40 hover:bg-blue-500/10 hover:text-blue-400"
+            className="flex h-9 min-w-9 items-center justify-center rounded-md border border-transparent px-2 text-xltext-neutral-400 transition hover:border-blue-500/40 hover:bg-blue-500/10 hover:text-blue-400"
           >
             {currentPage + 2}
           </Link>
@@ -88,13 +88,13 @@ export default function Pagination({
         {/* Last page */}
         {currentPage + 2 < totalPages && (
           <>
-            {currentPage + 3 < totalPages && <span className="px-1 text-sm text-neutral-600">...</span>}
+            {currentPage + 3 < totalPages && <span className="px-1 text-xl text-neutral-600">...</span>}
 
             <Link
               scroll={false}
               aria-label={`Page ${totalPages}`}
               href={`/?page=${totalPages}&search=${searchParam}&category=${categoryParam}&sortBy=${sortByParam}&filter=${filterParam}`}
-              className="flex h-9 min-w-9 items-center justify-center rounded-md border border-transparent px-2 text-sm text-neutral-400 transition hover:border-blue-500/40 hover:bg-blue-500/10 hover:text-blue-400"
+              className="flex h-9 min-w-9 items-center justify-center rounded-md border border-transparent px-2 text-xl text-neutral-400 transition hover:border-blue-500/40 hover:bg-blue-500/10 hover:text-blue-400"
             >
               {totalPages}
             </Link>
@@ -107,7 +107,7 @@ export default function Pagination({
             scroll={false}
             aria-label="Next page"
             href={`/?page=${currentPage + 1}&search=${searchParam}&category=${categoryParam}&sortBy=${sortByParam}&filter=${filterParam}`}
-            className="flex h-9 w-9 items-center justify-center rounded-md border border-transparent text-neutral-400 transition hover:border-blue-500/40 hover:bg-blue-500/10 hover:text-blue-400"
+            className="flex h-9 w-9 items-center justify-center rounded-md border border-transparent text-xl transition hover:border-blue-500/40 hover:bg-blue-500/10 hover:text-blue-400"
           >
             <ChevronRight size={18} />
           </Link>

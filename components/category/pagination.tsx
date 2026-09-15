@@ -9,7 +9,7 @@ type Props = {
 export default function Pagination({ currentPage, totalPages }: Props) {
   return (
     <nav aria-label="Category pagination" className="flex items-center justify-center py-6">
-      <div className="flex items-center gap-1.5 rounded-lg border border-neutral-800 bg-neutral-900/80 p-1.5 shadow-lg">
+      <div className="flex items-center gap-1.5 rounded-xl border border-indigo-600  p-1.5 shadow-lg">
         {/* Previous */}
         {currentPage > 1 ? (
           <Link

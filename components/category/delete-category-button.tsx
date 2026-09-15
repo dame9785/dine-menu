@@ -1,5 +1,6 @@
 'use client';
 
+import { Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 type Props = {
@@ -34,9 +35,11 @@ export default function deleteCategoryButton({ categoryId, deleteCategory }: Pro
 
   return (
     <button
+      type="button"
       onClick={handleDelete}
-      className="rounded-lg border border-red-500/30 px-3 py-1.5 text-sm text-red-400 transition hover:bg-red-500/10 cursor-pointer"
+      className="flex cursor-pointer items-center gap-2 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-2 text-sm font-medium text-red-400 backdrop-blur transition hover:border-red-500/50 hover:bg-orange-500/20"
     >
+      <Trash2 size={16} />
       Delete
     </button>
   );

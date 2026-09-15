@@ -9,7 +9,7 @@ type Props = {
   filterParam: string;
 };
 
-export default function FoodFilter({ categories, searchParam, categoryParam, sortByParam, filterParam }: Props) {
+export default function Filtering({ categories, searchParam, categoryParam, sortByParam, filterParam }: Props) {
   return (
     <div className="mb-8">
       <form
