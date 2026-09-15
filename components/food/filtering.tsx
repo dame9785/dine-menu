@@ -121,7 +121,7 @@ export default function Filtering({ categories, searchParam, categoryParam, sort
             cursor-pointer
             rounded-xl
             border border-slate-200
-            bg-slate-50
+            bg-[#C09721]
             px-4
             py-2.5
             text-sm
