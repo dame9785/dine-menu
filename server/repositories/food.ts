@@ -124,4 +124,26 @@ export class FoodRepository {
       },
     });
   }
+
+  async update(foodId: number, dto: FoodDto) {
+    return await prisma.menuItem.update({
+      where: {
+        id: foodId,
+      },
+      data: {
+        name: dto.name,
+        description: dto.description,
+        price: dto.price,
+        imageUrl: dto.imageUrl,
+        category: {
+          connect: {
+            id: dto.categoryId,
+          },
+        },
+      },
+      include: {
+        category: true,
+      },
+    });
+  }
 }

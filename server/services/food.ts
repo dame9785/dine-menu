@@ -69,6 +69,63 @@ export class FoodService {
     }
   }
 
+  async update(foodId: number, formData: FormData): Promise<ApiResponse<FoodViewModel>> {
+    try {
+      const name = formData.get('name');
+      const description = formData.get('description');
+      const price = formData.get('price');
+      const categoryId = formData.get('categoryId');
+      const image = formData.get('image');
+
+      if (
+        typeof name !== 'string' ||
+        typeof description !== 'string' ||
+        typeof price !== 'string' ||
+        typeof categoryId !== 'string'
+      ) {
+        return {
+          success: false,
+          message: 'Invalid food data.',
+        } satisfies ApiResponse<[]>;
+      }
+
+      let imageUrl = '';
+      if (image instanceof File) {
+        imageUrl = await saveImage(image);
+        if (!imageUrl) {
+          return {
+            success: false,
+            message: 'Could not upload the image',
+          } satisfies ApiResponse<[]>;
+        }
+      }
+
+      const dto: FoodDto = {
+        name,
+        description,
+        price: Number(price),
+        categoryId: Number(categoryId),
+        imageUrl: imageUrl,
+      };
+
+      const foodData = await foodRepository.update(foodId, dto);
+      const viewModel = FoodMapper.foodDboToViewModel(foodData);
+
+      return {
+        success: true,
+        message: 'Food successfully updated.',
+        data: viewModel,
+      } satisfies ApiResponse<FoodViewModel>;
+    } catch (error) {
+      console.error('Server error', error);
+
+      return {
+        success: false,
+        message: 'Something went wrong while updating food item.',
+      } satisfies ApiResponse<FoodViewModel>;
+    }
+  }
+
   async getAll(
     page: number,
     searchParam: string,
