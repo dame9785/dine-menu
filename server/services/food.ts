@@ -1,5 +1,5 @@
 import { ApiResponse, FoodApiResponse } from '@/types/api-responses';
-import { FoodDto } from '@/types/food';
+import { FoodDto, FoodViewModel } from '@/types/food';
 import { FoodRepository } from '../repositories/food';
 import { FoodMapper } from '../mapping/food';
 import { saveImage } from '@/helpers/image-helper';
@@ -114,6 +114,31 @@ export class FoodService {
       return {
         success: false,
         message: 'Something went wrong while deleting the food.',
+      } satisfies ApiResponse<[]>;
+    }
+  }
+
+  async getById(foodId: number): Promise<ApiResponse<FoodViewModel>> {
+    try {
+      const foodData = await foodRepository.getById(foodId);
+      if (!foodData) {
+        return {
+          success: true,
+          message: 'food item could not be found',
+        } satisfies ApiResponse<FoodViewModel>;
+      }
+
+      const viewModel = FoodMapper.foodDboToViewModel(foodData);
+      return {
+        success: true,
+        message: 'Food managed to retrieve',
+        data: viewModel,
+      } satisfies ApiResponse<FoodViewModel>;
+    } catch (error) {
+      console.error('Server error', error);
+      return {
+        success: false,
+        message: 'Something went wrong while getting the food item.',
       } satisfies ApiResponse<[]>;
     }
   }

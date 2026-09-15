@@ -1,4 +1,5 @@
 import { ApiResponse, FoodApiResponse } from '@/types/api-responses';
+import { FoodViewModel } from '@/types/food';
 
 const API_URL = 'http://localhost:3000/api/food';
 
@@ -58,6 +59,21 @@ export class FoodService {
     } catch (error) {
       console.error('API/FOOD/DELETE', error);
 
+      return {
+        success: false,
+        message: 'Could not connect to the server.',
+      } satisfies ApiResponse<[]>;
+    }
+  }
+
+  async getById(foodId: string): Promise<ApiResponse<FoodViewModel>> {
+    try {
+      const response = await fetch(`${API_URL}/${foodId}`, {
+        method: 'GET',
+      });
+      return (await response.json()) as ApiResponse<FoodViewModel>;
+    } catch (error) {
+      console.error('API/FOOD/{ID}', error);
       return {
         success: false,
         message: 'Could not connect to the server.',

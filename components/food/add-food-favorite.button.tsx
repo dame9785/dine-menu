@@ -2,6 +2,7 @@
 
 import { Heart } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 type Props = {
   foodId: number;
@@ -13,42 +14,46 @@ export default function FavoriteButton({ foodId }: Props) {
   const keyName = `food-${foodId}`;
 
   const checkExistingFood = (): boolean => {
-    const item = localStorage.getItem(keyName);
-    if (!item) {
-      return false;
-    }
-
-    return true;
+    return localStorage.getItem(keyName) !== null;
   };
 
   useEffect(() => {
-    const isExsisting = checkExistingFood();
-    if (isExsisting) {
+    const isExisting = checkExistingFood();
+
+    if (isExisting) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsActive(true);
     }
   }, [keyName]);
 
-  const addFavorite = () => {
+  const addFavorite = (event: React.MouseEvent<HTMLButtonElement>) => {
+    // Extra protection in case the button is ever placed inside a link
+    event.preventDefault();
+    event.stopPropagation();
+
     const isExisting = checkExistingFood();
 
     if (isExisting) {
-      setIsActive(false);
       localStorage.removeItem(keyName);
+      setIsActive(false);
       return;
     }
 
-    setIsActive(true);
     localStorage.setItem(keyName, foodId.toString());
+    setIsActive(true);
+    toast.success('Tillagd bland favoriterna', { duration: 1000 });
   };
 
   return (
     <button
-      onClick={addFavorite}
       type="button"
-      className={`${isActive ? 'fill-red-500 text-red-500' : 'text-white'} cursor-pointer absolute right-3 top-3 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/40 text-red-500 backdrop-blur-sm transition hover:bg-black/60 hover:text-red-400`}
+      onClick={addFavorite}
+      className={`absolute right-3 top-3 z-10 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-black/40 backdrop-blur-sm transition hover:bg-black/60 ${
+        isActive ? 'text-red-500' : 'text-white hover:text-red-400'
+      }`}
+      aria-label={isActive ? 'Ta bort från favoriter' : 'Lägg till favorit'}
     >
-      <Heart size={22} />
+      <Heart size={22} className={isActive ? 'fill-current' : ''} />
     </button>
   );
 }

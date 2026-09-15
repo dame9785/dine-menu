@@ -1,4 +1,4 @@
-import { Search, Utensils, Heart } from 'lucide-react';
+import { Search, Utensils } from 'lucide-react';
 import { CategoryService } from '@/services/category';
 import { FoodService } from '@/services/food';
 import FoodCard from '@/components/food/food-card';
@@ -110,24 +110,11 @@ export default async function MenuPage({ searchParams }: Props) {
             <select
               name="sortBy"
               id="sortBy"
-              className="  cursor-pointer
-    rounded-lg
-    border border-slate-800
-    bg-[#0b1120]
-    px-4
-    py-2.5
-    text-sm
-    text-slate-300
-    outline-none
-    transition
-    hover:border-slate-700
-    focus:border-blue-500
-    focus:ring-1
-    focus:ring-blue-500/30"
+              className="cursor-pointer rounded-lg border border-slate-800 bg-[#0b1120] px-4 py-2.5 text-sm text-slate-300 outline-none transition hover:border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500/30"
             >
               <option value="">Sort by</option>
-              <option value={'asc'}>Asc</option>
-              <option value={'desc'}>Dec</option>
+              <option value={'asc'}>Ascending</option>
+              <option value={'desc'}>Decending</option>
               <option value={'lowest'}>Lowest first</option>
               <option value={'highest'}>Highest first</option>
             </select>
@@ -154,9 +141,9 @@ export default async function MenuPage({ searchParams }: Props) {
 
       {/* Foods */}
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
-        {foods?.map((item) => {
-          return <FoodCard key={item.id} foodItem={item} />;
-        })}
+        {foods?.map((item) => (
+          <FoodCard key={item.id} foodItem={item} />
+        ))}
       </div>
       <Pagination currentPage={currentPage} totalPages={foodResponse.pagination?.totalPages ?? 1} />
     </main>

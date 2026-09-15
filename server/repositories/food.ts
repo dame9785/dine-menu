@@ -98,8 +98,6 @@ export class FoodRepository {
       take: pageSize,
     });
 
-    console.log('FOUND FOODS:', foods.length);
-
     return {
       totalNumberOfFoods,
       foods,
@@ -112,6 +110,17 @@ export class FoodRepository {
     return await prisma.menuItem.delete({
       where: {
         id: foodId,
+      },
+    });
+  }
+
+  async getById(foodId: number) {
+    return await prisma.menuItem.findUnique({
+      where: {
+        id: foodId,
+      },
+      include: {
+        category: true,
       },
     });
   }
