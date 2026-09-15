@@ -19,8 +19,8 @@ export default function Filtering({ categories, searchParam, categoryParam, sort
         className="
           flex flex-col gap-3
           rounded-2xl
-          border border-slate-200
-          bg-white
+          border border-[#C09721]/30
+          bg-[#FBF8F0]
           p-4
           shadow-sm
           md:flex-row
@@ -35,7 +35,7 @@ export default function Filtering({ categories, searchParam, categoryParam, sort
               pointer-events-none
               absolute left-3.5 top-1/2
               -translate-y-1/2
-              text-slate-400
+              text-[#C09721]
             "
           />
 
@@ -48,8 +48,8 @@ export default function Filtering({ categories, searchParam, categoryParam, sort
               w-full
               cursor-text
               rounded-xl
-              border border-slate-200
-              bg-slate-50
+              border border-[#C09721]/30
+              bg-white
               py-2.5
               pl-10
               pr-4
@@ -59,16 +59,13 @@ export default function Filtering({ categories, searchParam, categoryParam, sort
               outline-none
               transition-all duration-200
 
-              placeholder:text-base
               placeholder:text-slate-400
 
-              hover:border-slate-300
-              hover:bg-white
+              hover:border-[#C09721]/60
 
-              focus:border-indigo-500
-              focus:bg-white
+              focus:border-[#C09721]
               focus:ring-4
-              focus:ring-indigo-500/10
+              focus:ring-[#C09721]/10
             "
           />
         </div>
@@ -81,8 +78,8 @@ export default function Filtering({ categories, searchParam, categoryParam, sort
             w-full
             cursor-pointer
             rounded-xl
-            border border-slate-200
-            bg-slate-50
+            border border-[#C09721]/30
+            bg-white
             px-4
             py-2.5
             text-sm
@@ -92,13 +89,11 @@ export default function Filtering({ categories, searchParam, categoryParam, sort
             outline-none
             transition-all duration-200
 
-            hover:border-slate-300
-            hover:bg-white
+            hover:border-[#C09721]/60
 
-            focus:border-indigo-500
-            focus:bg-white
+            focus:border-[#C09721]
             focus:ring-4
-            focus:ring-indigo-500/10
+            focus:ring-[#C09721]/10
 
             md:w-48
           "
@@ -120,8 +115,8 @@ export default function Filtering({ categories, searchParam, categoryParam, sort
             w-full
             cursor-pointer
             rounded-xl
-            border border-slate-200
-            bg-[#C09721]
+            border border-[#C09721]/30
+            bg-white
             px-4
             py-2.5
             text-sm
@@ -131,13 +126,11 @@ export default function Filtering({ categories, searchParam, categoryParam, sort
             outline-none
             transition-all duration-200
 
-            hover:border-slate-300
-            hover:bg-white
+            hover:border-[#C09721]/60
 
-            focus:border-indigo-500
-            focus:bg-white
+            focus:border-[#C09721]
             focus:ring-4
-            focus:ring-indigo-500/10
+            focus:ring-[#C09721]/10
 
             md:w-44
           "
@@ -163,8 +156,8 @@ export default function Filtering({ categories, searchParam, categoryParam, sort
             justify-center
             gap-2
             rounded-xl
-            border border-indigo-600
-            bg-indigo-600
+            border border-[#A77F18]
+            bg-[#C09721]
             px-5
             py-2.5
             text-sm
@@ -174,10 +167,9 @@ export default function Filtering({ categories, searchParam, categoryParam, sort
             transition-all duration-200
 
             hover:-translate-y-0.5
-            hover:border-indigo-700
-            hover:bg-indigo-700
+            hover:bg-[#A77F18]
             hover:shadow-lg
-            hover:shadow-indigo-500/20
+            hover:shadow-[#C09721]/20
 
             active:translate-y-0
             active:scale-[0.98]

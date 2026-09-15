@@ -46,7 +46,7 @@ export default function FoodCard({ foodItem, categories }: Props) {
 
             {/* Category */}
             <div className="absolute left-3 top-3">
-              <span className="rounded-full border-indigo-100 bg-indigo-50 px-3 py-1.5 text-xs font-semibold text-indigo-600 shadow-sm backdrop-blur-md">
+              <span className="rounded-full border border-[#A77F18] bg-[#C09721] text-white px-3 py-1.5 text-xs font-semibold   shadow-sm backdrop-blur-md">
                 {foodItem.category}
               </span>
             </div>
