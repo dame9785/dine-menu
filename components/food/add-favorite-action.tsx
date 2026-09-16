@@ -6,10 +6,9 @@ import { toast } from 'sonner';
 
 type Props = {
   foodId: number;
-  isDetail: boolean;
 };
 
-export default function FavoriteButton({ foodId, isDetail }: Props) {
+export default function FavoriteButton({ foodId }: Props) {
   const [isActive, setIsActive] = useState(false);
 
   const keyName = `food-${foodId}`;
@@ -49,17 +48,11 @@ export default function FavoriteButton({ foodId, isDetail }: Props) {
     <button
       type="button"
       onClick={addFavorite}
-      className={
-        isDetail
-          ? 'cursor-pointer text-red-500 gap-2  bg-white border border-[#C09721]/30'
-          : ` z-10 flex h-10 w-10 cursor-pointer items-center gap-2 justify-center  rounded-full border border-[#C09721]/30
-        bg-white text-red backdrop-blur-sm transition hover:bg-[#C09721] ${
-          isActive ? 'text-red-500' : 'hover:text-red-400'
-        }`
-      }
+      className="z-10 flex h-10 w-10 cursor-pointer items-center justify-center gap-2 rounded-full border border-[#C09721]/30 bg-white backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-[#C09721] hover:bg-[#FFFCF5] hover:shadow-md hover:shadow-[#C09721]/15 focus:border-[#C09721] focus:ring-4 focus:ring-[#C09721]/10 active:translate-y-0 active:scale-[0.98]"
+
       aria-label={isActive ? 'Ta bort från favoriter' : 'Lägg till favorit'}
     >
-      <Heart size={22} className={isActive ? 'fill-current' : ''} />
+      <Heart size={22} className={isActive ? 'fill-current text-red-600' : 'text-red-600'} />
     </button>
   );
 }

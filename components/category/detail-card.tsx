@@ -1,6 +1,6 @@
 import Image from 'next/image';
-import AddFavoritFoodButton from '@/components/food/favorite-button';
-import EditFoodButton from '@/components/food/edit-food-button';
+import AddFavoritFoodButton from '@/components/food/add-favorite-action';
+import EditFoodButton from '@/components/food/edit-modal-action';
 import { Heart, Utensils, Euro } from 'lucide-react';
 import { FoodViewModel } from '@/types/food';
 import { CategoryViewModel } from '@/types/category';
@@ -12,16 +12,9 @@ type Props = {
 
 export default function DetailCard({ foodItem, categories }: Props) {
   return (
-    <div
-      className="
-          relative overflow-hidden rounded-3xl
-          border border-slate-200
-          bg-white
-          shadow-xl shadow-slate-200/60
-        "
-    >
+    <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl shadow-slate-200/60">
       {/* Edit */}
-      <div className="absolute right-5 top-5 z-30">
+      <div className="absolute top-5 right-5 z-30">
         <EditFoodButton foodItem={foodItem} categories={categories} />
       </div>
 
@@ -53,36 +46,17 @@ export default function DetailCard({ foodItem, categories }: Props) {
           <div className="absolute inset-0 bg-linear-to-t from-black/50 via-transparent to-transparent" />
 
           {/* Category */}
-          <div className="absolute left-6 top-6">
-            <div
-              className="
-                  inline-flex items-center gap-2
-                  rounded-full
-                       hover:-translate-y-0.5
-                        border border-[#A77F18]
-            bg-[#C09721]
-            hover:bg-[#A77F18]
-            
-            hover:shadow-lg
-            hover:shadow-[#C09721]/20
-
-            active:translate-y-0
-            active:scale-[0.98]
-
-                  px-4 py-2
-                  shadow-lg
-                  backdrop-blur-md
-                "
-            >
+          <div className="absolute top-6 left-6">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#A77F18] bg-[#C09721] px-4 py-2 shadow-lg backdrop-blur-md hover:-translate-y-0.5 hover:bg-[#A77F18] hover:shadow-lg hover:shadow-[#C09721]/20 active:translate-y-0 active:scale-[0.98]">
               <Utensils size={15} className="text-white" />
 
-              <span className="font-semibold uppercase tracking-wider text-sm text-white">{foodItem.category}</span>
+              <span className="text-sm font-semibold tracking-wider text-white uppercase">{foodItem.category}</span>
             </div>
           </div>
 
           {/* Image bottom label */}
-          <div className="absolute bottom-6 left-6 right-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70">Dine Menu</p>
+          <div className="absolute right-6 bottom-6 left-6">
+            <p className="text-xs font-semibold tracking-[0.2em] text-white/70 uppercase">Dine Menu</p>
 
             <p className="mt-1 text-sm font-medium text-white/90">Fresh from our kitchen</p>
           </div>
@@ -94,39 +68,14 @@ export default function DetailCard({ foodItem, categories }: Props) {
           <div className="mb-4 flex items-center gap-2">
             <div className="h-1.5 w-1.5 rounded-full bg-[#C09721]" />
 
-            <span
-              className="
-                  text-xs font-bold uppercase
-                  tracking-[0.2em] text-[#C09721]
-                "
-            >
-              Our menu
-            </span>
+            <span className="text-xs font-bold tracking-[0.2em] text-[#C09721] uppercase">Our menu</span>
           </div>
 
           {/* Title */}
-          <h1
-            className="
-                max-w-xl
-                text-4xl font-bold
-                tracking-tight text-slate-900
-                md:text-5xl
-              "
-          >
-            {foodItem.name}
-          </h1>
+          <h1 className="max-w-xl text-4xl font-bold tracking-tight text-slate-900 md:text-5xl">{foodItem.name}</h1>
 
           {/* Description */}
-          <p
-            className="
-                mt-5 max-w-xl
-                text-base leading-7
-                text-slate-500
-                md:text-lg
-              "
-          >
-            {foodItem.description}
-          </p>
+          <p className="mt-5 max-w-xl text-base leading-7 text-slate-500 md:text-lg">{foodItem.description}</p>
 
           {/* Divider */}
           <div className="my-8 h-px bg-slate-100" />
@@ -134,36 +83,22 @@ export default function DetailCard({ foodItem, categories }: Props) {
           {/* Details */}
           <div className="grid grid-cols-2 gap-4">
             {/* Category */}
-            <div
-              className="
-                  rounded-2xl
-                  border border-[#C09721]
-                  bg-slate-50
-                  p-5
-                "
-            >
+            <div className="rounded-2xl border border-[#C09721] bg-slate-50 p-5">
               <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-white shadow-sm">
                 <Utensils size={17} className="text-[#C09721]" />
               </div>
 
-              <p className="text-xs font-semibold uppercase tracking-wider text-[#C09721]">Category</p>
+              <p className="text-xs font-semibold tracking-wider text-[#C09721] uppercase">Category</p>
 
               <p className="mt-1 text-base font-semibold text-[#C09721]">{foodItem.category}</p>
             </div>
 
             {/* Price */}
-            <div
-              className="
-                   rounded-2xl
-                  border border-[#C09721]
-                  bg-slate-50
-                  p-5
-                "
-            >
+            <div className="rounded-2xl border border-[#C09721] bg-slate-50 p-5">
               <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-white shadow-sm">
                 <Euro size={17} className="text-[#C09721]" />
               </div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-[#C09721]">Price</p>
+              <p className="text-xs font-semibold tracking-wider text-[#C09721] uppercase">Price</p>
 
               <p className="mt-2 text-2xl font-bold tracking-tight text-[#C09721]">
                 {Number(foodItem.price).toFixed(2)} €
@@ -173,16 +108,7 @@ export default function DetailCard({ foodItem, categories }: Props) {
 
           {/* Favorite */}
           <div className="mt-8">
-            <div
-              className="
-                  flex items-center justify-between
-                  rounded-2xl
-                  border border-slate-200
-                  bg-white
-                  p-4
-                  shadow-sm
-                "
-            >
+            <div className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-50">
                   <Heart size={19} className="fill-red-500 text-red-500" />

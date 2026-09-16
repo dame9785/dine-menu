@@ -1,6 +1,6 @@
 import { CategoryViewModel } from '@/types/category';
 import Image from 'next/image';
-import FoodActions from '@/components/food/food-actions';
+import FoodActions from '@/components/food/food-modal-edit-actions';
 
 type Props = {
   categories: CategoryViewModel[];
@@ -38,14 +38,14 @@ export default function Header({ categories }: Props) {
               Manage <span className="text-[#A77F18]">your menu</span>
             </h1>
 
-            <p className="mt-2 max-w-md text-lg font-semibold leading-6 text-slate-700">
+            <p className="mt-2 max-w-md text-lg leading-6 font-semibold text-slate-700">
               Here you can find your dishes.
             </p>
           </div>
         </div>
 
         {/* Show food modal action */}
-        <div className="relative align-top z-20 flex shrink-0">
+        <div className="relative z-20 flex shrink-0 align-top">
           <FoodActions categories={categories ?? []} />
         </div>
       </div>

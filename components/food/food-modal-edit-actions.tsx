@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 
-import AddFoodButton from './add-food-button';
-import EditFoodButton from './edit-food-button';
+import AddModalAction from './food-modal-add-action';
+import EditModalAction from '@/components/food/edit-modal-action';
 import FoodModal from './food-modal';
 
 import { CategoryViewModel } from '@/types/category';
@@ -17,14 +17,15 @@ type Props = {
 export default function FoodActions({ categories, foodItem }: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
+  console.log(foodItem);
   const isEditing = Boolean(foodItem);
 
   return (
     <>
       {isEditing ? (
-        <EditFoodButton onClick={() => setIsOpen(true)} />
+        <EditModalAction onClick={() => setIsOpen(true)} />
       ) : (
-        <AddFoodButton onClick={() => setIsOpen(true)} />
+        <AddModalAction onClick={() => setIsOpen(true)} />
       )}
 
       <FoodModal foodItem={foodItem} categories={categories} open={isOpen} onOpenChange={setIsOpen} />
