@@ -1,32 +1,16 @@
 import { Search } from 'lucide-react';
 
 import FoodCard from '@/components/food/food-card';
-import Pagination from '@/components/food/pagination';
 
 import { CategoryViewModel } from '@/types/category';
 import { FoodViewModel } from '@/types/food';
 
 type Props = {
-  currentPage: number;
-  searchParam: string;
-  categoryParam: string;
-  filterParam: string;
-  sortByParam: string;
   categories: CategoryViewModel[];
   foods: FoodViewModel[];
-  totalPages: number;
 };
 
-export default async function FoodList({
-  currentPage,
-  searchParam,
-  categoryParam,
-  filterParam,
-  sortByParam,
-  categories,
-  foods,
-  totalPages,
-}: Props) {
+export default async function FoodList({ categories, foods }: Props) {
   return (
     <>
       {/* Foods */}
@@ -44,18 +28,6 @@ export default async function FoodList({
           foods.map((item) => <FoodCard key={item.id} foodItem={item} categories={categories} />)
         )}
       </div>
-
-      {/* Pagination */}
-      {foods.length > 0 && (
-        <Pagination
-          currentPage={currentPage}
-          searchParam={searchParam}
-          sortByParam={sortByParam}
-          filterParam={filterParam}
-          categoryParam={categoryParam}
-          totalPages={totalPages}
-        />
-      )}
     </>
   );
 }

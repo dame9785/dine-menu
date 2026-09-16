@@ -9,6 +9,7 @@ import LoadingSpinner from '@/components/loading-spinner';
 import Header from '@/components/food/header';
 import { Utensils } from 'lucide-react';
 import FilterActions from '@/components/food/filter-actions';
+import Pagination from '@/components/food/pagination';
 
 const categoryService = new CategoryService();
 
@@ -59,12 +60,13 @@ export default async function MenuPage({ searchParams }: Props) {
         filterParam={filterParam}
       />
 
-      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-3 rounded-xl border border-[#C09721]/30 bg-white p-3 text-base font-bold text-slate-900 shadow-sm">
-            <Utensils size={14} aria-hidden="true" />
-            <span className="tracking-wider">{totalFoodsCount} items</span>
-          </div>
+      <section
+        className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+        aria-label="Menu controls"
+      >
+        <div className="group text-l flex cursor-pointer items-center gap-3 rounded-xl border border-[#C09721]/30 bg-white p-3 font-medium text-slate-600 shadow-sm transition-all duration-200 ease-out outline-none hover:-translate-y-0.5 hover:border-[#C09721] hover:bg-[#FFFCF5] hover:text-[#A77F18] hover:shadow-md hover:shadow-[#C09721]/15 focus:border-[#C09721] focus:ring-4 focus:ring-[#C09721]/10 active:translate-y-0 active:scale-[0.98]">
+          <Utensils size={16} aria-hidden="true" />
+          <span className="tracking-wider">{totalFoodsCount} items</span>
         </div>
 
         {/* Filter  actions for reset filtering and filter on favorites */}
@@ -74,21 +76,24 @@ export default async function MenuPage({ searchParams }: Props) {
           categoryParam={categoryParam}
           sortByParam={sortByParam}
         />
-      </div>
+      </section>
 
       {/* Foods */}
       <Suspense fallback={<LoadingSpinner />}>
-        <FoodList
-          foods={foodList}
+        <FoodList foods={foodList} categories={categories ?? []} />
+      </Suspense>
+
+      {/* Pagination */}
+      {foodList.length > 0 && totalPages > 1 && (
+        <Pagination
           currentPage={currentPage}
           searchParam={searchParam}
           sortByParam={sortByParam}
           filterParam={filterParam}
           categoryParam={categoryParam}
           totalPages={totalPages}
-          categories={categories ?? []}
         />
-      </Suspense>
+      )}
     </div>
   );
 }
