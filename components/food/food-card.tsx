@@ -34,7 +34,7 @@ export default function FoodCard({ foodItem, categories }: Props) {
         <div className="relative h-70 overflow-hidden bg-slate-100">
           <Image
             fill
-            src={foodItem.imageUrl}
+            src={foodItem.imageUrl || '/img/food-placeholder.png'}
             alt={foodItem.name}
             className="object-cover transition duration-500 group-hover:scale-105"
             sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
