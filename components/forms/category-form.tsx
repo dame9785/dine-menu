@@ -76,7 +76,7 @@ export default function AddCategoryForm({ category, onOpenChange }: Props) {
   return (
     <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6">
       <div>
-        <label htmlFor="category-name" className="mb-2 block text-sm font-semibold text-slate-700">
+        <label htmlFor="category-name" className="mb-2 block text-sm font-medium text-slate-700">
           Name
         </label>
 
@@ -86,7 +86,7 @@ export default function AddCategoryForm({ category, onOpenChange }: Props) {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="e.g. Breakfast"
-          className="w-full cursor-text rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 shadow-sm transition-all duration-200 outline-none placeholder:text-base placeholder:text-slate-700 hover:border-slate-300 hover:bg-white focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-500/10"
+          className="w-full cursor-text rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm transition-all duration-200 outline-none placeholder:text-base hover:border-[#C09721] focus:border-[#C09721] focus:ring-4 focus:ring-[#C09721]/10 active:translate-y-0 active:scale-[0.98]"
         ></input>
 
         {errors.name?.[0] && (

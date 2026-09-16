@@ -23,11 +23,6 @@ export default function Filtering({ categories, searchParam, categoryParam, sort
           <label htmlFor="search" className="sr-only">
             Search food
           </label>
-          <Search
-            size={16}
-            aria-hidden="true"
-            className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-[#C09721]"
-          />
 
           <input
             id="search"
@@ -35,7 +30,14 @@ export default function Filtering({ categories, searchParam, categoryParam, sort
             name="search"
             defaultValue={searchParam}
             placeholder="Search food..."
-            className="w-full cursor-text rounded-xl border border-[#C09721]/30 bg-white py-2.5 pr-4 pl-10 text-sm text-slate-900 shadow-sm transition-all duration-200 outline-none placeholder:text-slate-400 hover:border-[#C09721]/60 focus:border-[#C09721] focus:ring-4 focus:ring-[#C09721]/10"
+            className="w-full rounded-xl border border-[#C09721]/30 bg-white p-3 pr-12 font-medium text-slate-600 shadow-sm transition-all duration-200 ease-out outline-none hover:-translate-y-0.5 hover:border-[#C09721] hover:bg-[#FFFCF5] hover:text-[#A77F18] hover:shadow-md hover:shadow-[#C09721]/15 focus:border-[#C09721] focus:ring-4 focus:ring-[#C09721]/10"
+          />
+
+          {/* Search icon – höger */}
+          <Search
+            size={18}
+            aria-hidden="true"
+            className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-[#C09721]"
           />
         </div>
 

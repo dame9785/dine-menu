@@ -46,7 +46,7 @@ export default function CategoryTable({ categories }: Props) {
 
               {/* Name */}
               <td className="px-6 py-4">
-                <span className="font-medium text-slate-600 transition-colors group-hover:text-blue-400">
+                <span className="group font-medium text-slate-600 transition-colors duration-200 hover:bg-[#FFFCF5]">
                   {category.name}
                 </span>
               </td>

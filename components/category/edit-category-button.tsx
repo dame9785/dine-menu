@@ -9,7 +9,7 @@ export default function EditCatgoryButton({ onClick }: Props) {
     <button
       type="button"
       onClick={onClick}
-      className="flex cursor-pointer items-center gap-2 rounded-lg border border-orange-500/30 bg-orange-500/10 px-4 py-2 text-sm font-medium text-orange-400 backdrop-blur transition hover:border-red-500/50 hover:bg-orange-500/20"
+      className="group flex cursor-pointer items-center gap-3 rounded-xl border border-[#C09721]/30 bg-white p-3 text-sm font-medium text-slate-600 shadow-sm transition-all duration-200 ease-out outline-none hover:-translate-y-0.5 hover:border-[#C09721] hover:bg-[#FFFCF5] hover:text-[#A77F18] hover:shadow-md hover:shadow-[#C09721]/15 focus:border-[#C09721] focus:ring-4 focus:ring-[#C09721]/10 active:translate-y-0 active:scale-[0.98]"
     >
       <Pencil size={16} />
       Update

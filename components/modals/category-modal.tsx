@@ -55,7 +55,7 @@ export default function CategoryModal({ category, open, onOpenChange }: Props) {
               </h2>
 
               <p className="mt-1 text-sm leading-5 text-slate-500">
-                {isEditMode ? 'Update the information for this dish.' : 'Add a new dish to your menu.'}
+                {isEditMode ? 'Update the information for this category.' : 'Add a new category'}
               </p>
             </div>
 

@@ -15,7 +15,7 @@ export default function AddFoodButton({ onClick }: Props) {
     >
       <Plus size={17} aria-hidden="true" className="transition-transform duration-300 group-hover:-rotate-45" />
 
-      <span>Add food</span>
+      <span>Add category</span>
     </button>
   );
 }

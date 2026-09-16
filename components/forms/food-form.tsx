@@ -147,7 +147,7 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
           }}
           type="text"
           placeholder="e.g. Margherita Pizza"
-          className="w-full cursor-text rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm transition-all duration-200 outline-none placeholder:text-base hover:border-[#C09721] focus:border-[#C09721]"
+          className="w-full cursor-text rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm transition-all duration-200 outline-none placeholder:text-base hover:border-[#C09721] focus:border-[#C09721] focus:ring-4 focus:ring-[#C09721]/10 active:translate-y-0 active:scale-[0.98]"
         />
 
         {errors.name?.[0] && (
@@ -169,7 +169,7 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
           }}
           placeholder="Describe the dish..."
           rows={5}
-          className="w-full cursor-text rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm transition-all duration-200 outline-none placeholder:text-base placeholder:text-slate-400 hover:border-[#C09721] focus:border-[#C09721] focus:ring-4 focus:ring-indigo-500/10"
+          className="w-full cursor-text rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm transition-all duration-200 outline-none placeholder:text-base placeholder:text-slate-400 hover:border-[#C09721] focus:border-[#C09721] focus:ring-4 focus:ring-[#C09721]/10 active:translate-y-0 active:scale-[0.98]"
         />
 
         {errors.description?.[0] && (
@@ -232,7 +232,7 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
             min="0"
             step="0.01"
             placeholder="129"
-            className="w-full cursor-text rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm transition-all duration-200 outline-none placeholder:text-base placeholder:text-slate-400 hover:border-[#C09721] focus:border-[#C09721] focus:ring-4 focus:ring-indigo-500/10"
+            className="w-full cursor-text rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm transition-all duration-200 outline-none placeholder:text-base hover:border-[#C09721] focus:border-[#C09721] focus:ring-4 focus:ring-[#C09721]/10 active:translate-y-0 active:scale-[0.98]"
           />
 
           {errors.price?.[0] && (
@@ -252,7 +252,7 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
               setCategoryId(e.target.value);
               clearError('categoryId');
             }}
-            className="w-full cursor-pointer rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm transition-all duration-200 outline-none placeholder:text-base placeholder:text-slate-400 hover:border-[#C09721] focus:border-[#C09721] focus:ring-4 focus:ring-indigo-500/10"
+            className="w-full cursor-text rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm transition-all duration-200 outline-none placeholder:text-base hover:border-[#C09721] focus:border-[#C09721] focus:ring-4 focus:ring-[#C09721]/10 active:translate-y-0 active:scale-[0.98]"
           >
             <option value="">Select</option>
 
