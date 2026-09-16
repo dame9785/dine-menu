@@ -37,18 +37,23 @@ export default function FoodModal({ categories, foodItem, open, onOpenChange }: 
   return createPortal(
     <div
       className="fixed inset-0 z-9999 flex items-center justify-center bg-slate-900/60 px-4 py-6 backdrop-blur-md"
-      onMouseDown={handleClose}
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) {
+          handleClose();
+        }
+      }}
     >
-      {/* Modal */}
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="food-modal-title"
         className="flex max-h-[90vh] w-full max-w-lg flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl"
-        onMouseDown={(event) => event.stopPropagation()}
       >
         {/* Header */}
         <div className="shrink-0 border-b border-slate-200 px-6 py-5">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <h2 className="text-lg font-semibold tracking-tight text-slate-900">
+              <h2 id="food-modal-title" className="text-lg font-semibold tracking-tight text-slate-900">
                 {isEditMode ? 'Update food' : 'Add food'}
               </h2>
 

@@ -1,40 +1,54 @@
 'use client';
 
-import { useState } from 'react';
-
-import FoodModal from '@/components/food/modal';
-import { CategoryViewModel } from '@/types/category';
+import { Plus } from 'lucide-react';
 
 type Props = {
-  categories: CategoryViewModel[];
+  onClick: () => void;
 };
 
-export default function AddFoodButton({ categories }: Props) {
-  const [isOpen, setIsOpen] = useState(false);
-
+export default function AddFoodButton({ onClick }: Props) {
   return (
-    <>
-      <button
-        type="button"
-        onClick={() => setIsOpen(true)}
-        className="
-          flex cursor-pointer items-center gap-2
-          rounded-xl
-           border border-[#A77F18] bg-[#C09721] px-3 py-1.5
-           shadow-sm
-          transition-all duration-200
-          hover:-translate-y-0.5
-     
-          active:translate-y-0
-          active:scale-[0.98]
-          text-xs font-semibold uppercase tracking-wider     text-white
-        "
-      >
-        <span className="text-lg leading-none">+</span>
-        <span>Add food</span>
-      </button>
+    <button
+      type="button"
+      onClick={onClick}
+      className="
+        group
+        flex cursor-pointer items-center gap-3
+        rounded-xl
+        border border-[#C09721]/30
+        bg-white
+        p-3
+        text-sm font-medium text-slate-900
+        shadow-sm
+        outline-none
+        transition-all duration-200 ease-out
 
-      <FoodModal categories={categories} open={isOpen} onOpenChange={setIsOpen} />
-    </>
+        hover:-translate-y-0.5
+        hover:border-[#C09721]
+        hover:bg-[#FFFCF5]
+        hover:text-[#A77F18]
+        hover:shadow-md
+        hover:shadow-[#C09721]/15
+
+        focus:border-[#C09721]
+        focus:ring-4
+        focus:ring-[#C09721]/10
+
+        active:translate-y-0
+        active:scale-[0.98]
+      "
+    >
+      <Plus
+        size={17}
+        aria-hidden="true"
+        className="
+          transition-transform
+          duration-300
+          group-hover:-rotate-45
+        "
+      />
+
+      <span>Add food</span>
+    </button>
   );
 }

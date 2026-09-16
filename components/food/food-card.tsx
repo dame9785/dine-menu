@@ -10,7 +10,7 @@ import { CategoryViewModel } from '@/types/category';
 
 import DeleteFoodButton from '@/components/food/delete-food-button';
 import FavoriteButton from '@/components/food/favorite-button';
-import FoodModal from '@/components/food/modal';
+import FoodModal from '@/components/food/food-modal';
 
 import { deleteFood } from '@/actions/food';
 import UpdateFoodButton from './update-food-button';

@@ -24,8 +24,7 @@ model menuitem {
   categoryId  Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-
-  category category @relation(fields: [categoryId], references: [id], onDelete: Cascade, map: "MenuItem_categoryId_fkey")
+  category    category @relation(fields: [categoryId], references: [id], onDelete: Cascade, map: "MenuItem_categoryId_fkey")
 
   @@index([categoryId], map: "MenuItem_categoryId_fkey")
 }
