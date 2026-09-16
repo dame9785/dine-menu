@@ -7,7 +7,7 @@ import { useSyncExternalStore } from 'react';
 import { FoodViewModel } from '@/types/food';
 import { CategoryViewModel } from '@/types/category';
 
-import FoodForm from '@/components/food/food-form';
+import FoodForm from '@/components/forms/food-form';
 
 type Props = {
   categories: CategoryViewModel[];
@@ -66,16 +66,7 @@ export default function FoodModal({ categories, foodItem, open, onOpenChange }: 
             <button
               type="button"
               onClick={handleClose}
-              className="
-                flex h-9 w-9 shrink-0 cursor-pointer
-                items-center justify-center
-                rounded-lg
-                text-black
-                transition-all duration-200
-                hover:bg-[#C09721]
-                hover:text-white
-                active:scale-95
-              "
+              className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg text-black transition-all duration-200 hover:bg-[#C09721] hover:text-white active:scale-95"
               aria-label="Close modal"
             >
               <X size={19} />

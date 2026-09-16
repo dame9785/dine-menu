@@ -3,7 +3,7 @@
 import type { CategoryViewModel } from '@/types/category';
 
 import { X } from 'lucide-react';
-import CategoryForm from '@/components/category/form';
+import CategoryForm from '@/components/forms/category-form';
 
 type Props = {
   category?: CategoryViewModel;
@@ -49,16 +49,7 @@ export default function CategoryModal({ category, isOpen, onClose }: Props) {
             <button
               type="button"
               onClick={handleClose}
-              className="
-                   flex h-9 w-9 shrink-0 cursor-pointer
-                   items-center justify-center
-                   rounded-lg
-                   text-slate-400
-                   transition-all duration-200
-                   hover:bg-slate-100
-                   hover:text-slate-700
-                   active:scale-95
-                 "
+              className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg text-slate-400 transition-all duration-200 hover:bg-slate-100 hover:text-slate-700 active:scale-95"
               aria-label="Close modal"
             >
               <X size={19} />
