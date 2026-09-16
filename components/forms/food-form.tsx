@@ -221,8 +221,7 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
       <div className="grid grid-cols-2 gap-4">
         {/* Price */}
         <div>
-          <label className="mb-2 block text-sm font-medium text-slate-700">Price</label>
-
+          <label className="mb-2 block text-sm font-medium text-slate-700">Price (€)</label>
           <input
             value={price}
             onChange={(e) => {

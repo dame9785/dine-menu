@@ -1,9 +1,9 @@
 import Image from 'next/image';
-import AddFavoritFoodButton from '@/components/food/add-favorite-action';
-import EditFoodButton from '@/components/food/edit-modal-action';
+import FavoriteAction from '@/components/food/add-favorite-action';
 import { Heart, Utensils, Euro } from 'lucide-react';
 import { FoodViewModel } from '@/types/food';
 import { CategoryViewModel } from '@/types/category';
+import ModalAction from '@/components/food/food-modal-actions';
 
 type Props = {
   foodItem: FoodViewModel;
@@ -12,10 +12,10 @@ type Props = {
 
 export default function DetailCard({ foodItem, categories }: Props) {
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl shadow-slate-200/60">
+    <article className="group relative overflow-hidden rounded-2xl border border-[#C09721]/30 bg-[#FFFCF5] shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#C09721] hover:shadow-md hover:shadow-[#C09721]/15">
       {/* Edit */}
-      <div className="absolute top-5 right-5 z-30">
-        <EditFoodButton foodItem={foodItem} categories={categories} />
+      <div className="absolute top-5 right-5 z-30 rounded-2xl border border-[#C09721]/30 bg-[#FFFCF5]">
+        <ModalAction foodItem={foodItem} categories={categories} />
       </div>
 
       <div className="grid md:grid-cols-2">
@@ -36,7 +36,6 @@ export default function DetailCard({ foodItem, categories }: Props) {
                 <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-sm">
                   <Utensils size={24} className="text-slate-400" />
                 </div>
-
                 <p className="text-sm font-medium text-slate-500">No image available</p>
               </div>
             </div>
@@ -46,18 +45,18 @@ export default function DetailCard({ foodItem, categories }: Props) {
           <div className="absolute inset-0 bg-linear-to-t from-black/50 via-transparent to-transparent" />
 
           {/* Category */}
-          <div className="absolute top-6 left-6">
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#A77F18] bg-[#C09721] px-4 py-2 shadow-lg backdrop-blur-md hover:-translate-y-0.5 hover:bg-[#A77F18] hover:shadow-lg hover:shadow-[#C09721]/20 active:translate-y-0 active:scale-[0.98]">
-              <Utensils size={15} className="text-white" />
-
-              <span className="text-sm font-semibold tracking-wider text-white uppercase">{foodItem.category}</span>
-            </div>
+          <div className="absolute top-3 left-3">
+            <span
+              aria-hidden="true"
+              className="rounded-full border border-[#C09721]/30 bg-white px-3 py-1.5 text-xs font-semibold text-slate-600 shadow-sm backdrop-blur-md"
+            >
+              {foodItem.category}
+            </span>
           </div>
 
           {/* Image bottom label */}
           <div className="absolute right-6 bottom-6 left-6">
             <p className="text-xs font-semibold tracking-[0.2em] text-white/70 uppercase">Dine Menu</p>
-
             <p className="mt-1 text-sm font-medium text-white/90">Fresh from our kitchen</p>
           </div>
         </div>
@@ -83,23 +82,21 @@ export default function DetailCard({ foodItem, categories }: Props) {
           {/* Details */}
           <div className="grid grid-cols-2 gap-4">
             {/* Category */}
-            <div className="rounded-2xl border border-[#C09721] bg-slate-50 p-5">
+            <div className="rounded-2xl border border-[#C09721]/30 bg-[#FFFCF5] p-5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#C09721] hover:shadow-md hover:shadow-[#C09721]/15">
               <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-white shadow-sm">
                 <Utensils size={17} className="text-[#C09721]" />
               </div>
 
               <p className="text-xs font-semibold tracking-wider text-[#C09721] uppercase">Category</p>
-
-              <p className="mt-1 text-base font-semibold text-[#C09721]">{foodItem.category}</p>
+              <p className="mt-2 text-2xl font-bold tracking-tight text-[#C09721]">{foodItem.category}</p>
             </div>
 
             {/* Price */}
-            <div className="rounded-2xl border border-[#C09721] bg-slate-50 p-5">
+            <div className="rounded-2xl border border-[#C09721]/30 bg-[#FFFCF5] p-5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#C09721] hover:shadow-md hover:shadow-[#C09721]/15">
               <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-white shadow-sm">
                 <Euro size={17} className="text-[#C09721]" />
               </div>
               <p className="text-xs font-semibold tracking-wider text-[#C09721] uppercase">Price</p>
-
               <p className="mt-2 text-2xl font-bold tracking-tight text-[#C09721]">
                 {Number(foodItem.price).toFixed(2)} €
               </p>
@@ -107,25 +104,22 @@ export default function DetailCard({ foodItem, categories }: Props) {
           </div>
 
           {/* Favorite */}
-          <div className="mt-8">
-            <div className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-50">
-                  <Heart size={19} className="fill-red-500 text-red-500" />
-                </div>
-
-                <div>
-                  <p className="text-sm font-semibold text-slate-900">Add to favorites</p>
-
-                  <p className="text-xs text-slate-400">Save this dish for later</p>
-                </div>
+          <div className="mt-3 flex items-center justify-between rounded-2xl border border-[#C09721]/30 bg-[#FFFCF5] p-4 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#C09721] hover:shadow-md hover:shadow-[#C09721]/15">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl">
+                <Heart size={19} className="fill-red-500 text-red-500" />
               </div>
 
-              <AddFavoritFoodButton foodId={foodItem.id} isDetail={true} />
+              <div>
+                <p className="text-m font-semibold text-slate-600">Add to favorites</p>
+                <p className="text-xs text-slate-600">Save this dish for later</p>
+              </div>
             </div>
+
+            <FavoriteAction foodId={foodItem.id} />
           </div>
         </div>
       </div>
-    </div>
+    </article>
   );
 }
