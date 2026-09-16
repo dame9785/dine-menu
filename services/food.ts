@@ -1,9 +1,9 @@
 import { ApiResponse, FoodApiResponse } from '@/types/api-responses';
 import { FoodViewModel } from '@/types/food';
 
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000/api';
 
-const API_URL = `${BASE_URL}/api/food`;
+const FOOD_API_URL = `${API_URL}/food`;
 
 export class FoodService {
   async getAll(
@@ -15,7 +15,7 @@ export class FoodService {
   ): Promise<FoodApiResponse> {
     try {
       const response = await fetch(
-        `${API_URL}?page=${page}&search=${encodeURIComponent(searchParams)}&category=${encodeURIComponent(categoryParam)}&filter=${encodeURIComponent(filterParam)}&sortBy=${encodeURIComponent(sortBy)}`,
+        `${FOOD_API_URL}?page=${page}&search=${encodeURIComponent(searchParams)}&category=${encodeURIComponent(categoryParam)}&filter=${encodeURIComponent(filterParam)}&sortBy=${encodeURIComponent(sortBy)}`,
         {
           method: 'GET',
         },
@@ -36,7 +36,7 @@ export class FoodService {
 
   async add(formData: FormData): Promise<ApiResponse<[]>> {
     try {
-      const response = await fetch(`${API_URL}`, {
+      const response = await fetch(FOOD_API_URL, {
         method: 'POST',
         body: formData,
       });
@@ -54,14 +54,14 @@ export class FoodService {
 
   async update(foodId: number, formData: FormData): Promise<ApiResponse<[]>> {
     try {
-      const response = await fetch(`${API_URL}/${foodId}`, {
+      const response = await fetch(`${FOOD_API_URL}/${foodId}`, {
         method: 'PUT',
         body: formData,
       });
 
       return (await response.json()) as ApiResponse<[]>;
     } catch (error) {
-      console.error('API/FOOD/POST', error);
+      console.error('API/FOOD/PUT', error);
 
       return {
         success: false,
@@ -72,9 +72,10 @@ export class FoodService {
 
   async deleteFood(foodId: number): Promise<ApiResponse<[]>> {
     try {
-      const response = await fetch(`${API_URL}/${foodId}`, {
+      const response = await fetch(`${FOOD_API_URL}/${foodId}`, {
         method: 'DELETE',
       });
+
       return (await response.json()) as ApiResponse<[]>;
     } catch (error) {
       console.error('API/FOOD/DELETE', error);
@@ -88,16 +89,18 @@ export class FoodService {
 
   async getById(foodId: string): Promise<ApiResponse<FoodViewModel>> {
     try {
-      const response = await fetch(`${API_URL}/${foodId}`, {
+      const response = await fetch(`${FOOD_API_URL}/${foodId}`, {
         method: 'GET',
       });
+
       return (await response.json()) as ApiResponse<FoodViewModel>;
     } catch (error) {
       console.error('API/FOOD/{ID}', error);
+
       return {
         success: false,
-        message: 'Could not connect to the server.',
-      } satisfies ApiResponse<[]>;
+        message: 'Could not connect to the server',
+      };
     }
   }
 }

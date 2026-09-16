@@ -1,14 +1,14 @@
 import { CategoryDto } from '@/schemas/category';
 import { ApiResponse, CategoryApiResponse } from '@/types/api-responses';
 
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000/api';
 
-const API_URL = `${BASE_URL}/api/category`;
+const CATEGORY_API_URL = `${API_URL}/category`;
 
 export class CategoryService {
   async getAll(page: number): Promise<CategoryApiResponse> {
     try {
-      const response = await fetch(`${API_URL}?page=${page}`, {
+      const response = await fetch(`${CATEGORY_API_URL}?page=${page}`, {
         method: 'GET',
       });
 
@@ -27,8 +27,11 @@ export class CategoryService {
 
   async create(dto: CategoryDto): Promise<ApiResponse<[]>> {
     try {
-      const response = await fetch(`${API_URL}`, {
+      const response = await fetch(CATEGORY_API_URL, {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(dto),
       });
       return (await response.json()) as ApiResponse<[]>;
@@ -42,7 +45,7 @@ export class CategoryService {
 
   async delete(categoryId: number): Promise<ApiResponse<[]>> {
     try {
-      const response = await fetch(`${API_URL}/${categoryId}`, {
+      const response = await fetch(`${CATEGORY_API_URL}/${categoryId}`, {
         method: 'DELETE',
       });
       return (await response.json()) as ApiResponse<[]>;
@@ -57,8 +60,11 @@ export class CategoryService {
 
   async update(dto: CategoryDto, categoryId: number): Promise<ApiResponse<[]>> {
     try {
-      const response = await fetch(`${API_URL}/${categoryId}`, {
+      const response = await fetch(`${CATEGORY_API_URL}/${categoryId}`, {
         method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(dto),
       });
       return (await response.json()) as ApiResponse<[]>;
