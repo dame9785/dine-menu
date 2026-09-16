@@ -1,6 +1,6 @@
 'use server';
 
-import { CategoryDto } from '@/schemas/category';
+import { CategoryDto, UpdateCategoryDto } from '@/schemas/category';
 import { CategoryService } from '@/services/category';
 import { revalidatePath } from 'next/cache';
 
@@ -41,11 +41,11 @@ export async function createCategory(dto: CategoryDto) {
   };
 }
 
-export async function updateCategory(dto: CategoryDto) {
+export async function updateCategory(dto: UpdateCategoryDto, categoryId: number) {
   if (!dto.id) {
     return;
   }
-  const response = await categoryService.update(dto, dto.id);
+  const response = await categoryService.update(dto, categoryId);
   if (!response.success) {
     return {
       success: response.success,

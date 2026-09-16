@@ -1,74 +1,76 @@
 import { createCategory, updateCategory } from '@/actions/category';
-import { CategoryDto, createCategorySchema } from '@/schemas/category';
+import { createCategorySchema, updateCategorySchema } from '@/schemas/category';
 import { toast } from 'sonner';
 import { useState, useTransition } from 'react';
 import { CategoryViewModel } from '@/types/category';
 
 type Props = {
-  onClose: () => void;
-  category: CategoryViewModel | undefined;
+  category?: CategoryViewModel;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 };
 
-export default function AddCategoryForm({ onClose, category }: Props) {
+export default function AddCategoryForm({ category, onOpenChange }: Props) {
   const [name, setName] = useState(category?.name ?? '');
   const [isPending, startTransition] = useTransition();
   const [errors, setErrors] = useState<Record<string, string[]>>({});
 
-  const isEdit = !!category;
+  const isEditMode = !!category;
+
+  const resetForm = () => {
+    if (category) {
+      setName(category.name);
+    } else {
+      setName('');
+    }
+
+    setErrors({});
+  };
+
+  const handleClose = () => {
+    resetForm();
+    onOpenChange?.(false);
+  };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     startTransition(async () => {
-      if (isEdit) {
-        const dto: CategoryDto = {
-          id: category.id,
-          name,
-        };
+      const validate = isEditMode
+        ? updateCategorySchema.safeParse({
+            name,
+          })
+        : createCategorySchema.safeParse({
+            name,
+          });
 
-        const validate = createCategorySchema.safeParse(dto);
-
-        if (!validate.success) {
-          setErrors(validate.error.flatten().fieldErrors);
-          return;
-        }
-
-        const response = await updateCategory(validate.data);
-
-        if (!response?.success) {
-          toast.error(response?.message);
-          return;
-        }
-
-        toast.success(response.message);
-
-        onClose();
-      } else {
-        const dto: CategoryDto = {
-          name,
-        };
-
-        const validate = createCategorySchema.safeParse(dto);
-
-        if (!validate.success) {
-          setErrors(validate.error.flatten().fieldErrors);
-          return;
-        }
-
-        const response = await createCategory(validate.data);
-
-        if (!response.success) {
-          toast.error(response.message);
-          return;
-        }
-
-        toast.success(response.message);
-
-        setName('');
-        onClose();
+      if (!validate.success) {
+        setErrors(validate.error.flatten().fieldErrors);
+        return;
       }
+
+      const response = isEditMode
+        ? await updateCategory(validate.data, category.id)
+        : await createCategory(validate.data);
+
+      if (!response) {
+        toast.error('Något gick fel');
+        return;
+      }
+
+      if (!response.success) {
+        toast.error(response.message);
+        return;
+      }
+
+      toast.success(response.message, {
+        duration: 1000,
+      });
+
+      handleClose();
     });
   };
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6">
       <div>
@@ -82,28 +84,7 @@ export default function AddCategoryForm({ onClose, category }: Props) {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="e.g. Breakfast"
-          className="w-full
-            cursor-text
-            rounded-xl
-            border border-slate-200
-            bg-slate-50
-            px-4 py-3
-            text-sm
-            text-slate-900
-            shadow-sm
-            outline-none
-            transition-all duration-200
-
-            placeholder:text-base
-            placeholder:text-slate-700
-
-            hover:border-slate-300
-            hover:bg-white
-
-            focus:border-indigo-500
-            focus:bg-white
-            focus:ring-4
-            focus:ring-indigo-500/10"
+          className="w-full cursor-text rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 shadow-sm transition-all duration-200 outline-none placeholder:text-base placeholder:text-slate-700 hover:border-slate-300 hover:bg-white focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-500/10"
         ></input>
 
         {errors.name?.[0] && (
@@ -113,75 +94,14 @@ export default function AddCategoryForm({ onClose, category }: Props) {
         )}
       </div>
 
-      {/* Actions */}
-      {/* Buttons */}
-      <div
-        className="
-          flex
-          gap-3
-          border-t
-          border-slate-100
-          pt-5
-        "
-      >
-        {/* Cancel */}
-        <button
-          type="button"
-          onClick={onClose}
-          className="
-            w-full
-            cursor-pointer
-            rounded-xl
-            border border-slate-200
-            bg-white
-            px-4 py-3
-            text-sm
-            font-semibold
-            text-slate-600
-            shadow-sm
-            transition-all duration-200
-
-            hover:border-slate-300
-            hover:bg-slate-50
-            hover:text-slate-900
-
-            active:scale-[0.98]
-          "
-        >
-          Cancel
-        </button>
-
-        {/* Submit */}
+      {/* Submit */}
+      <div className="flex gap-3 border-t border-slate-100 pt-5">
         <button
           type="submit"
           disabled={isPending}
-          className="
-            w-full
-            cursor-pointer
-            rounded-xl
-            border border-indigo-600
-            bg-indigo-600
-            px-4 py-3
-            text-sm
-            font-semibold
-            text-white
-            shadow-sm
-            transition-all duration-200
-
-            hover:-translate-y-0.5
-            hover:border-indigo-700
-            hover:bg-indigo-700
-            hover:shadow-lg
-            hover:shadow-indigo-500/20
-
-            disabled:cursor-not-allowed
-            disabled:opacity-60
-
-            active:translate-y-0
-            active:scale-[0.98]
-          "
+          className="w-full cursor-pointer rounded-xl border border-[#C09721]/30 bg-white p-3 text-sm font-medium text-slate-600 shadow-sm transition-all duration-200 ease-out outline-none hover:-translate-y-0.5 hover:border-[#C09721] hover:bg-[#FFFCF5] hover:text-[#A77F18] hover:shadow-md hover:shadow-[#C09721]/15 focus:border-[#C09721] focus:ring-4 focus:ring-[#C09721]/10 active:translate-y-0 active:scale-[0.98]"
         >
-          {isPending ? (isEdit ? 'Updating...' : 'Adding...') : isEdit ? 'Update food' : 'Add food'}
+          {isPending ? (isEditMode ? 'Updating...' : 'Adding...') : isEditMode ? 'Update' : 'Add'}
         </button>
       </div>
     </form>

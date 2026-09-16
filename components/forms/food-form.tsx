@@ -119,7 +119,6 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
       }
 
       const response = isEditMode ? await updateFood(foodItem.id, formData) : await addFood(formData);
-      console.log(response);
 
       if (!response.success) {
         toast.error(response.message);
@@ -273,9 +272,7 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
         </div>
       </div>
 
-      {/* Buttons */}
       <div className="flex gap-3 border-t border-slate-100 pt-5">
-        {/* Submit */}
         <button
           type="submit"
           disabled={isPending}

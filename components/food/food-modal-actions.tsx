@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 
-import AddModalAction from './food-modal-add-action';
+import AddModalAction from '@/components/food/food-modal-add-action';
 import EditModalAction from '@/components/food/edit-modal-action';
-import FoodModal from './food-modal';
+import Modal from '@/components/modals/food-modal';
 
 import { CategoryViewModel } from '@/types/category';
 import { FoodViewModel } from '@/types/food';
@@ -17,7 +17,6 @@ type Props = {
 export default function FoodActions({ categories, foodItem }: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
-  console.log(foodItem);
   const isEditing = Boolean(foodItem);
 
   return (
@@ -28,7 +27,7 @@ export default function FoodActions({ categories, foodItem }: Props) {
         <AddModalAction onClick={() => setIsOpen(true)} />
       )}
 
-      <FoodModal foodItem={foodItem} categories={categories} open={isOpen} onOpenChange={setIsOpen} />
+      <Modal foodItem={foodItem} categories={categories} open={isOpen} onOpenChange={setIsOpen} />
     </>
   );
 }

@@ -10,7 +10,7 @@ import { CategoryViewModel } from '@/types/category';
 
 import DeleteFoodButton from '@/components/food/delete-food-button';
 import FavoriteAction from '@/components/food/add-favorite-action';
-import ModalAction from '@/components/food/food-modal-edit-actions';
+import ModalAction from '@/components/food/food-modal-actions';
 
 import { deleteFood } from '@/actions/food';
 import FoodCardContent from './food-card-content';

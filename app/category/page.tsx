@@ -1,8 +1,8 @@
 import { CategoryService } from '@/services/category';
 import CategoryTable from '@/components/category/categories-table';
-import CategoryModal from '@/components/category/modal';
+
 import Pagination from '@/components/pagination/pagination';
-import AddCategoryButton from '@/components/category/add-category-button';
+import ModalAction from '@/components/category/category-modal-actions';
 
 const categoryService = new CategoryService();
 
@@ -28,9 +28,10 @@ export default async function CategoryPage({ searchParams }: Props) {
         <header>
           <div className="flex justify-between">
             <h1 className="text-3xl font-bold">Categories</h1>
-            <AddCategoryButton />
+            <ModalAction />
           </div>
         </header>
+
         <CategoryTable categories={categories} />
 
         {categories && categories.length > 0 && (

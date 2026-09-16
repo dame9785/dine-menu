@@ -1,6 +1,6 @@
 import { CategoryViewModel } from '@/types/category';
 import Image from 'next/image';
-import FoodActions from '@/components/food/food-modal-edit-actions';
+import FoodActions from '@/components/food/food-modal-actions';
 
 type Props = {
   categories: CategoryViewModel[];

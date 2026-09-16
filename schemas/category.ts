@@ -5,4 +5,7 @@ export const createCategorySchema = z.object({
   name: z.string().min(1, 'You must enter category name.'),
 });
 
+export const updateCategorySchema = createCategorySchema;
+
 export type CategoryDto = z.infer<typeof createCategorySchema>;
+export type UpdateCategoryDto = z.infer<typeof updateCategorySchema>;
