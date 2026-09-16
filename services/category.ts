@@ -1,7 +1,9 @@
 import { CategoryDto } from '@/schemas/category';
 import { ApiResponse, CategoryApiResponse } from '@/types/api-responses';
 
-const API_URL = 'http://localhost:3000/api/category';
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
+
+const API_URL = `${BASE_URL}/api/category`;
 
 export class CategoryService {
   async getAll(page: number): Promise<CategoryApiResponse> {

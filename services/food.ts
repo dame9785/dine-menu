@@ -1,7 +1,9 @@
 import { ApiResponse, FoodApiResponse } from '@/types/api-responses';
 import { FoodViewModel } from '@/types/food';
 
-const API_URL = 'http://localhost:3000/api/food';
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
+
+const API_URL = `${BASE_URL}/api/food`;
 
 export class FoodService {
   async getAll(
