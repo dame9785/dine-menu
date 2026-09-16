@@ -21,10 +21,14 @@ import path from 'path';
 // }
 
 export async function saveImage(image: File): Promise<string> {
-  const fileName = `foods/${crypto.randomUUID()}-${image.name}`;
+  const extension = image.name.split('.').pop() ?? 'png';
+
+  const fileName = `foods/${crypto.randomUUID()}.${extension}`;
 
   const blob = await put(fileName, image, {
     access: 'public',
+    addRandomSuffix: false,
+    contentType: image.type,
   });
 
   return blob.url;

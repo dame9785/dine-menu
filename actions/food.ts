@@ -41,18 +41,29 @@ export async function deleteFood(foodId: number): Promise<{ success: boolean; me
 }
 
 export async function updateFood(foodId: number, formData: FormData) {
-  const response = await foodService.update(foodId, formData);
-  if (!response.success) {
+  try {
+    const response = await foodService.update(foodId, formData);
+
+    if (!response.success) {
+      return {
+        success: false,
+        message: response.message,
+      };
+    }
+
+    revalidatePath('/');
+    revalidatePath('/category');
+
     return {
-      success: response.success,
+      success: true,
       message: response.message,
     };
+  } catch (error) {
+    console.error('Update food error:', error);
+
+    return {
+      success: false,
+      message: 'Something went wrong while updating food.',
+    };
   }
-
-  revalidatePath('/');
-
-  return {
-    success: response.success,
-    message: response.message,
-  };
 }
