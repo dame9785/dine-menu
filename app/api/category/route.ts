@@ -24,28 +24,43 @@ export async function GET(request: NextRequest) {
     }
 
     const result = await categoryService.getAll(page);
-    return NextResponse.json(result, { status: result.success ? 200 : 404 });
+
+    return NextResponse.json(result, {
+      status: result.success ? 200 : 404,
+    });
   } catch (error) {
     console.error('CATEGORIES/GET', error);
-    return {
-      success: false,
-      message: 'Failed to create category',
-      data: [],
-      pagination: null,
-    } satisfies CategoryApiResponse;
+
+    return NextResponse.json(
+      {
+        success: false,
+        message: 'Failed to fetch categories',
+        data: [],
+        pagination: null,
+      } satisfies CategoryApiResponse,
+      { status: 500 },
+    );
   }
 }
 
 export async function POST(request: Request) {
   try {
     const dto: CategoryDto = await request.json();
+
     const result = await categoryService.create(dto);
-    return NextResponse.json(result, { status: result.success ? 200 : 404 });
+
+    return NextResponse.json(result, {
+      status: result.success ? 200 : 400,
+    });
   } catch (error) {
     console.error('CATEGORY/POST', error);
-    return {
-      success: false,
-      message: 'Failed to create category',
-    } satisfies ApiResponse<[]>;
+
+    return NextResponse.json(
+      {
+        success: false,
+        message: 'Failed to create category',
+      } satisfies ApiResponse<[]>,
+      { status: 500 },
+    );
   }
 }

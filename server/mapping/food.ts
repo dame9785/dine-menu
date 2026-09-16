@@ -1,7 +1,8 @@
 import { Prisma } from '@/generated/prisma/client';
+
 import { FoodViewModel } from '@/types/food';
 
-type FoodWithCategory = Prisma.MenuItemGetPayload<{
+type FoodWithCategory = Prisma.menuitemGetPayload<{
   include: {
     category: true;
   };
