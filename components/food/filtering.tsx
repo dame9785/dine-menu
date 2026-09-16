@@ -11,10 +11,10 @@ type Props = {
 
 export default function Filtering({ categories, searchParam, categoryParam, sortByParam, filterParam }: Props) {
   return (
-    <section aria-label="Food filters" className="mb-8">
+    <section aria-label="Food filters" className="mb-8" id="food-filters">
       <form
         key={`${searchParam}-${categoryParam}-${sortByParam}-${filterParam}`}
-        action="/"
+        action="/#food-filters"
         method="GET"
         className="flex flex-col gap-3 rounded-2xl border border-[#C09721]/30 bg-[#FBF8F0] p-4 shadow-sm md:flex-row md:items-center"
       >

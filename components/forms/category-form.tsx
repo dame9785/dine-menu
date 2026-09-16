@@ -53,6 +53,8 @@ export default function AddCategoryForm({ category, onOpenChange }: Props) {
         ? await updateCategory(validate.data, category.id)
         : await createCategory(validate.data);
 
+      console.log(response);
+
       if (!response) {
         toast.error('Något gick fel');
         return;
