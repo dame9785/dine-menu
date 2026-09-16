@@ -11,7 +11,14 @@ export default function Header({ categories }: Props) {
     <header className="relative mb-8 overflow-hidden rounded-3xl border border-[#A77F18] shadow-lg">
       {/* Decorative background image */}
       <div aria-hidden="true" className="absolute inset-y-0 right-0 hidden w-1/2 md:block">
-        <Image fill src="/img/foods/header.jpg" alt="" className="object-cover" sizes="50vw" priority />
+        <Image
+          src="/img/logo.png"
+          alt="Dine Menu"
+          width={500}
+          height={500}
+          priority
+          className="h-full w-full object-contain object-left"
+        />
 
         {/* Fade image into content */}
         <div className="absolute inset-0 bg-linear-to-r from-white via-white/55 to-transparent" />
