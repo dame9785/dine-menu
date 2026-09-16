@@ -44,8 +44,8 @@ export default function Header({ categories }: Props) {
           </div>
         </div>
 
-        {/* Primary action */}
-        <div className="relative z-20 flex shrink-0">
+        {/* Show food modal action */}
+        <div className="relative align-top z-20 flex shrink-0">
           <FoodActions categories={categories ?? []} />
         </div>
       </div>

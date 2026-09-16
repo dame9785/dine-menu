@@ -67,44 +67,11 @@ export default function FavoriteFilterButton({ currentPage, searchParam, sortByP
     <button
       onClick={showFavorites}
       type="button"
-      className="
-    group
-    flex cursor-pointer items-center gap-3
-    rounded-xl
-    border border-[#C09721]/30
-    bg-white
-    p-3
-    text-sm font-medium text-slate-900
-    shadow-sm
-    outline-none
-
-    transition-all duration-200 ease-out
-
-    hover:-translate-y-0.5
-    hover:border-[#C09721]
-    hover:bg-[#FFFCF5]
-    hover:text-[#A77F18]
-    hover:shadow-md
-    hover:shadow-[#C09721]/15
-
-    focus:border-[#C09721]
-    focus:ring-4
-    focus:ring-[#C09721]/10
-
-    active:translate-y-0
-    active:scale-[0.98]
-  "
+      className="group flex cursor-pointer items-center gap-3 rounded-xl border border-[#C09721]/30 bg-white p-3 text-sm font-medium text-slate-600 shadow-sm transition-all duration-200 ease-out outline-none hover:-translate-y-0.5 hover:border-[#C09721] hover:bg-[#FFFCF5] hover:text-[#A77F18] hover:shadow-md hover:shadow-[#C09721]/15 focus:border-[#C09721] focus:ring-4 focus:ring-[#C09721]/10 active:translate-y-0 active:scale-[0.98]"
     >
       {isFavorite ? (
         <>
-          <LayoutList
-            size={19}
-            className="
-          transition-transform
-          duration-200
-          group-hover:scale-110
-        "
-          />
+          <LayoutList size={19} className="transition-transform duration-200 group-hover:scale-110" />
 
           <p>Visa alla</p>
         </>
@@ -112,14 +79,7 @@ export default function FavoriteFilterButton({ currentPage, searchParam, sortByP
         <>
           <Heart
             size={19}
-            className="
-          fill-current
-          text-red-600
-          transition-all
-          duration-200
-          group-hover:scale-110
-          group-hover:text-red-500
-        "
+            className="fill-current text-red-600 transition-all duration-200 group-hover:scale-110 group-hover:text-red-500"
           />
 
           <p>Visa alla favoriter</p>
