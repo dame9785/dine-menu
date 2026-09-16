@@ -8,6 +8,7 @@ import { updateFoodDataSchema, addFoodSchema } from '@/schemas/food';
 
 import { CategoryViewModel } from '@/types/category';
 import { FoodViewModel } from '@/types/food';
+import Image from 'next/image';
 
 type Props = {
   categories: CategoryViewModel[];
@@ -147,18 +148,7 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
           }}
           type="text"
           placeholder="e.g. Margherita Pizza"
-          className="
-           w-full cursor-text rounded-xl
-              border border-slate-200 bg-white
-              px-4 py-2.5 text-sm text-slate-900
-              shadow-sm outline-none transition-all duration-200
-           
-              hover:border-[#C09721]
-              focus:border-[#C09721]
-              
-                placeholder:text-base
-
-          "
+          className="w-full cursor-text rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm transition-all duration-200 outline-none placeholder:text-base hover:border-[#C09721] focus:border-[#C09721]"
         />
 
         {errors.name?.[0] && (
@@ -179,19 +169,8 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
             clearError('description');
           }}
           placeholder="Describe the dish..."
-          rows={3}
-          className="
-            w-full cursor-text rounded-xl
-              border border-slate-200 bg-white
-              px-4 py-2.5 text-sm text-slate-900
-              shadow-sm outline-none transition-all duration-200
-              placeholder:text-slate-400
-               hover:border-[#C09721]
-              focus:border-[#C09721]
-              focus:ring-4 focus:ring-indigo-500/10
-                placeholder:text-base
- 
-          "
+          rows={5}
+          className="w-full cursor-text rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm transition-all duration-200 outline-none placeholder:text-base placeholder:text-slate-400 hover:border-[#C09721] focus:border-[#C09721] focus:ring-4 focus:ring-indigo-500/10"
         />
 
         {errors.description?.[0] && (
@@ -205,29 +184,20 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
       <div>
         <label
           htmlFor={`image-${foodItem?.id ?? 'new'}`}
-          className="
-            flex min-h-48 cursor-pointer flex-col
-            items-center justify-center
-            overflow-hidden rounded-xl
-              
-            border border-dashed border-indigo-200
-            bg-slate-50
-            p-4
-            transition-all duration-200
-            
-              hover:border-[#C09721]
-              focus:border-[#C09721]
-              focus:ring-4 focus:ring-indigo-500/10
-                placeholder:text-base
-  placeholder:text-slate-400
-          "
+          className="relative flex h-48 cursor-pointer flex-col items-center justify-center overflow-hidden rounded-xl border border-dashed border-indigo-200 bg-slate-50 p-4 transition-all duration-200 focus-within:border-[#C09721] focus-within:ring-4 focus-within:ring-indigo-500/10 hover:border-[#C09721]"
         >
           {imagePreview ? (
-            <img src={imagePreview} alt="Food preview" className="h-48 w-full rounded-lg object-cover" />
+            <Image
+              fill
+              src={imagePreview}
+              alt="Preview of uploaded image"
+              className="rounded-lg object-cover"
+              sizes="(max-width: 768px) 100vw, 448px"
+            />
           ) : (
             <>
               <div className="mb-3 rounded-full bg-indigo-50 p-3 text-indigo-600">📷</div>
-              <p className="text-sm font-medium text-slate-700">Upload food image</p>
+              <p className="text-sm font-medium text-slate-700">Upload image</p>
               <p className="mt-1 text-xs text-slate-400">PNG, JPG or WEBP</p>
             </>
           )}
@@ -264,18 +234,7 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
             min="0"
             step="0.01"
             placeholder="129"
-            className="
-              w-full cursor-text rounded-xl
-              border border-slate-200 bg-white
-              px-4 py-2.5 text-sm text-slate-900
-              shadow-sm outline-none transition-all duration-200
-              placeholder:text-slate-400
-              hover:border-[#C09721]
-              focus:border-[#C09721]
-              focus:ring-4 focus:ring-indigo-500/10
-                placeholder:text-base
-  placeholder:text-slate-400
-            "
+            className="w-full cursor-text rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm transition-all duration-200 outline-none placeholder:text-base placeholder:text-slate-400 hover:border-[#C09721] focus:border-[#C09721] focus:ring-4 focus:ring-indigo-500/10"
           />
 
           {errors.price?.[0] && (
@@ -295,17 +254,7 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
               setCategoryId(e.target.value);
               clearError('categoryId');
             }}
-            className="
-              w-full cursor-pointer rounded-xl
-              border border-slate-200 bg-white
-              px-4 py-2.5 text-sm text-slate-900
-              shadow-sm outline-none transition-all duration-200
-               hover:border-[#C09721]
-              focus:border-[#C09721]
-              focus:ring-4 focus:ring-indigo-500/10
-                placeholder:text-base
-  placeholder:text-slate-400
-            "
+            className="w-full cursor-pointer rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm transition-all duration-200 outline-none placeholder:text-base placeholder:text-slate-400 hover:border-[#C09721] focus:border-[#C09721] focus:ring-4 focus:ring-indigo-500/10"
           >
             <option value="">Select</option>
 
@@ -326,64 +275,13 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
 
       {/* Buttons */}
       <div className="flex gap-3 border-t border-slate-100 pt-5">
-        {/* Cancel */}
-        <button
-          type="button"
-          onClick={handleClose}
-          className="
-            w-full cursor-pointer rounded-xl
-            border border-slate-200 bg-white
-            px-4 py-2.5
-            text-sm font-medium text-slate-600
-            shadow-sm transition-all duration-200
-            hover:border-[#C09721]
-    hover:bg-[#FFFCF5]
-    hover:text-[#A77F18]
-    hover:shadow-md
-    hover:shadow-[#C09721]/15
-
-    focus:border-[#C09721]
-    focus:ring-4
-    focus:ring-[#C09721]/10
-
-    active:translate-y-0
-    active:scale-[0.98]
-          "
-        >
-          Cancel
-        </button>
-
         {/* Submit */}
         <button
           type="submit"
           disabled={isPending}
-          className="
-            w-full cursor-pointer rounded-xl
-           border border-[#C09721]/30
-    bg-white
-    p-3
-    text-sm font-medium text-black
-    shadow-sm
-    outline-none
-
-    transition-all duration-200 ease-out
-
-    hover:-translate-y-0.5
-    hover:border-[#C09721]
-    hover:bg-[#FFFCF5]
-    hover:text-[#A77F18]
-    hover:shadow-md
-    hover:shadow-[#C09721]/15
-
-    focus:border-[#C09721]
-    focus:ring-4
-    focus:ring-[#C09721]/10
-
-    active:translate-y-0
-    active:scale-[0.98]
-          "
+          className="w-full cursor-pointer rounded-xl border border-[#C09721]/30 bg-white p-3 text-sm font-medium text-slate-600 shadow-sm transition-all duration-200 ease-out outline-none hover:-translate-y-0.5 hover:border-[#C09721] hover:bg-[#FFFCF5] hover:text-[#A77F18] hover:shadow-md hover:shadow-[#C09721]/15 focus:border-[#C09721] focus:ring-4 focus:ring-[#C09721]/10 active:translate-y-0 active:scale-[0.98]"
         >
-          {isPending ? (isEditMode ? 'Updating...' : 'Adding...') : isEditMode ? 'Update food' : 'Add food'}
+          {isPending ? (isEditMode ? 'Updating...' : 'Adding...') : isEditMode ? 'Update' : 'Add'}
         </button>
       </div>
     </form>

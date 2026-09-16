@@ -13,6 +13,7 @@ import FavoriteAction from '@/components/food/add-favorite-action';
 import ModalAction from '@/components/food/food-modal-edit-actions';
 
 import { deleteFood } from '@/actions/food';
+import FoodCardContent from './food-card-content';
 
 type Props = {
   foodItem: FoodViewModel;
@@ -46,31 +47,17 @@ export default function FoodCard({ foodItem, categories }: Props) {
 
           {/* Category badge */}
           <div className="absolute top-3 left-3">
-            <span className="rounded-full border border-[#C09721]/30 bg-white px-3 py-1.5 text-xs font-semibold text-slate-600 shadow-sm backdrop-blur-md">
+            <span
+              aria-hidden="true"
+              className="rounded-full border border-[#C09721]/30 bg-white px-3 py-1.5 text-xs font-semibold text-slate-600 shadow-sm backdrop-blur-md"
+            >
               {foodItem.category}
             </span>
           </div>
         </div>
 
         {/* Content */}
-        <div className="p-5">
-          {/* Title */}
-          <div className="mb-3">
-            <h2 className="text-xl font-bold tracking-wide text-[#765315]">{foodItem.name}</h2>
-            <p className="mt-1 text-xs font-semibold tracking-wider text-slate-600 uppercase">{foodItem.category}</p>
-          </div>
-
-          {/* Description */}
-          <p className="mb-5 line-clamp-2 min-h-10 text-sm leading-5 tracking-wide text-slate-600">
-            {foodItem.description}
-          </p>
-
-          {/* Price */}
-          <div className="border-t border-slate-100 pt-4">
-            <p className="mb-0.5 text-sm font-semibold tracking-wider text-slate-600 uppercase">Price</p>
-            <p className="text-xl font-bold text-[#765315]">{Number(foodItem.price).toFixed(2)} €</p>
-          </div>
-        </div>
+        <FoodCardContent foodItem={foodItem} />
       </Link>
 
       {/* Favorite action */}
@@ -87,6 +74,7 @@ export default function FoodCard({ foodItem, categories }: Props) {
           aria-label={`Open actions for ${foodItem.name}`}
           aria-expanded={isMenuOpen}
           aria-haspopup="menu"
+          aria-controls={`food-actions-${foodItem.id}`}
         >
           <MoreVertical size={17} aria-hidden="true" />
         </button>

@@ -1,7 +1,7 @@
 import { CategoryService } from '@/services/category';
 import CategoryTable from '@/components/category/categories-table';
 import CategoryModal from '@/components/category/modal';
-import Pagination from '@/components/category/pagination';
+import Pagination from '@/components/pagination/pagination';
 import AddCategoryButton from '@/components/category/add-category-button';
 
 const categoryService = new CategoryService();
@@ -32,7 +32,15 @@ export default async function CategoryPage({ searchParams }: Props) {
           </div>
         </header>
         <CategoryTable categories={categories} />
-        <Pagination currentPage={currentPage} totalPages={response.pagination?.totalPages ?? 1} />
+
+        {categories && categories.length > 0 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={response.pagination?.totalPages ?? 1}
+            basePath="/category"
+            ariaLabel="Category pagination"
+          />
+        )}
       </div>
     </section>
   );

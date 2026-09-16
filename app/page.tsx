@@ -9,7 +9,7 @@ import LoadingSpinner from '@/components/loading-spinner';
 import Header from '@/components/food/header';
 import { Utensils } from 'lucide-react';
 import FilterActions from '@/components/food/filter-actions';
-import Pagination from '@/components/food/pagination';
+import Pagination from '@/components/pagination/pagination';
 
 const categoryService = new CategoryService();
 
@@ -87,11 +87,15 @@ export default async function MenuPage({ searchParams }: Props) {
       {foodList.length > 0 && totalPages > 1 && (
         <Pagination
           currentPage={currentPage}
-          searchParam={searchParam}
-          sortByParam={sortByParam}
-          filterParam={filterParam}
-          categoryParam={categoryParam}
           totalPages={totalPages}
+          basePath="/"
+          ariaLabel="Food pagination"
+          queryParams={{
+            search: searchParam,
+            category: categoryParam,
+            sortBy: sortByParam,
+            filter: filterParam,
+          }}
         />
       )}
     </div>
