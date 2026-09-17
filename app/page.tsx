@@ -63,7 +63,6 @@ export default async function MenuPage({ searchParams }: Props) {
 
       {/* Loading provider */}
       <FilterLoadingProvider>
-        {/* Menu controls */}
         <section
           className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
           aria-label="Menu controls"
