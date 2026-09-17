@@ -1,9 +1,9 @@
 'use client';
 
 import { Heart, LayoutList } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import Swal from 'sweetalert2';
+import { useFilterLoading } from '@/components/food/food-list-loading-wrapper';
 
 type Props = {
   currentPage: number;
@@ -13,12 +13,13 @@ type Props = {
 };
 
 export default function FavoriteFilterButton({ currentPage, searchParam, sortByParam, categoryParam }: Props) {
-  const router = useRouter();
+  const { navigateWithLoading } = useFilterLoading();
   const [isFavorite, setIsFavorit] = useState(false);
 
   const showAllFavorites = () => {
     setIsFavorit(false);
-    router.push('/');
+
+    navigateWithLoading('/');
   };
 
   const showFavorites = () => {
@@ -58,7 +59,7 @@ export default function FavoriteFilterButton({ currentPage, searchParam, sortByP
 
     const filter = favoriteIds.join(',');
 
-    router.push(
+    navigateWithLoading(
       `/?filter=${filter}&page=${currentPage}&search=${searchParam}&category=${categoryParam}&sortBy=${sortByParam}`,
     );
   };
