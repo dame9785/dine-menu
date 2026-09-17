@@ -24,9 +24,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
       <body className="min-h-full font-sans text-slate-900">
         <Sidebar />
-
-        <main className="ml-64 min-h-screen p-8">{children}</main>
-
+        <main className="min-h-screen p-4 pt-20 md:ml-64 md:p-8">{children}</main>
         <Toaster richColors position="top-right" />
       </body>
     </html>
