@@ -14,6 +14,7 @@ import ModalAction from '@/components/food/food-modal-actions';
 
 import { deleteFood } from '@/actions/food';
 import FoodCardContent from './food-card-content';
+import FoodImage from '@/components/food/food-image';
 
 type Props = {
   foodItem: FoodViewModel;
@@ -32,13 +33,7 @@ export default function FoodCard({ foodItem, categories }: Props) {
       >
         {/* Image */}
         <div className="relative h-70 overflow-hidden bg-slate-100">
-          <Image
-            fill
-            src={foodItem.imageUrl || '/img/food-placeholder.png'}
-            alt={foodItem.name}
-            className="object-cover transition duration-500 group-hover:scale-105"
-            sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-          />
+          <FoodImage src={foodItem.imageUrl || '/img/food-placeholder.png'} alt={foodItem.name} />
 
           <div
             aria-hidden="true"
