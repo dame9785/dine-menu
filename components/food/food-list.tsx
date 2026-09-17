@@ -13,7 +13,6 @@ type Props = {
 
 export default async function FoodList({ categories, foods }: Props) {
   const isAdmin = (await checkAdmin()).authorized;
-  console.log('IS ADMIN', isAdmin);
   return (
     <>
       {/* Foods */}

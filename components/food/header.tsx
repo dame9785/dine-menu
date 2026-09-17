@@ -33,7 +33,7 @@ export default async function Header({ categories }: Props) {
         <div className="max-w-xl">
           <div className="mb-4 h-40 w-48 sm:h-48 sm:w-56">
             <Image
-              src="/img/foods/logotype.png"
+              src="/img/logotype.png"
               alt="Dine Menu"
               width={500}
               height={500}
