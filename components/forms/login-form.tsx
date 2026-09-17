@@ -4,6 +4,7 @@ import { FormEvent, useState } from 'react';
 import { authClient } from '@/lib/auth-client';
 import { useRouter } from 'next/navigation';
 import Input from '@/components/ui/input';
+import SubmitButton from '../ui/submit-button';
 
 export default function LoginForm() {
   const router = useRouter();
@@ -85,13 +86,7 @@ export default function LoginForm() {
         </p>
       )}
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="w-full rounded-xl bg-[#C09721] px-4 py-3 font-semibold text-white transition hover:bg-[#A77F18] disabled:cursor-not-allowed disabled:opacity-50"
-      >
-        {loading ? 'Logging in...' : 'Login'}
-      </button>
+      <SubmitButton>{loading ? 'Logging in...' : 'Login'}</SubmitButton>
     </form>
   );
 }

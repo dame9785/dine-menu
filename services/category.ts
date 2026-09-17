@@ -1,5 +1,6 @@
 import { CategoryDto } from '@/schemas/category';
 import { ApiResponse, CategoryApiResponse } from '@/types/api-responses';
+import { headers } from 'next/headers';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000/api';
 
@@ -27,12 +28,13 @@ export class CategoryService {
 
   async create(dto: CategoryDto): Promise<ApiResponse<[]>> {
     try {
+      const requestHeaders = await headers();
       const response = await fetch(CATEGORY_API_URL, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify(dto),
+        headers: {
+          Cookie: requestHeaders.get('cookie') ?? '',
+        },
       });
       return (await response.json()) as ApiResponse<[]>;
     } catch (error) {

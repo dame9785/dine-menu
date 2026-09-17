@@ -3,7 +3,6 @@
 import { CategoryDto, UpdateCategoryDto } from '@/schemas/category';
 import { CategoryService } from '@/services/category';
 import { revalidatePath } from 'next/cache';
-import { success } from 'zod';
 
 const categoryService = new CategoryService();
 
@@ -27,6 +26,7 @@ export async function deleteCategory(categoryId: number) {
 
 export async function createCategory(dto: CategoryDto) {
   const response = await categoryService.create(dto);
+
   if (!response.success) {
     return {
       success: response.success,
