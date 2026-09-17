@@ -1,4 +1,7 @@
-import { Trash2 } from 'lucide-react';
+'use client';
+
+import { useTransition } from 'react';
+import { Trash2, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 type Props = {
@@ -10,22 +13,32 @@ type Props = {
 };
 
 export default function DeleteFoodButton({ foodId, deleteFoodAction }: Props) {
+  const [isPending, startTransition] = useTransition();
+
   const handleDelete = () => {
     toast('Are you sure you want to delete the food?', {
       action: {
         label: 'Delete',
-        onClick: async () => {
-          const response = await deleteFoodAction(foodId);
+        onClick: () => {
+          startTransition(async () => {
+            try {
+              const response = await deleteFoodAction(foodId);
 
-          if (response.success) {
-            toast.success(response.message, {
-              duration: 1000,
-            });
-          } else {
-            toast.error(response.message, {
-              duration: 1000,
-            });
-          }
+              if (response.success) {
+                toast.success(response.message, {
+                  duration: 1000,
+                });
+              } else {
+                toast.error(response.message, {
+                  duration: 1000,
+                });
+              }
+            } catch (error) {
+              console.error('Delete food error:', error);
+
+              toast.error('Something went wrong while deleting the food.');
+            }
+          });
         },
       },
       cancel: {
@@ -39,10 +52,12 @@ export default function DeleteFoodButton({ foodId, deleteFoodAction }: Props) {
     <button
       type="button"
       onClick={handleDelete}
-      className="cursor-pointer flex w-full items-center gap-2 px-3 py-2.5 text-left text-sm  text-red-600  transition hover:bg-red-50"
+      disabled={isPending}
+      className="flex w-full cursor-pointer items-center gap-2 px-3 py-2.5 text-left text-sm text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
     >
-      <Trash2 size={16} />
-      Delete
+      {isPending ? <Loader2 size={16} className="animate-spin" /> : <Trash2 size={16} />}
+
+      {isPending ? 'Deleting...' : 'Delete'}
     </button>
   );
 }

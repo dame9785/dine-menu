@@ -36,8 +36,8 @@ export default function UserActions() {
                 <User size={20} />
               </div>
               <div className="min-w-0">
-                <p className="truncate text-sm font-semibold text-[#5F4A20]">{session.user.name}</p>
-                <p className="truncate text-xs text-gray-500">{session.user.email}</p>
+                <p className="text-m truncate font-semibold text-[#5F4A20]">{session.user.name}</p>
+                <p className="truncate text-sm text-gray-500">{session.user.email}</p>
               </div>
               <button
                 type="button"

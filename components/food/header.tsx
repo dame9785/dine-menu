@@ -43,7 +43,7 @@ export default async function Header({ categories }: Props) {
           </div>
 
           <div>
-            <h1 className="text-3xl font-bold text-slate-700 sm:text-4xl">
+            <h1 className="text-3xl font-extrabold text-slate-700 sm:text-4xl">
               Manage <span className="text-[#A77F18]">your menu</span>
             </h1>
             <p className="mt-2 max-w-md text-lg leading-6 font-semibold text-slate-700">

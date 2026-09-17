@@ -79,8 +79,12 @@ export class FoodService {
 
   async deleteFood(foodId: number): Promise<ApiResponse<[]>> {
     try {
+      const requestHeaders = await headers();
       const response = await fetch(`${FOOD_API_URL}/${foodId}`, {
         method: 'DELETE',
+        headers: {
+          Cookie: requestHeaders.get('cookie') ?? '',
+        },
       });
 
       return (await response.json()) as ApiResponse<[]>;

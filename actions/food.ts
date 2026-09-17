@@ -34,24 +34,50 @@ export async function addFood(formData: FormData): Promise<{ success: boolean; m
 }
 
 export async function deleteFood(foodId: number): Promise<{ success: boolean; message: string }> {
-  await requireAdmin();
+  try {
+    console.log('1. Delete action started:', foodId);
 
-  const response = await foodService.deleteFood(foodId);
+    const adminCheck = await checkAdmin();
 
-  if (!response.success) {
+    console.log('2. Admin check:', adminCheck);
+
+    if (!adminCheck.authorized) {
+      return {
+        success: false,
+        message: adminCheck.message,
+      };
+    }
+
+    console.log('3. Calling food service');
+
+    const response = await foodService.deleteFood(foodId);
+
+    console.log('4. Food service response:', response);
+
+    if (!response.success) {
+      return {
+        success: false,
+        message: response.message,
+      };
+    }
+
+    revalidatePath('/');
+    revalidatePath('/category');
+
+    console.log('5. Delete completed');
+
     return {
-      success: false,
+      success: true,
       message: response.message,
     };
+  } catch (error) {
+    console.error('DELETE FOOD ACTION ERROR:', error);
+
+    return {
+      success: false,
+      message: 'Something went wrong while deleting the food.',
+    };
   }
-
-  revalidatePath('/');
-  revalidatePath('/category');
-
-  return {
-    success: true,
-    message: response.message,
-  };
 }
 
 export async function updateFood(foodId: number, formData: FormData) {
