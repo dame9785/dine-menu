@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import FavoriteAction from '@/components/food/actions/add-favorite-action';
+import FavoriteAction from '@/components/food/actions/favorite-menu-action';
 import { Heart, Utensils, Euro } from 'lucide-react';
 import { FoodViewModel } from '@/types/food';
 import { CategoryViewModel } from '@/types/category';

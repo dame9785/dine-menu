@@ -1,10 +1,14 @@
 import { Prisma } from '@/generated/prisma/client';
-
 import { FoodViewModel } from '@/types/food';
 
 type FoodWithCategory = Prisma.menuitemGetPayload<{
   include: {
     category: true;
+    favorites: {
+      select: {
+        id: true;
+      };
+    };
   };
 }>;
 
@@ -20,6 +24,8 @@ export class FoodMapper {
       updatedAt: foodItem.updatedAt,
       category: foodItem.category.name,
       categoryId: foodItem.categoryId,
+
+      isFavorite: (foodItem.favorites?.length ?? 0) > 0,
     };
   }
 }

@@ -18,4 +18,5 @@ export interface FoodViewModel {
   updatedAt: Date;
   category: string;
   categoryId: number;
+  isFavorite: boolean;
 }

@@ -2,6 +2,7 @@ import { ApiResponse } from '@/types/api-responses';
 import { NextRequest, NextResponse } from 'next/server';
 import { FoodService } from '@/server/services/food';
 import { requireApiAdmin } from '@/lib/api-auth-guard';
+import { auth } from '@/lib/auth';
 
 const foodService = new FoodService();
 
@@ -35,18 +36,23 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
+    const session = await auth.api.getSession({
+      headers: request.headers,
+    });
+
+    const userId = session?.user?.id;
+
+    console.log('SESSION USER ID:', userId);
+
     const pageParam = request.nextUrl.searchParams.get('page');
     const page = pageParam ? Number(pageParam) : 1;
 
     const searchParam = request.nextUrl.searchParams.get('search') ?? '';
-
-    const categoryParam = request.nextUrl.searchParams.get('category') ?? ';';
-
+    const categoryParam = request.nextUrl.searchParams.get('category') ?? '';
     const filterParam = request.nextUrl.searchParams.get('filter') ?? '';
-
     const sortByParam = request.nextUrl.searchParams.get('sortBy') ?? '';
 
-    const result = await foodService.getAll(page, searchParam, categoryParam, filterParam, sortByParam);
+    const result = await foodService.getAll(page, searchParam, categoryParam, filterParam, sortByParam, userId);
 
     return NextResponse.json(result, {
       status: 200,

@@ -5,6 +5,8 @@ import { headers } from 'next/headers';
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000/api';
 
 const FOOD_API_URL = `${API_URL}/food`;
+const FAVORITE_API_URL = `${API_URL}/favorite`;
+
 export class FoodService {
   async getAll(
     page: number,
@@ -14,10 +16,14 @@ export class FoodService {
     sortBy: string,
   ): Promise<FoodApiResponse> {
     try {
+      const requestHeaders = await headers();
       const response = await fetch(
         `${FOOD_API_URL}?page=${page}&search=${encodeURIComponent(searchParams)}&category=${encodeURIComponent(categoryParam)}&filter=${encodeURIComponent(filterParam)}&sortBy=${encodeURIComponent(sortBy)}`,
         {
           method: 'GET',
+          headers: {
+            Cookie: requestHeaders.get('cookie') ?? '',
+          },
         },
       );
 
@@ -36,8 +42,6 @@ export class FoodService {
 
   async add(formData: FormData): Promise<ApiResponse<[]>> {
     try {
-      console.log('🚀 FOOD SERVICE ADD START');
-      console.log('FOOD_API_URL:', FOOD_API_URL);
       const requestHeaders = await headers();
 
       const response = await fetch(FOOD_API_URL, {
@@ -112,6 +116,48 @@ export class FoodService {
         success: false,
         message: 'Could not connect to the server',
       };
+    }
+  }
+
+  async addFavorite(foodId: number): Promise<ApiResponse<[]>> {
+    try {
+      const requestHeaders = await headers();
+      const response = await fetch(`${FAVORITE_API_URL}/${foodId}`, {
+        method: 'POST',
+        headers: {
+          Cookie: requestHeaders.get('cookie') ?? '',
+        },
+      });
+
+      return (await response.json()) as ApiResponse<[]>;
+    } catch (error) {
+      console.error('API/FAVORITE/POST', error);
+
+      return {
+        success: false,
+        message: 'Could not connect to the server.',
+      } satisfies ApiResponse<[]>;
+    }
+  }
+
+  async deleteFavorite(menuItemId: number): Promise<ApiResponse<[]>> {
+    try {
+      const requestHeaders = await headers();
+      const response = await fetch(`${FAVORITE_API_URL}/${menuItemId}`, {
+        method: 'DELETE',
+        headers: {
+          Cookie: requestHeaders.get('cookie') ?? '',
+        },
+      });
+
+      return (await response.json()) as ApiResponse<[]>;
+    } catch (error) {
+      console.error('API/FAVORITE/POST', error);
+
+      return {
+        success: false,
+        message: 'Could not connect to the server.',
+      } satisfies ApiResponse<[]>;
     }
   }
 }

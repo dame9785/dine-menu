@@ -1,6 +1,29 @@
+import { Prisma } from '@/generated/prisma/client';
 import { prisma } from '@/lib/prisma';
 import { UpdateFoodDto } from '@/schemas/food';
 import { FoodDto } from '@/types/food';
+
+type FoodWithCategory = Prisma.menuitemGetPayload<{
+  include: {
+    category: true;
+    favorites: {
+      select: {
+        id: true;
+      };
+    };
+  };
+}>;
+
+export type GetAllFoodsResult = {
+  foods: FoodWithCategory[];
+  totalNumberOfFoods: number;
+  pageSize: number;
+  totalPages: number;
+};
+
+export type GetMenuItemResult = {
+  food: FoodWithCategory;
+};
 
 export class FoodRepository {
   async addFood(dto: FoodDto) {
@@ -19,7 +42,14 @@ export class FoodRepository {
     });
   }
 
-  async getAll(page: number, searchParam: string, categoryParam: string, filterParam: string, sortBy: string) {
+  async getAll(
+    page: number,
+    searchParam: string,
+    categoryParam: string,
+    filterParam: string,
+    sortBy: string,
+    userId?: string,
+  ): Promise<GetAllFoodsResult> {
     const pageSize = 6;
 
     const currentPage = Number.isFinite(page) && page > 0 ? Math.floor(page) : 1;
@@ -72,7 +102,7 @@ export class FoodRepository {
             }
           : {},
 
-        // Favorites
+        // Favorites filter
         filterIds.length > 0
           ? {
               id: {
@@ -83,7 +113,8 @@ export class FoodRepository {
       ],
     };
 
-    // Run both database queries at the same time
+    console.log('USER ID FROM SESSION:', userId);
+
     const [totalNumberOfFoods, foods] = await Promise.all([
       prisma.menuitem.count({
         where,
@@ -94,6 +125,14 @@ export class FoodRepository {
         orderBy,
         include: {
           category: true,
+          favorites: {
+            where: {
+              userId: userId ?? '__unauthenticated__',
+            },
+            select: {
+              id: true,
+            },
+          },
         },
         skip,
         take: pageSize,
@@ -118,19 +157,22 @@ export class FoodRepository {
     });
   }
 
-  async getById(foodId: number) {
-    return await prisma.menuitem.findUnique({
+  async getById(foodId: number): Promise<FoodWithCategory | null> {
+    const food = await prisma.menuitem.findUnique({
       where: {
         id: foodId,
       },
       include: {
         category: true,
+        favorites: true,
       },
     });
+
+    return food;
   }
 
-  async update(foodId: number, dto: UpdateFoodDto) {
-    return await prisma.menuitem.update({
+  async update(foodId: number, dto: UpdateFoodDto): Promise<GetMenuItemResult> {
+    const food = await prisma.menuitem.update({
       where: {
         id: foodId,
       },
@@ -147,7 +189,12 @@ export class FoodRepository {
       },
       include: {
         category: true,
+        favorites: true,
       },
     });
+
+    return {
+      food,
+    };
   }
 }

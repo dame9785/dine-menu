@@ -4,8 +4,10 @@ import { FoodRepository } from '../repositories/food';
 import { FoodMapper } from '../mapping/food';
 import { saveImage } from '@/helpers/image-helper';
 import { updateFoodDataSchema } from '@/schemas/food';
+import { FavoriteRepository } from '../repositories/favorite';
 
 const foodRepository = new FoodRepository();
+const favoriteRepository = new FavoriteRepository();
 
 export class FoodService {
   async addFood(formData: FormData): Promise<ApiResponse<[]>> {
@@ -122,8 +124,7 @@ export class FoodService {
       }
 
       const foodData = await foodRepository.update(foodId, dto);
-
-      const viewModel = FoodMapper.foodDboToViewModel(foodData);
+      const viewModel = FoodMapper.foodDboToViewModel(foodData.food);
 
       return {
         success: true,
@@ -146,9 +147,10 @@ export class FoodService {
     categoryParam: string,
     filterParam: string,
     sortByParam: string,
+    userId?: string,
   ): Promise<FoodApiResponse> {
     try {
-      const result = await foodRepository.getAll(page, searchParam, categoryParam, filterParam, sortByParam);
+      const result = await foodRepository.getAll(page, searchParam, categoryParam, filterParam, sortByParam, userId);
       const viewModel = result.foods.map((item) => FoodMapper.foodDboToViewModel(item));
       return {
         success: true,
@@ -210,6 +212,60 @@ export class FoodService {
       return {
         success: false,
         message: 'Something went wrong while getting the food item.',
+      } satisfies ApiResponse<[]>;
+    }
+  }
+
+  async addFavorite(userId: string, foodId: number): Promise<ApiResponse<[]>> {
+    if (!foodId) {
+      return {
+        success: false,
+        message: 'A valid food ID must be specified.',
+      } satisfies ApiResponse<null>;
+    }
+
+    try {
+      const result = favoriteRepository.addFavorite(userId, foodId);
+      if (!result) {
+        return {
+          success: false,
+          message: 'You must be logged in to add favorites.',
+        } satisfies ApiResponse<[]>;
+      }
+
+      return {
+        success: true,
+        message: 'Successfully saved as a favorite',
+      } satisfies ApiResponse<[]>;
+    } catch (error) {
+      console.error('Error adding favorite:', error);
+
+      return {
+        success: false,
+        message: 'An error occurred while adding the favorite.',
+      } satisfies ApiResponse<[]>;
+    }
+  }
+
+  async deleteFavorite(userId: string, menuItemId: number): Promise<ApiResponse<[]>> {
+    try {
+      if (!userId) {
+        return {
+          success: false,
+          message: 'You must be logged in to add favorites.',
+        } satisfies ApiResponse<[]>;
+      }
+
+      await favoriteRepository.deleteFavorite(userId, menuItemId);
+      return {
+        success: true,
+        message: 'Menu item removed from favorites.',
+      } satisfies ApiResponse<[]>;
+    } catch (error) {
+      console.error('ERROR WHILE DELETING FAVORITE MENU ITEM', error);
+      return {
+        success: false,
+        message: 'An error occurred while remove the favorite.',
       } satisfies ApiResponse<[]>;
     }
   }

@@ -4,7 +4,6 @@ import { requireApiAdmin } from '@/lib/api-auth-guard';
 
 import { NextRequest, NextResponse } from 'next/server';
 import { CategoryDto } from '@/schemas/category';
-import { success } from 'zod';
 
 const categoryService = new CategoryService();
 

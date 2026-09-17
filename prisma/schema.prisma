@@ -17,21 +17,24 @@ model category {
 }
 
 model menuitem {
-  id          Int      @id @default(autoincrement())
+  id          Int        @id @default(autoincrement())
   name        String
-  description String   @db.Text
+  description String     @db.Text
   price       Decimal
   imageUrl    String?
   categoryId  Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  category    category @relation(fields: [categoryId], references: [id], onDelete: Cascade, map: "MenuItem_categoryId_fkey")
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  category    category   @relation(fields: [categoryId], references: [id], onDelete: Cascade, map: "MenuItem_categoryId_fkey")
+
+  favorites   Favorite[]
 
   @@index([categoryId], map: "MenuItem_categoryId_fkey")
 }
 
 model User {
-   id            String    @id
+  id            String    @id
   name          String    @db.Text
   email         String
   emailVerified Boolean   @default(false)
@@ -42,6 +45,7 @@ model User {
   
   sessions      Session[]
   accounts      Account[]
+  favorites     Favorite[]
 
   @@unique([email])
   @@map("user")
@@ -93,4 +97,17 @@ model Verification {
 
   @@index([identifier(length: 191)])
   @@map("verification")
+}
+
+model Favorite {
+  id         Int      @id @default(autoincrement())
+  userId     String
+  menuItemId Int
+
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  menuItem   menuitem @relation(fields: [menuItemId], references: [id], onDelete: Cascade)
+
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, menuItemId])
 }

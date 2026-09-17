@@ -38,7 +38,7 @@ export default function DeleteFoodButton({ foodId, deleteFoodAction, onDeleted }
       const response = await deleteFoodAction(foodId);
 
       if (response.success) {
-        onDeleted(); // Stänger menyn
+        onDeleted();
         toast.success(response.message, {
           duration: 1000,
         });

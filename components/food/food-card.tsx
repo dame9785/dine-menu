@@ -8,7 +8,7 @@ import { FoodViewModel } from '@/types/food';
 import { CategoryViewModel } from '@/types/category';
 
 import DeleteAction from '@/components/food/actions/delete-food-action';
-import FavoriteAction from '@/components/food/actions/add-favorite-action';
+import FavoriteAction from '@/components/food/actions/favorite-menu-action';
 import ModalAction from '@/components/food/actions/food-modal-actions';
 
 import { deleteFood } from '@/actions/food';
@@ -19,9 +19,10 @@ type Props = {
   foodItem: FoodViewModel;
   categories: CategoryViewModel[];
   isAdmin: boolean;
+  isLoggedIn: boolean;
 };
 
-export default function FoodCard({ foodItem, categories, isAdmin }: Props) {
+export default function FoodCard({ foodItem, categories, isAdmin, isLoggedIn }: Props) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -52,7 +53,7 @@ export default function FoodCard({ foodItem, categories, isAdmin }: Props) {
       </Link>
 
       <div className="absolute top-2 right-2 z-30">
-        <FavoriteAction foodId={foodItem.id} />
+        <FavoriteAction foodId={foodItem.id} isFavorite={foodItem.isFavorite} />
       </div>
 
       {isAdmin && (
