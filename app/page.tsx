@@ -8,7 +8,7 @@ import FoodList from '@/components/food/food-list';
 import LoadingSpinner from '@/components/loading-spinner';
 import Header from '@/components/food/header';
 import { Utensils } from 'lucide-react';
-import FilterActions from '@/components/food/filter-actions';
+import FilterActions from '@/components/food/actions/filter-actions';
 import Pagination from '@/components/pagination/pagination';
 
 import { FilterLoadingProvider, FoodListLoadingOverlay } from '@/components/food/food-list-loading-wrapper';

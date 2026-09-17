@@ -1,6 +1,6 @@
 import { CategoryViewModel } from '@/types/category';
 import Image from 'next/image';
-import FoodActions from '@/components/food/food-modal-actions';
+import FoodActions from '@/components/food/actions/food-modal-actions';
 import { checkAdmin } from '@/lib/auth-guard';
 
 type Props = {

@@ -1,9 +1,9 @@
 import Image from 'next/image';
-import FavoriteAction from '@/components/food/add-favorite-action';
+import FavoriteAction from '@/components/food/actions/add-favorite-action';
 import { Heart, Utensils, Euro } from 'lucide-react';
 import { FoodViewModel } from '@/types/food';
 import { CategoryViewModel } from '@/types/category';
-import ModalAction from '@/components/food/food-modal-actions';
+import ModalAction from '@/components/food/actions/food-modal-actions';
 
 type Props = {
   foodItem: FoodViewModel;

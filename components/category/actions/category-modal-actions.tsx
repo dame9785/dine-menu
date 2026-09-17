@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 
-import AddModalAction from '@/components/category/add-category-button';
-import EditModalAction from '@/components/category/edit-category-button';
+import AddAction from '@/components/category/actions/add-category-action';
+import EditAction from '@/components/category/actions/edit-category-action';
 import Modal from '@/components/modals/category-modal';
 
 import { CategoryViewModel } from '@/types/category';
@@ -18,11 +18,7 @@ export default function CategoryAction({ category }: Props) {
 
   return (
     <>
-      {isEditing ? (
-        <EditModalAction onClick={() => setIsOpen(true)} />
-      ) : (
-        <AddModalAction onClick={() => setIsOpen(true)} />
-      )}
+      {isEditing ? <EditAction onClick={() => setIsOpen(true)} /> : <AddAction onClick={() => setIsOpen(true)} />}
 
       <Modal category={category} open={isOpen} onOpenChange={setIsOpen} />
     </>

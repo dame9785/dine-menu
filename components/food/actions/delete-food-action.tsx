@@ -10,9 +10,10 @@ type Props = {
     success: boolean;
     message: string;
   }>;
+  onDeleted: () => void;
 };
 
-export default function DeleteFoodButton({ foodId, deleteFoodAction }: Props) {
+export default function DeleteFoodButton({ foodId, deleteFoodAction, onDeleted }: Props) {
   const [isPending, startTransition] = useTransition();
 
   const handleDelete = () => {
@@ -21,23 +22,7 @@ export default function DeleteFoodButton({ foodId, deleteFoodAction }: Props) {
         label: 'Delete',
         onClick: () => {
           startTransition(async () => {
-            try {
-              const response = await deleteFoodAction(foodId);
-
-              if (response.success) {
-                toast.success(response.message, {
-                  duration: 1000,
-                });
-              } else {
-                toast.error(response.message, {
-                  duration: 1000,
-                });
-              }
-            } catch (error) {
-              console.error('Delete food error:', error);
-
-              toast.error('Something went wrong while deleting the food.');
-            }
+            await deleteAction();
           });
         },
       },
@@ -46,6 +31,26 @@ export default function DeleteFoodButton({ foodId, deleteFoodAction }: Props) {
         onClick: () => {},
       },
     });
+  };
+
+  const deleteAction = async () => {
+    try {
+      const response = await deleteFoodAction(foodId);
+
+      if (response.success) {
+        onDeleted(); // Stänger menyn
+        toast.success(response.message, {
+          duration: 1000,
+        });
+      } else {
+        toast.error(response.message, {
+          duration: 1000,
+        });
+      }
+    } catch (error) {
+      console.error('DELETE FOOD ERROR:', error);
+      toast.error('Something went wrong while deleting the food.');
+    }
   };
 
   return (

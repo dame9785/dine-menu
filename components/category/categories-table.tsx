@@ -1,7 +1,7 @@
 import { CategoryViewModel } from '@/types/category';
 import { deleteCategory } from '@/actions/category';
-import DeleteCategoryButton from '@/components/category/delete-category-button';
-import ModalAction from '@/components/category/category-modal-actions';
+import DeleteAction from '@/components/category/actions/delete-category-action';
+import ModalAction from '@/components/category/actions/category-modal-actions';
 
 type Props = {
   categories: CategoryViewModel[] | undefined;
@@ -55,7 +55,7 @@ export default function CategoryTable({ categories }: Props) {
               <td className="px-6 py-4">
                 <div className="flex justify-end gap-2">
                   <ModalAction category={category} />
-                  <DeleteCategoryButton categoryId={category.id} deleteCategory={deleteCategory} />
+                  <DeleteAction categoryId={category.id} deleteCategory={deleteCategory} />
                 </div>
               </td>
             </tr>

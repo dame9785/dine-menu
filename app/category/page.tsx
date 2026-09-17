@@ -2,7 +2,7 @@ import { CategoryService } from '@/services/category';
 import CategoryTable from '@/components/category/categories-table';
 
 import Pagination from '@/components/pagination/pagination';
-import ModalAction from '@/components/category/category-modal-actions';
+import ModalAction from '@/components/category/actions/category-modal-actions';
 
 import { requireAdmin } from '@/lib/auth-guard';
 

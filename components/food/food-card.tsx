@@ -7,9 +7,9 @@ import Link from 'next/link';
 import { FoodViewModel } from '@/types/food';
 import { CategoryViewModel } from '@/types/category';
 
-import DeleteFoodButton from '@/components/food/delete-food-button';
-import FavoriteAction from '@/components/food/add-favorite-action';
-import ModalAction from '@/components/food/food-modal-actions';
+import DeleteAction from '@/components/food/actions/delete-food-action';
+import FavoriteAction from '@/components/food/actions/add-favorite-action';
+import ModalAction from '@/components/food/actions/food-modal-actions';
 
 import { deleteFood } from '@/actions/food';
 import FoodCardContent from './food-card-content';
@@ -77,7 +77,8 @@ export default function FoodCard({ foodItem, categories, isAdmin }: Props) {
               className="absolute right-0 bottom-10 z-50 flex w-36 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl shadow-slate-300/40"
             >
               <ModalAction categories={categories} foodItem={foodItem} />
-              <DeleteFoodButton foodId={foodItem.id} deleteFoodAction={deleteFood} />
+
+              <DeleteAction foodId={foodItem.id} deleteFoodAction={deleteFood} onDeleted={() => setIsMenuOpen(false)} />
             </div>
           )}
         </div>

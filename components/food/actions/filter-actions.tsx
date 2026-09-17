@@ -1,5 +1,5 @@
-import FilterFavoriteButton from '@/components/food/filter-favorites-button';
-import ResetFilteringButton from '@/components/food/reset-filter-button';
+import FilterFavoriteButton from '@/components/food/actions/filter-favorites-action';
+import ResetFilteringButton from '@/components/food/actions/reset-filter-action';
 
 type Props = {
   currentPage: number;

@@ -6,7 +6,7 @@ type Props = {
   onClick: () => void;
 };
 
-export default function AddFoodButton({ onClick }: Props) {
+export default function AddFoodAction({ onClick }: Props) {
   return (
     <button
       type="button"

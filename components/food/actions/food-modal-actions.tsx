@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 
-import AddModalAction from '@/components/food/food-modal-add-action';
-import EditModalAction from '@/components/food/edit-modal-action';
+import AddModalAction from '@/components/food/actions/food-modal-add-action';
+import EditModalAction from '@/components/food/actions/edit-modal-action';
 import Modal from '@/components/modals/food-modal';
 
 import { CategoryViewModel } from '@/types/category';
