@@ -4,6 +4,8 @@ import CategoryTable from '@/components/category/categories-table';
 import Pagination from '@/components/pagination/pagination';
 import ModalAction from '@/components/category/category-modal-actions';
 
+import { requireAdmin } from '@/lib/auth-guard';
+
 const categoryService = new CategoryService();
 
 type Props = {
@@ -13,6 +15,8 @@ type Props = {
 };
 
 export default async function CategoryPage({ searchParams }: Props) {
+  await requireAdmin();
+
   const params = await searchParams;
 
   //Set default current page to 1 if params.page is undefined.

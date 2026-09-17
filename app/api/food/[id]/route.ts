@@ -1,3 +1,4 @@
+import { requireApiAdmin } from '@/lib/api-auth-guard';
 import { FoodService } from '@/server/services/food';
 import { ApiResponse } from '@/types/api-responses';
 import { FoodViewModel } from '@/types/food';
@@ -13,6 +14,12 @@ type RouteParams = {
 
 export async function DELETE(request: Request, { params }: RouteParams) {
   try {
+    const { response } = await requireApiAdmin(request);
+
+    if (response) {
+      return response;
+    }
+
     const { id } = await params;
 
     const result = await foodService.delete(Number(id));

@@ -887,6 +887,7 @@ export const UserScalarFieldEnum = {
   email: 'email',
   emailVerified: 'emailVerified',
   image: 'image',
+  role: 'role',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -975,7 +976,8 @@ export const UserOrderByRelevanceFieldEnum = {
   id: 'id',
   name: 'name',
   email: 'email',
-  image: 'image'
+  image: 'image',
+  role: 'role'
 } as const
 
 export type UserOrderByRelevanceFieldEnum = (typeof UserOrderByRelevanceFieldEnum)[keyof typeof UserOrderByRelevanceFieldEnum]

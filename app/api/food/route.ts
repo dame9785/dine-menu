@@ -1,11 +1,20 @@
 import { ApiResponse } from '@/types/api-responses';
 import { NextRequest, NextResponse } from 'next/server';
 import { FoodService } from '@/server/services/food';
+import { requireApiAdmin } from '@/lib/api-auth-guard';
 
 const foodService = new FoodService();
 
 export async function POST(request: NextRequest) {
   try {
+    const { response, session } = await requireApiAdmin(request);
+
+    console.log('SESSION:', session);
+    console.log('AUTH RESPONSE:', response);
+    if (response) {
+      return response;
+    }
+
     const formData = await request.formData();
 
     const result = await foodService.addFood(formData);

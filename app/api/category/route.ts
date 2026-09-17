@@ -1,5 +1,6 @@
 import { ApiResponse, CategoryApiResponse } from '@/types/api-responses';
 import { CategoryService } from '@/server/services/category';
+import { requireApiAdmin } from '@/lib/api-auth-guard';
 
 import { NextRequest, NextResponse } from 'next/server';
 import { CategoryDto } from '@/schemas/category';
@@ -45,12 +46,18 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: Request) {
   try {
+    const { response } = await requireApiAdmin(request);
+
+    if (response) {
+      return response;
+    }
+
     const dto: CategoryDto = await request.json();
 
     const result = await categoryService.create(dto);
 
     return NextResponse.json(result, {
-      status: result.success ? 200 : 400,
+      status: result.success ? 201 : 400,
     });
   } catch (error) {
     console.error('CATEGORY/POST', error);

@@ -11,15 +11,21 @@ const navigationItems = [
     label: 'Home',
     href: '/',
     icon: House,
+    requiresAdmin: false,
   },
   {
     label: 'Categories',
     href: '/category',
     icon: Folder,
+    requiresAdmin: true,
   },
 ];
 
-export default function Sidebar() {
+type Props = {
+  isAdmin: boolean;
+};
+
+export default function Sidebar({ isAdmin }: Props) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -30,31 +36,34 @@ export default function Sidebar() {
       <p className="mb-4 px-3 text-[10px] font-bold tracking-[0.18em] text-slate-400 uppercase">Menu</p>
 
       <ul className="space-y-2">
-        {navigationItems.map((item) => {
-          const Icon = item.icon;
+        {navigationItems
+          .filter((item) => !item.requiresAdmin || isAdmin)
+          .map((item) => {
+            const Icon = item.icon;
 
-          const isActive = item.href === '/' ? pathname === '/' : pathname.startsWith(item.href);
+            const isActive = item.href === '/' ? pathname === '/' : pathname.startsWith(item.href);
 
-          return (
-            <li key={item.href}>
-              <Link
-                href={item.href}
-                onClick={closeMenu}
-                aria-current={isActive ? 'page' : undefined}
-                className={`group flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold transition-all duration-200 outline-none ${
-                  isActive
-                    ? 'border border-[#C09721]/20 bg-[#E8DAB8] text-slate-900 shadow-sm'
-                    : 'border border-transparent text-slate-500 hover:border-[#C09721]/30 hover:bg-[#FFFCF5] hover:text-[#A77F18]'
-                }`}
-              >
-                <Icon size={18} aria-hidden="true" className={isActive ? 'text-[#765315]' : 'text-slate-500'} />
+            return (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  onClick={closeMenu}
+                  aria-current={isActive ? 'page' : undefined}
+                  className={`group flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold transition-all duration-200 outline-none ${
+                    isActive
+                      ? 'border border-[#C09721]/20 bg-[#E8DAB8] text-slate-900 shadow-sm'
+                      : 'border border-transparent text-slate-500 hover:border-[#C09721]/30 hover:bg-[#FFFCF5] hover:text-[#A77F18]'
+                  }`}
+                >
+                  <Icon size={18} aria-hidden="true" className={isActive ? 'text-[#765315]' : 'text-slate-500'} />
 
-                <span>{item.label}</span>
-                {isActive && <span aria-hidden="true" className="ml-auto h-1.5 w-1.5 rounded-full bg-[#A77F18]" />}
-              </Link>
-            </li>
-          );
-        })}
+                  <span>{item.label}</span>
+
+                  {isActive && <span aria-hidden="true" className="ml-auto h-1.5 w-1.5 rounded-full bg-[#A77F18]" />}
+                </Link>
+              </li>
+            );
+          })}
       </ul>
     </nav>
   );
@@ -63,7 +72,7 @@ export default function Sidebar() {
     <>
       {/* Mobile Header */}
       <header className="fixed inset-x-0 top-0 z-40 flex h-16 items-center justify-between border-b border-[#C09721]/20 bg-white px-4 shadow-sm md:hidden">
-        <Link href="/" className="font-semibold tracking-[0.08em] text-[#A77F18] uppercase">
+        <Link href="/" onClick={closeMenu} className="font-semibold tracking-[0.08em] text-[#A77F18] uppercase">
           Dine Menu
         </Link>
 
@@ -99,8 +108,10 @@ export default function Sidebar() {
           <Link href="/" onClick={closeMenu} aria-label="Go to Dine Menu home" className="flex items-center gap-3">
             <div className="flex">
               <h2 className="font-semibold tracking-[0.08em] text-[#A77F18] uppercase">Dine Menu</h2>
+
               <div className="ml-3 border-l border-[#C09721]/20 pl-3">
                 <p className="font-semibold tracking-[0.08em] text-[#A77F18] uppercase">Restaurant</p>
+
                 <p className="font-medium tracking-[0.04em] text-slate-400">Essentials</p>
               </div>
             </div>
@@ -112,7 +123,6 @@ export default function Sidebar() {
 
         {/* Footer */}
         <footer className="space-y-3 border-t border-slate-100 p-4">
-          {/* User actions */}
           <UserActions />
         </footer>
       </aside>

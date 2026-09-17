@@ -1,12 +1,16 @@
 import { CategoryViewModel } from '@/types/category';
 import Image from 'next/image';
 import FoodActions from '@/components/food/food-modal-actions';
+import { checkAdmin } from '@/lib/auth-guard';
 
 type Props = {
   categories: CategoryViewModel[];
 };
 
-export default function Header({ categories }: Props) {
+export default async function Header({ categories }: Props) {
+  //Check if user is admin
+  const isAuthorized = (await checkAdmin()).authorized;
+
   return (
     <header className="relative mb-8 overflow-hidden rounded-3xl border border-[#A77F18] shadow-lg">
       {/* Decorative background image */}
@@ -50,9 +54,11 @@ export default function Header({ categories }: Props) {
         </div>
 
         {/* Show food-modal action */}
-        <div className="relative z-20 flex shrink-0 align-top">
-          <FoodActions categories={categories ?? []} />
-        </div>
+        {!isAuthorized && (
+          <div className="relative z-20 flex shrink-0 align-top">
+            <FoodActions categories={categories ?? []} />
+          </div>
+        )}
       </div>
     </header>
   );

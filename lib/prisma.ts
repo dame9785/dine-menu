@@ -7,9 +7,13 @@ const adapter = new PrismaMariaDb({
   user: process.env.MYSQL_USER!,
   password: process.env.MYSQL_PASSWORD!,
   database: process.env.MYSQL_DATABASE!,
+
+  ssl: {
+    rejectUnauthorized: false,
+  },
+
   connectionLimit: 5,
-  connectTimeout: 10_000,
-  ssl: true,
+  connectTimeout: 30_000,
 });
 
 const globalForPrisma = globalThis as unknown as {
