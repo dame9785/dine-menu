@@ -10,9 +10,11 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@better-auth/prisma-adapter": "^1.7.5",
     "@prisma/adapter-mariadb": "^7.10.0",
     "@prisma/client": "^7.10.0",
     "@vercel/blob": "^2.8.0",
+    "better-auth": "^1.7.5",
     "dotenv": "^17.4.2",
     "lucide-react": "^1.43.0",
     "next": "16.3.4",
