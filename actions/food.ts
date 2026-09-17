@@ -4,6 +4,8 @@ import { FoodService } from '@/services/food';
 import { revalidatePath } from 'next/cache';
 import { checkAdmin, requireSession } from '@/lib/auth-guard';
 import { success } from 'zod';
+import { headers } from 'next/headers';
+import { ApiResponse } from '@/types/api-responses';
 
 const foodService = new FoodService();
 
@@ -180,6 +182,30 @@ export async function deleteFavorite(menuItemId: number) {
     return {
       success: false,
       message: 'Couldt remove menu as favorite.',
+    };
+  }
+}
+
+export async function getFavoriteIds(): Promise<ApiResponse<number[]>> {
+  try {
+    const session = await requireSession();
+    if (!session) {
+      return {
+        success: false,
+        message: 'You need to be logged in.',
+      };
+    }
+
+    const result = await foodService.getFavoriteIds();
+
+    return result;
+  } catch (error) {
+    console.error('getFavoriteIds error:', error);
+
+    return {
+      success: false,
+      message: 'Could not get favorite IDs.',
+      data: [],
     };
   }
 }

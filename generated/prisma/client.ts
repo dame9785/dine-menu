@@ -76,3 +76,8 @@ export type Verification = Prisma.VerificationModel
  * 
  */
 export type Favorite = Prisma.FavoriteModel
+/**
+ * Model Comment
+ * 
+ */
+export type Comment = Prisma.CommentModel

@@ -1,5 +1,4 @@
 import { prisma } from '@/lib/prisma';
-import { id } from 'zod/v4/locales';
 
 export class FavoriteRepository {
   async addFavorite(userId: string, menuItemId: number) {
@@ -26,5 +25,18 @@ export class FavoriteRepository {
         },
       },
     });
+  }
+  // Hämta alla favorit-ID:n för en användare
+  async getFavoriteIds(userId: string): Promise<number[]> {
+    const favorites = await prisma.favorite.findMany({
+      where: {
+        userId,
+      },
+      select: {
+        menuItemId: true,
+      },
+    });
+
+    return favorites.map((favorite) => favorite.menuItemId);
   }
 }

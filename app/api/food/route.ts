@@ -42,8 +42,6 @@ export async function GET(request: NextRequest) {
 
     const userId = session?.user?.id;
 
-    console.log('SESSION USER ID:', userId);
-
     const pageParam = request.nextUrl.searchParams.get('page');
     const page = pageParam ? Number(pageParam) : 1;
 

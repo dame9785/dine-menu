@@ -6,14 +6,14 @@ type Props = {
   searchParam: string;
   categoryParam: string;
   sortByParam: string;
-  filterParam: string;
+  favoritesParam: string;
 };
 
-export default function Filtering({ categories, searchParam, categoryParam, sortByParam, filterParam }: Props) {
+export default function Filtering({ categories, searchParam, categoryParam, sortByParam, favoritesParam }: Props) {
   return (
     <section aria-label="Food filters" className="mb-8" id="food-filters">
       <form
-        key={`${searchParam}-${categoryParam}-${sortByParam}-${filterParam}`}
+        key={`${searchParam}-${categoryParam}-${sortByParam}-${favoritesParam}`}
         action="/#food-filters"
         method="GET"
         className="flex flex-col gap-3 rounded-2xl border border-[#C09721]/30 bg-[#FBF8F0] p-4 shadow-sm md:flex-row md:items-center"
@@ -84,7 +84,7 @@ export default function Filtering({ categories, searchParam, categoryParam, sort
         </div>
 
         {/* Preserve favorite filter when active */}
-        {filterParam !== '' && <input type="hidden" name="filter" value={filterParam} />}
+        {favoritesParam !== '' && <input type="hidden" name="filter" value={favoritesParam} />}
 
         {/* Submit button */}
         <button

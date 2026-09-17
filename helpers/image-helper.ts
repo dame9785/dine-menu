@@ -51,14 +51,6 @@ export async function saveImage(image: File): Promise<string> {
     throw new Error('BLOB_READ_WRITE_TOKEN is missing.');
   }
 
-  console.log({
-    hasBlobToken: Boolean(token),
-    tokenLength: token.length,
-    hasOidcToken: Boolean(process.env.VERCEL_OIDC_TOKEN),
-    vercelEnv: process.env.VERCEL_ENV,
-    blobStoreId: process.env.BLOB_STORE_ID,
-  });
-
   const blob = await put(fileName, image, {
     access: 'public',
     addRandomSuffix: false,

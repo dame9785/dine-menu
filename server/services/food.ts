@@ -269,4 +269,32 @@ export class FoodService {
       } satisfies ApiResponse<[]>;
     }
   }
+
+  async getFavoriteIds(userId: string): Promise<ApiResponse<number[]>> {
+    try {
+      if (!userId) {
+        return {
+          success: false,
+          message: 'You must be logged in to get favorites.',
+          data: [],
+        };
+      }
+
+      const favoriteIds = await favoriteRepository.getFavoriteIds(userId);
+
+      return {
+        success: true,
+        message: 'Favorite IDs retrieved successfully.',
+        data: favoriteIds,
+      } satisfies ApiResponse<number[]>;
+    } catch (error) {
+      console.error('ERROR WHILE GETTING FAVORITE IDS', error);
+
+      return {
+        success: false,
+        message: 'An error occurred while getting favorite IDs.',
+        data: [],
+      } satisfies ApiResponse<number[]>;
+    }
+  }
 }

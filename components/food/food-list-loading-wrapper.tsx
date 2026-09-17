@@ -1,11 +1,14 @@
 'use client';
 
-import { createContext, useContext, useTransition } from 'react';
-import { useRouter } from 'next/navigation';
+import { createContext, useContext, useEffect, useState, useTransition } from 'react';
+
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 
 type FilterLoadingContextType = {
   navigateWithLoading: (url: string) => void;
+  startLoading: () => void;
+  stopLoading: () => void;
   isPending: boolean;
 };
 
@@ -13,7 +16,19 @@ const FilterLoadingContext = createContext<FilterLoadingContextType | null>(null
 
 export function FilterLoadingProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const [isPending, startTransition] = useTransition();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const startLoading = () => {
+    setIsLoading(true);
+  };
+
+  const stopLoading = () => {
+    setIsLoading(false);
+  };
 
   const navigateWithLoading = (url: string) => {
     startTransition(() => {
@@ -21,8 +36,26 @@ export function FilterLoadingProvider({ children }: { children: React.ReactNode 
     });
   };
 
+  // Stäng laddningen när URL:en har uppdaterats
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setIsLoading(false);
+    }, 0);
+
+    return () => clearTimeout(timeout);
+  }, [pathname, searchParams]);
+
   return (
-    <FilterLoadingContext.Provider value={{ navigateWithLoading, isPending }}>{children}</FilterLoadingContext.Provider>
+    <FilterLoadingContext.Provider
+      value={{
+        navigateWithLoading,
+        startLoading,
+        stopLoading,
+        isPending: isPending || isLoading,
+      }}
+    >
+      {children}
+    </FilterLoadingContext.Provider>
   );
 }
 

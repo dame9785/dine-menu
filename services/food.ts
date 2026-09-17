@@ -160,4 +160,27 @@ export class FoodService {
       } satisfies ApiResponse<[]>;
     }
   }
+
+  async getFavoriteIds(): Promise<ApiResponse<number[]>> {
+    try {
+      const requestHeaders = await headers();
+
+      const response = await fetch(FAVORITE_API_URL, {
+        method: 'GET',
+        headers: {
+          Cookie: requestHeaders.get('cookie') ?? '',
+        },
+      });
+
+      return (await response.json()) as ApiResponse<number[]>;
+    } catch (error) {
+      console.error('API/FAVORITE/GET', error);
+
+      return {
+        success: false,
+        message: 'Could not connect to the server.',
+        data: [],
+      };
+    }
+  }
 }

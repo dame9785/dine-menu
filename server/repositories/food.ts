@@ -6,7 +6,7 @@ import { FoodDto } from '@/types/food';
 type FoodWithCategory = Prisma.menuitemGetPayload<{
   include: {
     category: true;
-    favorites: {
+    Favorite: {
       select: {
         id: true;
       };
@@ -113,8 +113,6 @@ export class FoodRepository {
       ],
     };
 
-    console.log('USER ID FROM SESSION:', userId);
-
     const [totalNumberOfFoods, foods] = await Promise.all([
       prisma.menuitem.count({
         where,
@@ -125,7 +123,7 @@ export class FoodRepository {
         orderBy,
         include: {
           category: true,
-          favorites: {
+          Favorite: {
             where: {
               userId: userId ?? '__unauthenticated__',
             },
@@ -164,7 +162,7 @@ export class FoodRepository {
       },
       include: {
         category: true,
-        favorites: true,
+        Favorite: true,
       },
     });
 
@@ -189,7 +187,7 @@ export class FoodRepository {
       },
       include: {
         category: true,
-        favorites: true,
+        Favorite: true,
       },
     });
 

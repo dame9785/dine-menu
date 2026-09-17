@@ -1,22 +1,26 @@
 import Image from 'next/image';
-import FavoriteAction from '@/components/food/actions/favorite-menu-action';
+import FavoriteAction from '@/components/food/actions/favorite-food-action';
 import { Heart, Utensils, Euro } from 'lucide-react';
 import { FoodViewModel } from '@/types/food';
 import { CategoryViewModel } from '@/types/category';
 import ModalAction from '@/components/food/actions/food-modal-actions';
+import { checkAdmin } from '@/lib/auth-guard';
 
 type Props = {
   foodItem: FoodViewModel;
   categories: CategoryViewModel[];
 };
 
-export default function DetailCard({ foodItem, categories }: Props) {
+export default async function DetailCard({ foodItem, categories }: Props) {
+  const isAdmin = (await checkAdmin()).authorized;
+  console.log(isAdmin);
   return (
     <article className="group relative overflow-hidden rounded-2xl border border-[#C09721]/30 bg-[#FFFCF5] shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#C09721] hover:shadow-md hover:shadow-[#C09721]/15">
-      {/* Edit */}
-      <div className="absolute top-5 right-5 z-30 rounded-2xl border border-[#C09721]/30 bg-[#FFFCF5]">
-        <ModalAction foodItem={foodItem} categories={categories} />
-      </div>
+      {isAdmin && (
+        <div className="absolute top-5 right-5 z-30 rounded-2xl border border-[#C09721]/30 bg-[#FFFCF5]">
+          <ModalAction foodItem={foodItem} categories={categories} />
+        </div>
+      )}
 
       <div className="grid md:grid-cols-2">
         {/* IMAGE */}
@@ -116,7 +120,7 @@ export default function DetailCard({ foodItem, categories }: Props) {
               </div>
             </div>
 
-            <FavoriteAction foodId={foodItem.id} />
+            <FavoriteAction foodId={foodItem.id} isFavorite={foodItem.isFavorite} />
           </div>
         </div>
       </div>

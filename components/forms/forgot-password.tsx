@@ -13,7 +13,6 @@ interface Props {
 }
 
 export default function ForgotPasswordForm({ onSuccess }: Props) {
-  console.log('Received onSuccess:', onSuccess);
   const [email, setEmail] = useState('');
   const [isPending, setIsPending] = useState(false);
 

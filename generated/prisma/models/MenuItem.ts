@@ -248,8 +248,9 @@ export type menuitemWhereInput = {
   categoryId?: Prisma.IntFilter<"menuitem"> | number
   createdAt?: Prisma.DateTimeFilter<"menuitem"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"menuitem"> | Date | string
+  Comment?: Prisma.CommentListRelationFilter
+  Favorite?: Prisma.FavoriteListRelationFilter
   category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.categoryWhereInput>
-  favorites?: Prisma.FavoriteListRelationFilter
 }
 
 export type menuitemOrderByWithRelationInput = {
@@ -261,8 +262,9 @@ export type menuitemOrderByWithRelationInput = {
   categoryId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  Comment?: Prisma.CommentOrderByRelationAggregateInput
+  Favorite?: Prisma.FavoriteOrderByRelationAggregateInput
   category?: Prisma.categoryOrderByWithRelationInput
-  favorites?: Prisma.FavoriteOrderByRelationAggregateInput
   _relevance?: Prisma.menuitemOrderByRelevanceInput
 }
 
@@ -278,8 +280,9 @@ export type menuitemWhereUniqueInput = Prisma.AtLeast<{
   categoryId?: Prisma.IntFilter<"menuitem"> | number
   createdAt?: Prisma.DateTimeFilter<"menuitem"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"menuitem"> | Date | string
+  Comment?: Prisma.CommentListRelationFilter
+  Favorite?: Prisma.FavoriteListRelationFilter
   category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.categoryWhereInput>
-  favorites?: Prisma.FavoriteListRelationFilter
 }, "id">
 
 export type menuitemOrderByWithAggregationInput = {
@@ -319,8 +322,9 @@ export type menuitemCreateInput = {
   imageUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  Comment?: Prisma.CommentCreateNestedManyWithoutMenuitemInput
+  Favorite?: Prisma.FavoriteCreateNestedManyWithoutMenuitemInput
   category: Prisma.categoryCreateNestedOneWithoutMenuitemInput
-  favorites?: Prisma.FavoriteCreateNestedManyWithoutMenuItemInput
 }
 
 export type menuitemUncheckedCreateInput = {
@@ -332,7 +336,8 @@ export type menuitemUncheckedCreateInput = {
   categoryId: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutMenuItemInput
+  Comment?: Prisma.CommentUncheckedCreateNestedManyWithoutMenuitemInput
+  Favorite?: Prisma.FavoriteUncheckedCreateNestedManyWithoutMenuitemInput
 }
 
 export type menuitemUpdateInput = {
@@ -342,8 +347,9 @@ export type menuitemUpdateInput = {
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  Comment?: Prisma.CommentUpdateManyWithoutMenuitemNestedInput
+  Favorite?: Prisma.FavoriteUpdateManyWithoutMenuitemNestedInput
   category?: Prisma.categoryUpdateOneRequiredWithoutMenuitemNestedInput
-  favorites?: Prisma.FavoriteUpdateManyWithoutMenuItemNestedInput
 }
 
 export type menuitemUncheckedUpdateInput = {
@@ -355,7 +361,8 @@ export type menuitemUncheckedUpdateInput = {
   categoryId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutMenuItemNestedInput
+  Comment?: Prisma.CommentUncheckedUpdateManyWithoutMenuitemNestedInput
+  Favorite?: Prisma.FavoriteUncheckedUpdateManyWithoutMenuitemNestedInput
 }
 
 export type menuitemCreateManyInput = {
@@ -509,18 +516,32 @@ export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
 }
 
-export type menuitemCreateNestedOneWithoutFavoritesInput = {
-  create?: Prisma.XOR<Prisma.menuitemCreateWithoutFavoritesInput, Prisma.menuitemUncheckedCreateWithoutFavoritesInput>
-  connectOrCreate?: Prisma.menuitemCreateOrConnectWithoutFavoritesInput
+export type menuitemCreateNestedOneWithoutFavoriteInput = {
+  create?: Prisma.XOR<Prisma.menuitemCreateWithoutFavoriteInput, Prisma.menuitemUncheckedCreateWithoutFavoriteInput>
+  connectOrCreate?: Prisma.menuitemCreateOrConnectWithoutFavoriteInput
   connect?: Prisma.menuitemWhereUniqueInput
 }
 
-export type menuitemUpdateOneRequiredWithoutFavoritesNestedInput = {
-  create?: Prisma.XOR<Prisma.menuitemCreateWithoutFavoritesInput, Prisma.menuitemUncheckedCreateWithoutFavoritesInput>
-  connectOrCreate?: Prisma.menuitemCreateOrConnectWithoutFavoritesInput
-  upsert?: Prisma.menuitemUpsertWithoutFavoritesInput
+export type menuitemUpdateOneRequiredWithoutFavoriteNestedInput = {
+  create?: Prisma.XOR<Prisma.menuitemCreateWithoutFavoriteInput, Prisma.menuitemUncheckedCreateWithoutFavoriteInput>
+  connectOrCreate?: Prisma.menuitemCreateOrConnectWithoutFavoriteInput
+  upsert?: Prisma.menuitemUpsertWithoutFavoriteInput
   connect?: Prisma.menuitemWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.menuitemUpdateToOneWithWhereWithoutFavoritesInput, Prisma.menuitemUpdateWithoutFavoritesInput>, Prisma.menuitemUncheckedUpdateWithoutFavoritesInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.menuitemUpdateToOneWithWhereWithoutFavoriteInput, Prisma.menuitemUpdateWithoutFavoriteInput>, Prisma.menuitemUncheckedUpdateWithoutFavoriteInput>
+}
+
+export type menuitemCreateNestedOneWithoutCommentInput = {
+  create?: Prisma.XOR<Prisma.menuitemCreateWithoutCommentInput, Prisma.menuitemUncheckedCreateWithoutCommentInput>
+  connectOrCreate?: Prisma.menuitemCreateOrConnectWithoutCommentInput
+  connect?: Prisma.menuitemWhereUniqueInput
+}
+
+export type menuitemUpdateOneRequiredWithoutCommentNestedInput = {
+  create?: Prisma.XOR<Prisma.menuitemCreateWithoutCommentInput, Prisma.menuitemUncheckedCreateWithoutCommentInput>
+  connectOrCreate?: Prisma.menuitemCreateOrConnectWithoutCommentInput
+  upsert?: Prisma.menuitemUpsertWithoutCommentInput
+  connect?: Prisma.menuitemWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.menuitemUpdateToOneWithWhereWithoutCommentInput, Prisma.menuitemUpdateWithoutCommentInput>, Prisma.menuitemUncheckedUpdateWithoutCommentInput>
 }
 
 export type menuitemCreateWithoutCategoryInput = {
@@ -530,7 +551,8 @@ export type menuitemCreateWithoutCategoryInput = {
   imageUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  favorites?: Prisma.FavoriteCreateNestedManyWithoutMenuItemInput
+  Comment?: Prisma.CommentCreateNestedManyWithoutMenuitemInput
+  Favorite?: Prisma.FavoriteCreateNestedManyWithoutMenuitemInput
 }
 
 export type menuitemUncheckedCreateWithoutCategoryInput = {
@@ -541,7 +563,8 @@ export type menuitemUncheckedCreateWithoutCategoryInput = {
   imageUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutMenuItemInput
+  Comment?: Prisma.CommentUncheckedCreateNestedManyWithoutMenuitemInput
+  Favorite?: Prisma.FavoriteUncheckedCreateNestedManyWithoutMenuitemInput
 }
 
 export type menuitemCreateOrConnectWithoutCategoryInput = {
@@ -584,17 +607,18 @@ export type menuitemScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"menuitem"> | Date | string
 }
 
-export type menuitemCreateWithoutFavoritesInput = {
+export type menuitemCreateWithoutFavoriteInput = {
   name: string
   description: string
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  Comment?: Prisma.CommentCreateNestedManyWithoutMenuitemInput
   category: Prisma.categoryCreateNestedOneWithoutMenuitemInput
 }
 
-export type menuitemUncheckedCreateWithoutFavoritesInput = {
+export type menuitemUncheckedCreateWithoutFavoriteInput = {
   id?: number
   name: string
   description: string
@@ -603,35 +627,37 @@ export type menuitemUncheckedCreateWithoutFavoritesInput = {
   categoryId: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  Comment?: Prisma.CommentUncheckedCreateNestedManyWithoutMenuitemInput
 }
 
-export type menuitemCreateOrConnectWithoutFavoritesInput = {
+export type menuitemCreateOrConnectWithoutFavoriteInput = {
   where: Prisma.menuitemWhereUniqueInput
-  create: Prisma.XOR<Prisma.menuitemCreateWithoutFavoritesInput, Prisma.menuitemUncheckedCreateWithoutFavoritesInput>
+  create: Prisma.XOR<Prisma.menuitemCreateWithoutFavoriteInput, Prisma.menuitemUncheckedCreateWithoutFavoriteInput>
 }
 
-export type menuitemUpsertWithoutFavoritesInput = {
-  update: Prisma.XOR<Prisma.menuitemUpdateWithoutFavoritesInput, Prisma.menuitemUncheckedUpdateWithoutFavoritesInput>
-  create: Prisma.XOR<Prisma.menuitemCreateWithoutFavoritesInput, Prisma.menuitemUncheckedCreateWithoutFavoritesInput>
+export type menuitemUpsertWithoutFavoriteInput = {
+  update: Prisma.XOR<Prisma.menuitemUpdateWithoutFavoriteInput, Prisma.menuitemUncheckedUpdateWithoutFavoriteInput>
+  create: Prisma.XOR<Prisma.menuitemCreateWithoutFavoriteInput, Prisma.menuitemUncheckedCreateWithoutFavoriteInput>
   where?: Prisma.menuitemWhereInput
 }
 
-export type menuitemUpdateToOneWithWhereWithoutFavoritesInput = {
+export type menuitemUpdateToOneWithWhereWithoutFavoriteInput = {
   where?: Prisma.menuitemWhereInput
-  data: Prisma.XOR<Prisma.menuitemUpdateWithoutFavoritesInput, Prisma.menuitemUncheckedUpdateWithoutFavoritesInput>
+  data: Prisma.XOR<Prisma.menuitemUpdateWithoutFavoriteInput, Prisma.menuitemUncheckedUpdateWithoutFavoriteInput>
 }
 
-export type menuitemUpdateWithoutFavoritesInput = {
+export type menuitemUpdateWithoutFavoriteInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  Comment?: Prisma.CommentUpdateManyWithoutMenuitemNestedInput
   category?: Prisma.categoryUpdateOneRequiredWithoutMenuitemNestedInput
 }
 
-export type menuitemUncheckedUpdateWithoutFavoritesInput = {
+export type menuitemUncheckedUpdateWithoutFavoriteInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
@@ -640,6 +666,69 @@ export type menuitemUncheckedUpdateWithoutFavoritesInput = {
   categoryId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  Comment?: Prisma.CommentUncheckedUpdateManyWithoutMenuitemNestedInput
+}
+
+export type menuitemCreateWithoutCommentInput = {
+  name: string
+  description: string
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  imageUrl?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  Favorite?: Prisma.FavoriteCreateNestedManyWithoutMenuitemInput
+  category: Prisma.categoryCreateNestedOneWithoutMenuitemInput
+}
+
+export type menuitemUncheckedCreateWithoutCommentInput = {
+  id?: number
+  name: string
+  description: string
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  imageUrl?: string | null
+  categoryId: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  Favorite?: Prisma.FavoriteUncheckedCreateNestedManyWithoutMenuitemInput
+}
+
+export type menuitemCreateOrConnectWithoutCommentInput = {
+  where: Prisma.menuitemWhereUniqueInput
+  create: Prisma.XOR<Prisma.menuitemCreateWithoutCommentInput, Prisma.menuitemUncheckedCreateWithoutCommentInput>
+}
+
+export type menuitemUpsertWithoutCommentInput = {
+  update: Prisma.XOR<Prisma.menuitemUpdateWithoutCommentInput, Prisma.menuitemUncheckedUpdateWithoutCommentInput>
+  create: Prisma.XOR<Prisma.menuitemCreateWithoutCommentInput, Prisma.menuitemUncheckedCreateWithoutCommentInput>
+  where?: Prisma.menuitemWhereInput
+}
+
+export type menuitemUpdateToOneWithWhereWithoutCommentInput = {
+  where?: Prisma.menuitemWhereInput
+  data: Prisma.XOR<Prisma.menuitemUpdateWithoutCommentInput, Prisma.menuitemUncheckedUpdateWithoutCommentInput>
+}
+
+export type menuitemUpdateWithoutCommentInput = {
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  Favorite?: Prisma.FavoriteUpdateManyWithoutMenuitemNestedInput
+  category?: Prisma.categoryUpdateOneRequiredWithoutMenuitemNestedInput
+}
+
+export type menuitemUncheckedUpdateWithoutCommentInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryId?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  Favorite?: Prisma.FavoriteUncheckedUpdateManyWithoutMenuitemNestedInput
 }
 
 export type menuitemCreateManyCategoryInput = {
@@ -659,7 +748,8 @@ export type menuitemUpdateWithoutCategoryInput = {
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  favorites?: Prisma.FavoriteUpdateManyWithoutMenuItemNestedInput
+  Comment?: Prisma.CommentUpdateManyWithoutMenuitemNestedInput
+  Favorite?: Prisma.FavoriteUpdateManyWithoutMenuitemNestedInput
 }
 
 export type menuitemUncheckedUpdateWithoutCategoryInput = {
@@ -670,7 +760,8 @@ export type menuitemUncheckedUpdateWithoutCategoryInput = {
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutMenuItemNestedInput
+  Comment?: Prisma.CommentUncheckedUpdateManyWithoutMenuitemNestedInput
+  Favorite?: Prisma.FavoriteUncheckedUpdateManyWithoutMenuitemNestedInput
 }
 
 export type menuitemUncheckedUpdateManyWithoutCategoryInput = {
@@ -689,11 +780,13 @@ export type menuitemUncheckedUpdateManyWithoutCategoryInput = {
  */
 
 export type MenuitemCountOutputType = {
-  favorites: number
+  Comment: number
+  Favorite: number
 }
 
 export type MenuitemCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  favorites?: boolean | MenuitemCountOutputTypeCountFavoritesArgs
+  Comment?: boolean | MenuitemCountOutputTypeCountCommentArgs
+  Favorite?: boolean | MenuitemCountOutputTypeCountFavoriteArgs
 }
 
 /**
@@ -709,7 +802,14 @@ export type MenuitemCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Ext
 /**
  * MenuitemCountOutputType without action
  */
-export type MenuitemCountOutputTypeCountFavoritesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type MenuitemCountOutputTypeCountCommentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CommentWhereInput
+}
+
+/**
+ * MenuitemCountOutputType without action
+ */
+export type MenuitemCountOutputTypeCountFavoriteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.FavoriteWhereInput
 }
 
@@ -723,8 +823,9 @@ export type menuitemSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   categoryId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  Comment?: boolean | Prisma.menuitem$CommentArgs<ExtArgs>
+  Favorite?: boolean | Prisma.menuitem$FavoriteArgs<ExtArgs>
   category?: boolean | Prisma.categoryDefaultArgs<ExtArgs>
-  favorites?: boolean | Prisma.menuitem$favoritesArgs<ExtArgs>
   _count?: boolean | Prisma.MenuitemCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["menuitem"]>
 
@@ -743,16 +844,18 @@ export type menuitemSelectScalar = {
 
 export type menuitemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "price" | "imageUrl" | "categoryId" | "createdAt" | "updatedAt", ExtArgs["result"]["menuitem"]>
 export type menuitemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  Comment?: boolean | Prisma.menuitem$CommentArgs<ExtArgs>
+  Favorite?: boolean | Prisma.menuitem$FavoriteArgs<ExtArgs>
   category?: boolean | Prisma.categoryDefaultArgs<ExtArgs>
-  favorites?: boolean | Prisma.menuitem$favoritesArgs<ExtArgs>
   _count?: boolean | Prisma.MenuitemCountOutputTypeDefaultArgs<ExtArgs>
 }
 
 export type $menuitemPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "menuitem"
   objects: {
+    Comment: Prisma.$CommentPayload<ExtArgs>[]
+    Favorite: Prisma.$FavoritePayload<ExtArgs>[]
     category: Prisma.$categoryPayload<ExtArgs>
-    favorites: Prisma.$FavoritePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1103,8 +1206,9 @@ readonly fields: menuitemFieldRefs;
  */
 export interface Prisma__menuitemClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  Comment<T extends Prisma.menuitem$CommentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.menuitem$CommentArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  Favorite<T extends Prisma.menuitem$FavoriteArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.menuitem$FavoriteArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoritePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   category<T extends Prisma.categoryDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.categoryDefaultArgs<ExtArgs>>): Prisma.Prisma__categoryClient<runtime.Types.Result.GetResult<Prisma.$categoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  favorites<T extends Prisma.menuitem$favoritesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.menuitem$favoritesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoritePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1490,9 +1594,33 @@ export type menuitemDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
 }
 
 /**
- * menuitem.favorites
+ * menuitem.Comment
  */
-export type menuitem$favoritesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type menuitem$CommentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Comment
+   */
+  select?: Prisma.CommentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Comment
+   */
+  omit?: Prisma.CommentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CommentInclude<ExtArgs> | null
+  where?: Prisma.CommentWhereInput
+  orderBy?: Prisma.CommentOrderByWithRelationInput | Prisma.CommentOrderByWithRelationInput[]
+  cursor?: Prisma.CommentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CommentScalarFieldEnum | Prisma.CommentScalarFieldEnum[]
+}
+
+/**
+ * menuitem.Favorite
+ */
+export type menuitem$FavoriteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Favorite
    */

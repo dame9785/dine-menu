@@ -52,9 +52,11 @@ export default function FoodCard({ foodItem, categories, isAdmin, isLoggedIn }: 
         <FoodCardContent foodItem={foodItem} />
       </Link>
 
-      <div className="absolute top-2 right-2 z-30">
-        <FavoriteAction foodId={foodItem.id} isFavorite={foodItem.isFavorite} />
-      </div>
+      {isLoggedIn && (
+        <div className="absolute top-2 right-2 z-30">
+          <FavoriteAction foodId={foodItem.id} isFavorite={foodItem.isFavorite} />
+        </div>
+      )}
 
       {isAdmin && (
         <div className="absolute right-5 bottom-5 z-40">

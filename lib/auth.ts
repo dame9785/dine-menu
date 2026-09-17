@@ -21,8 +21,6 @@ export const auth = betterAuth({
         throw new Error('NEXT_PUBLIC_LOGO_URL is missing');
       }
 
-      console.log('Logo URL:', logoUrl);
-
       await sendEmail({
         to: user.email,
         subject: 'Reset your Dine Menu password',

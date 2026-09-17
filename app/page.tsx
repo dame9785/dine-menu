@@ -8,7 +8,7 @@ import FoodList from '@/components/food/food-list';
 import LoadingSpinner from '@/components/loading-spinner';
 import Header from '@/components/food/header';
 import { Utensils } from 'lucide-react';
-import FilterActions from '@/components/food/actions/filter-actions';
+import FilterButtons from '@/components/food/actions/filter-buttons';
 import Pagination from '@/components/pagination/pagination';
 
 import { FilterLoadingProvider, FoodListLoadingOverlay } from '@/components/food/food-list-loading-wrapper';
@@ -21,7 +21,7 @@ type Props = {
     page?: string;
     search?: string;
     category?: string;
-    filter?: string;
+    favoritesParam?: string;
     sortBy?: string;
   }>;
 };
@@ -32,12 +32,12 @@ export default async function MenuPage({ searchParams }: Props) {
   const currentPage = Number(params.page ?? '1');
   const searchParam = params.search ?? '';
   const categoryParam = params.category ?? '';
-  const filterParam = params.filter ?? '';
+  const favoritesParam = params.favoritesParam ?? '';
   const sortByParam = params.sortBy ?? '';
 
   const [categoryResponse, foodResponse] = await Promise.all([
     categoryService.getAll(1),
-    foodService.getAll(currentPage, searchParam, categoryParam, filterParam, sortByParam),
+    foodService.getAll(currentPage, searchParam, categoryParam, favoritesParam, sortByParam),
   ]);
 
   const categories = categoryResponse.data;
@@ -58,7 +58,7 @@ export default async function MenuPage({ searchParams }: Props) {
         searchParam={searchParam}
         categoryParam={categoryParam}
         sortByParam={sortByParam}
-        filterParam={filterParam}
+        favoritesParam={favoritesParam}
       />
 
       {/* Loading provider */}
@@ -73,7 +73,7 @@ export default async function MenuPage({ searchParams }: Props) {
           </div>
 
           {/* Filter actions */}
-          <FilterActions
+          <FilterButtons
             currentPage={currentPage}
             searchParam={searchParam}
             categoryParam={categoryParam}
@@ -100,7 +100,7 @@ export default async function MenuPage({ searchParams }: Props) {
             search: searchParam,
             category: categoryParam,
             sortBy: sortByParam,
-            filter: filterParam,
+            favorites: favoritesParam,
           }}
         />
       )}
