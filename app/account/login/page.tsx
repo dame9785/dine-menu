@@ -11,6 +11,7 @@ export default function LoginPage() {
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
 
+  //Redirect to home page if already logged in
   useEffect(() => {
     if (!isPending && session) {
       router.replace('/');
@@ -34,7 +35,7 @@ export default function LoginPage() {
         {/* Register link */}
         <p className="mt-6 text-center text-sm text-gray-500">
           Dont have an account?{' '}
-          <Link href="/register" className="font-semibold text-[#A77F18] hover:underline">
+          <Link href="/account/register" className="font-semibold text-[#A77F18] hover:underline">
             Register
           </Link>
         </p>

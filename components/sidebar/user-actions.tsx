@@ -14,7 +14,7 @@ export default function UserActions() {
   async function handleLogout() {
     await authClient.signOut();
 
-    router.push('/login');
+    router.push('/account/login');
     router.refresh();
   }
 
@@ -61,7 +61,7 @@ export default function UserActions() {
                 <p className="text-xs text-gray-500">Not logged in</p>
               </div>
               <Link
-                href="/login"
+                href="/account/login"
                 className="mt-5 flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-[#C09721] px-3 py-2 text-sm font-medium text-[#8B6914] transition hover:bg-[#C09721] hover:text-white"
               >
                 Login

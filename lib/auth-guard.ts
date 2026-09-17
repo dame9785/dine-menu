@@ -16,13 +16,21 @@ export async function requireSession() {
   return session;
 }
 
+export async function getSession() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  return session;
+}
+
 export async function requireAdmin() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
 
   if (!session) {
-    redirect('/login');
+    redirect('/account/login');
   }
 
   const user = await prisma.user.findUnique({
