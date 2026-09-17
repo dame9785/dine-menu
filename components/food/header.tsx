@@ -53,7 +53,7 @@ export default async function Header({ categories }: Props) {
         </div>
 
         {/* Show food-modal action */}
-        {isAuthorized && (
+        {isAuthorized.authorized && (
           <div className="relative z-20 flex shrink-0 align-top">
             <FoodActions categories={categories ?? []} />
           </div>

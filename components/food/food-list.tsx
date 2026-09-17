@@ -4,6 +4,7 @@ import FoodCard from '@/components/food/food-card';
 
 import { CategoryViewModel } from '@/types/category';
 import { FoodViewModel } from '@/types/food';
+import { checkAdmin } from '@/lib/auth-guard';
 
 type Props = {
   categories: CategoryViewModel[];
@@ -11,6 +12,8 @@ type Props = {
 };
 
 export default async function FoodList({ categories, foods }: Props) {
+  const isAdmin = (await checkAdmin()).authorized;
+  console.log('IS ADMIN', isAdmin);
   return (
     <>
       {/* Foods */}
@@ -25,7 +28,7 @@ export default async function FoodList({ categories, foods }: Props) {
             <span className="text-l mt-1 text-slate-600">No food items match your current filter</span>
           </div>
         ) : (
-          foods.map((item) => <FoodCard key={item.id} foodItem={item} categories={categories} />)
+          foods.map((item) => <FoodCard key={item.id} isAdmin={isAdmin} foodItem={item} categories={categories} />)
         )}
       </div>
     </>

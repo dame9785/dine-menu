@@ -10,6 +10,7 @@ import Header from '@/components/food/header';
 import { Utensils } from 'lucide-react';
 import FilterActions from '@/components/food/filter-actions';
 import Pagination from '@/components/pagination/pagination';
+import { authClient } from '@/lib/auth-client';
 
 const categoryService = new CategoryService();
 

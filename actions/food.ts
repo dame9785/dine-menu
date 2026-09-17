@@ -56,7 +56,14 @@ export async function deleteFood(foodId: number): Promise<{ success: boolean; me
 
 export async function updateFood(foodId: number, formData: FormData) {
   try {
-    await requireAdmin();
+    const adminCheck = await checkAdmin();
+
+    if (!adminCheck.authorized) {
+      return {
+        success: false,
+        message: adminCheck.message,
+      };
+    }
 
     const response = await foodService.update(foodId, formData);
 
