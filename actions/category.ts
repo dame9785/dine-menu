@@ -7,39 +7,55 @@ import { revalidatePath } from 'next/cache';
 const categoryService = new CategoryService();
 
 export async function deleteCategory(categoryId: number) {
-  const response = await categoryService.delete(categoryId);
+  try {
+    const response = await categoryService.delete(categoryId);
 
-  if (!response.success) {
+    if (!response.success) {
+      return {
+        success: response.success,
+        message: response.message,
+      };
+    }
+
+    revalidatePath('/');
+
     return {
       success: response.success,
       message: response.message,
     };
+  } catch (error) {
+    console.error('DELETE CATEGORY ACTION ERROR', error);
+    return {
+      success: false,
+      message: 'Something went wrong.',
+    };
   }
-
-  revalidatePath('/');
-
-  return {
-    success: response.success,
-    message: response.message,
-  };
 }
 
 export async function createCategory(dto: CategoryDto) {
-  const response = await categoryService.create(dto);
+  try {
+    const response = await categoryService.create(dto);
 
-  if (!response.success) {
+    if (!response.success) {
+      return {
+        success: response.success,
+        message: response.message,
+      };
+    }
+
+    revalidatePath('/');
+
     return {
       success: response.success,
       message: response.message,
     };
+  } catch (error) {
+    console.error('CREATE CATEGORY ACTION ERROR', error);
+    return {
+      success: false,
+      message: 'Something went wrong.',
+    };
   }
-
-  revalidatePath('/');
-
-  return {
-    success: response.success,
-    message: response.message,
-  };
 }
 
 export async function updateCategory(dto: UpdateCategoryDto, categoryId: number) {
@@ -49,18 +65,27 @@ export async function updateCategory(dto: UpdateCategoryDto, categoryId: number)
       message: 'not item found',
     };
   }
-  const response = await categoryService.update(dto, categoryId);
-  if (!response.success) {
+
+  try {
+    const response = await categoryService.update(dto, categoryId);
+    if (!response.success) {
+      return {
+        success: response.success,
+        message: response.message,
+      };
+    }
+
+    revalidatePath('/');
+
     return {
       success: response.success,
       message: response.message,
     };
+  } catch (error) {
+    console.error('UPDATE CATEGORY ACTION ERROR', error);
+    return {
+      success: false,
+      message: 'Something went wrong.',
+    };
   }
-
-  revalidatePath('/');
-
-  return {
-    success: response.success,
-    message: response.message,
-  };
 }
