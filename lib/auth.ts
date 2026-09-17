@@ -4,6 +4,8 @@ import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { sendEmail } from '@/lib/email';
 import { prisma } from '@/lib/prisma';
 
+import { resetPasswordEmail } from '@/lib/email-templates/reset-password-email';
+
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: 'mysql',
@@ -13,25 +15,24 @@ export const auth = betterAuth({
     enabled: true,
 
     sendResetPassword: async ({ user, url }) => {
+      const logoUrl = process.env.NEXT_PUBLIC_LOGO_URL;
+
+      if (!logoUrl) {
+        throw new Error('NEXT_PUBLIC_LOGO_URL is missing');
+      }
+
+      console.log('Logo URL:', logoUrl);
+
       await sendEmail({
         to: user.email,
         subject: 'Reset your Dine Menu password',
-        html: `
-          <h1>Reset your password</h1>
-
-          <p>Hello ${user.name},</p>
-
-          <p>Click the link below to reset your password:</p>
-
-          <a href="${url}">
-            Reset Password
-          </a>
-
-          <p>This link will expire after a limited time.</p>
-        `,
+        html: resetPasswordEmail({
+          userName: user.name || 'there',
+          resetUrl: url,
+          logoUrl,
+        }),
       });
     },
-
     revokeSessionsOnPasswordReset: true,
   },
 });
