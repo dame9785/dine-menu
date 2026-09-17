@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { House, Folder, Menu, X } from 'lucide-react';
+import UserActions from '@/components/sidebar/user-actions';
 
 const navigationItems = [
   {
@@ -49,7 +50,6 @@ export default function Sidebar() {
                 <Icon size={18} aria-hidden="true" className={isActive ? 'text-[#765315]' : 'text-slate-500'} />
 
                 <span>{item.label}</span>
-
                 {isActive && <span aria-hidden="true" className="ml-auto h-1.5 w-1.5 rounded-full bg-[#A77F18]" />}
               </Link>
             </li>
@@ -99,10 +99,8 @@ export default function Sidebar() {
           <Link href="/" onClick={closeMenu} aria-label="Go to Dine Menu home" className="flex items-center gap-3">
             <div className="flex">
               <h2 className="font-semibold tracking-[0.08em] text-[#A77F18] uppercase">Dine Menu</h2>
-
               <div className="ml-3 border-l border-[#C09721]/20 pl-3">
                 <p className="font-semibold tracking-[0.08em] text-[#A77F18] uppercase">Restaurant</p>
-
                 <p className="font-medium tracking-[0.04em] text-slate-400">Essentials</p>
               </div>
             </div>
@@ -113,16 +111,9 @@ export default function Sidebar() {
         {navigation}
 
         {/* Footer */}
-        <footer className="border-t border-slate-100 p-4">
-          <div className="rounded-2xl border border-[#C09721]/15 bg-[#FFFCF5] px-4 py-4">
-            <div className="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-[#E8DAB8] text-sm font-bold text-[#765315]">
-              D
-            </div>
-
-            <p className="text-xs font-bold text-slate-700">Dine Menu</p>
-
-            <p className="mt-1 text-[11px] leading-4 text-slate-400">Restaurant management</p>
-          </div>
+        <footer className="space-y-3 border-t border-slate-100 p-4">
+          {/* User actions */}
+          <UserActions />
         </footer>
       </aside>
     </>
