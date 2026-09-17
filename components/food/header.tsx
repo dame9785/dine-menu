@@ -12,12 +12,12 @@ export default function Header({ categories }: Props) {
       {/* Decorative background image */}
       <div aria-hidden="true" className="absolute inset-y-0 right-0 hidden w-1/2 md:block">
         <Image
-          src="/img/logo.png"
-          alt="Dine Menu"
-          width={500}
-          height={500}
+          src="/img/header.jpg"
+          alt=""
+          fill
           priority
-          className="h-full w-full object-contain object-left"
+          sizes="(min-width: 768px) 50vw, 100vw"
+          className="object-cover object-center"
         />
 
         {/* Fade image into content */}
@@ -26,9 +26,7 @@ export default function Header({ categories }: Props) {
 
       {/* Header content */}
       <div className="relative z-10 flex min-h-80 flex-col gap-8 px-6 py-8 md:flex-row md:items-center md:justify-between md:px-10 lg:px-12">
-        {/* Content */}
         <div className="max-w-xl">
-          {/* Logo */}
           <div className="mb-4 h-40 w-48 sm:h-48 sm:w-56">
             <Image
               src="/img/foods/logotype.png"
@@ -51,7 +49,7 @@ export default function Header({ categories }: Props) {
           </div>
         </div>
 
-        {/* Show food modal action */}
+        {/* Show food-modal action */}
         <div className="relative z-20 flex shrink-0 align-top">
           <FoodActions categories={categories ?? []} />
         </div>
