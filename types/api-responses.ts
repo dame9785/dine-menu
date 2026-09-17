@@ -1,5 +1,5 @@
 import { CategoryViewModel } from './category';
-import { FoodViewModel } from './food';
+import { MenuItemViewModel } from './menu';
 
 export interface ApiResponse<T> {
   success: boolean;
@@ -14,10 +14,10 @@ export interface CategoryApiResponse {
   pagination: Pagination | null;
 }
 
-export interface FoodApiResponse {
+export interface MenuApiResponse {
   success: boolean;
   message: string;
-  data: FoodViewModel[];
+  data: MenuItemViewModel[];
   pagination: Pagination | null;
 }
 

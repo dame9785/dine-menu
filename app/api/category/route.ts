@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
       status: result.success ? 200 : 404,
     });
   } catch (error) {
-    console.error('CATEGORIES/GET', error);
+    console.error('API ERROR /api/category/get: ', error);
 
     return NextResponse.json(
       {

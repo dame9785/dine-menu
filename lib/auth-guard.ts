@@ -57,7 +57,7 @@ export async function checkAdmin() {
   if (!session) {
     return {
       authorized: false,
-      message: 'You do not have permission to add food.',
+      message: 'You do not have permission to add menu.',
     };
   }
 

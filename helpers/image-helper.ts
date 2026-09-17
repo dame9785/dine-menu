@@ -6,7 +6,7 @@ import path from 'path';
 //   const bytes = await image.arrayBuffer();
 //   const buffer = Buffer.from(bytes);
 
-//   const uploadDir = path.join(process.cwd(), 'public', 'img', 'foods');
+//   const uploadDir = path.join(process.cwd(), 'public', 'img', 'menus');
 
 //   await mkdir(uploadDir, { recursive: true });
 
@@ -17,13 +17,13 @@ import path from 'path';
 
 //   await writeFile(uploadPath, buffer);
 
-//   return `/img/foods/${fileName}`;
+//   return `/img/menu/${fileName}`;
 // }
 
 // export async function saveImage(image: File): Promise<string> {
 //   const extension = image.name.split('.').pop() ?? 'png';
 
-//   const fileName = `foods/${crypto.randomUUID()}.${extension}`;
+//   const fileName = `menus/${crypto.randomUUID()}.${extension}`;
 
 //   const blob = await put(fileName, image, {
 //     access: 'public',
@@ -43,7 +43,7 @@ export async function saveImage(image: File): Promise<string> {
 
   const extension = image.name.split('.').pop()?.toLowerCase() ?? 'jpg';
 
-  const fileName = `foods/${crypto.randomUUID()}.${extension}`;
+  const fileName = `menu/${crypto.randomUUID()}.${extension}`;
 
   const token = process.env.BLOB_READ_WRITE_TOKEN;
 

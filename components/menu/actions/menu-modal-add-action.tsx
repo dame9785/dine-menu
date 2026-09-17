@@ -6,7 +6,7 @@ type Props = {
   onClick: () => void;
 };
 
-export default function AddMenuAction({ onClick }: Props) {
+export default function AddMenuButton({ onClick }: Props) {
   return (
     <button
       type="button"
@@ -15,7 +15,7 @@ export default function AddMenuAction({ onClick }: Props) {
     >
       <Plus size={17} aria-hidden="true" className="transition-transform duration-300 group-hover:-rotate-45" />
 
-      <span>Add category</span>
+      <span>Add menu</span>
     </button>
   );
 }

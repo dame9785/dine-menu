@@ -11,6 +11,17 @@ export const auth = betterAuth({
     provider: 'mysql',
   }),
 
+  user: {
+    additionalFields: {
+      role: {
+        type: 'string',
+        required: true,
+        defaultValue: 'user',
+        input: false,
+      },
+    },
+  },
+
   emailAndPassword: {
     enabled: true,
 
@@ -31,6 +42,7 @@ export const auth = betterAuth({
         }),
       });
     },
+
     revokeSessionsOnPasswordReset: true,
   },
 });

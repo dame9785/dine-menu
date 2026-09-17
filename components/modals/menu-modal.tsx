@@ -1,20 +1,23 @@
 'use client';
 
-import type { CategoryViewModel } from '@/types/category';
-
 import { X } from 'lucide-react';
-import CategoryForm from '@/components/forms/category-form';
 import { createPortal } from 'react-dom';
 import { useSyncExternalStore } from 'react';
 
+import { MenuItemViewModel } from '@/types/menu';
+import { CategoryViewModel } from '@/types/category';
+
+import MenuForm from '@/components/forms/menu-form';
+
 type Props = {
-  category?: CategoryViewModel;
+  categories: CategoryViewModel[];
+  menuItem?: MenuItemViewModel;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 };
 
-export default function CategoryModal({ category, open, onOpenChange }: Props) {
-  const isEditMode = !!category;
+export default function MenuModal({ categories, menuItem, open, onOpenChange }: Props) {
+  const isEditMode = !!menuItem;
 
   // Detect client-side rendering without useEffect/setState
   const mounted = useSyncExternalStore(
@@ -55,7 +58,7 @@ export default function CategoryModal({ category, open, onOpenChange }: Props) {
               </h2>
 
               <p className="mt-1 text-sm leading-5 text-slate-500">
-                {isEditMode ? 'Update the information for this category.' : 'Add a new category'}
+                {isEditMode ? 'Update the information for this dish.' : 'Add a new dish to your menu.'}
               </p>
             </div>
 
@@ -73,7 +76,7 @@ export default function CategoryModal({ category, open, onOpenChange }: Props) {
 
         {/* Form */}
         <div className="overflow-y-auto">
-          <CategoryForm category={category} onOpenChange={handleClose} />
+          <MenuForm menuItem={menuItem} categories={categories} onOpenChange={handleClose} />
         </div>
       </div>
     </div>,
