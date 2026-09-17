@@ -9,7 +9,7 @@ type Props = {
 
 export default async function Header({ categories }: Props) {
   //Check if user is admin
-  const isAuthorized = (await checkAdmin()).authorized;
+  const isAuthorized = await checkAdmin();
 
   return (
     <header className="relative mb-8 overflow-hidden rounded-3xl border border-[#A77F18] shadow-lg">
@@ -46,7 +46,6 @@ export default async function Header({ categories }: Props) {
             <h1 className="text-3xl font-bold text-slate-700 sm:text-4xl">
               Manage <span className="text-[#A77F18]">your menu</span>
             </h1>
-
             <p className="mt-2 max-w-md text-lg leading-6 font-semibold text-slate-700">
               Here you can find your dishes.
             </p>
@@ -54,7 +53,7 @@ export default async function Header({ categories }: Props) {
         </div>
 
         {/* Show food-modal action */}
-        {!isAuthorized && (
+        {isAuthorized && (
           <div className="relative z-20 flex shrink-0 align-top">
             <FoodActions categories={categories ?? []} />
           </div>

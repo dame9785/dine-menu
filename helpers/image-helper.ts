@@ -20,17 +20,50 @@ import path from 'path';
 //   return `/img/foods/${fileName}`;
 // }
 
+// export async function saveImage(image: File): Promise<string> {
+//   const extension = image.name.split('.').pop() ?? 'png';
+
+//   const fileName = `foods/${crypto.randomUUID()}.${extension}`;
+
+//   const blob = await put(fileName, image, {
+//     access: 'public',
+//     addRandomSuffix: false,
+//     contentType: image.type,
+//     oidcToken: process.env.VERCEL_OIDC_TOKEN,
+//     storeId: process.env.BLOB_STORE_ID,
+//   });
+
+//   return blob.url;
+// }
+
 export async function saveImage(image: File): Promise<string> {
-  const extension = image.name.split('.').pop() ?? 'png';
+  if (!image || image.size === 0) {
+    throw new Error('No image provided.');
+  }
+
+  const extension = image.name.split('.').pop()?.toLowerCase() ?? 'jpg';
 
   const fileName = `foods/${crypto.randomUUID()}.${extension}`;
+
+  const token = process.env.BLOB_READ_WRITE_TOKEN;
+
+  if (!token) {
+    throw new Error('BLOB_READ_WRITE_TOKEN is missing.');
+  }
+
+  console.log({
+    hasBlobToken: Boolean(token),
+    tokenLength: token.length,
+    hasOidcToken: Boolean(process.env.VERCEL_OIDC_TOKEN),
+    vercelEnv: process.env.VERCEL_ENV,
+    blobStoreId: process.env.BLOB_STORE_ID,
+  });
 
   const blob = await put(fileName, image, {
     access: 'public',
     addRandomSuffix: false,
     contentType: image.type,
-    oidcToken: process.env.VERCEL_OIDC_TOKEN,
-    storeId: process.env.BLOB_STORE_ID,
+    token,
   });
 
   return blob.url;

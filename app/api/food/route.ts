@@ -6,7 +6,9 @@ import { requireApiAdmin } from '@/lib/api-auth-guard';
 const foodService = new FoodService();
 
 export async function POST(request: NextRequest) {
+  console.log('✅ FOOD API POST START');
   try {
+    console.log('KÖRS1');
     const { response, session } = await requireApiAdmin(request);
 
     console.log('SESSION:', session);

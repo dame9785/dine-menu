@@ -9,6 +9,9 @@ import { updateFoodDataSchema, addFoodSchema } from '@/schemas/food';
 import { CategoryViewModel } from '@/types/category';
 import { FoodViewModel } from '@/types/food';
 import Image from 'next/image';
+import Input from '@/components/ui/input';
+import TextArea from '@/components/ui/textarea';
+import Select from '../ui/select';
 
 type Props = {
   categories: CategoryViewModel[];
@@ -139,15 +142,15 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
       <div>
         <label className="mb-2 block text-sm font-medium text-slate-700">Name</label>
 
-        <input
+        <Input
           value={name}
           onChange={(e) => {
             setName(e.target.value);
             clearError('name');
           }}
           type="text"
+          name="name"
           placeholder="e.g. Margherita Pizza"
-          className="w-full cursor-text rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm transition-all duration-200 outline-none placeholder:text-base hover:border-[#C09721] focus:border-[#C09721] focus:ring-4 focus:ring-[#C09721]/10 active:translate-y-0 active:scale-[0.98]"
         />
 
         {errors.name?.[0] && (
@@ -161,7 +164,7 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
       <div>
         <label className="mb-2 block text-sm font-medium text-slate-700">Description</label>
 
-        <textarea
+        <TextArea
           value={description}
           onChange={(e) => {
             setDescription(e.target.value);
@@ -169,7 +172,6 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
           }}
           placeholder="Describe the dish..."
           rows={5}
-          className="w-full cursor-text rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm transition-all duration-200 outline-none placeholder:text-base placeholder:text-slate-400 hover:border-[#C09721] focus:border-[#C09721] focus:ring-4 focus:ring-[#C09721]/10 active:translate-y-0 active:scale-[0.98]"
         />
 
         {errors.description?.[0] && (
@@ -202,9 +204,10 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
           )}
         </label>
 
-        <input
+        <Input
           id={`image-${foodItem?.id ?? 'new'}`}
           type="file"
+          name="image"
           accept="image/png,image/jpeg,image/webp"
           onChange={handleImageChange}
           className="hidden"
@@ -222,17 +225,18 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
         {/* Price */}
         <div>
           <label className="mb-2 block text-sm font-medium text-slate-700">Price (€)</label>
-          <input
+          <Input
             value={price}
             onChange={(e) => {
               setPrice(e.target.value);
               clearError('price');
             }}
+            id="price"
             type="number"
+            name="pricce"
             min="0"
             step="0.01"
             placeholder="129"
-            className="w-full cursor-text rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm transition-all duration-200 outline-none placeholder:text-base hover:border-[#C09721] focus:border-[#C09721] focus:ring-4 focus:ring-[#C09721]/10 active:translate-y-0 active:scale-[0.98]"
           />
 
           {errors.price?.[0] && (
@@ -246,22 +250,20 @@ export default function FoodForm({ foodItem, onOpenChange, categories }: Props) 
         <div>
           <label className="mb-2 block text-sm font-medium text-slate-700">Category</label>
 
-          <select
+          <Select
             value={categoryId}
             onChange={(e) => {
               setCategoryId(e.target.value);
               clearError('categoryId');
             }}
-            className="w-full cursor-text rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm transition-all duration-200 outline-none placeholder:text-base hover:border-[#C09721] focus:border-[#C09721] focus:ring-4 focus:ring-[#C09721]/10 active:translate-y-0 active:scale-[0.98]"
           >
             <option value="">Select</option>
-
             {categories.map((category) => (
               <option key={category.id} value={category.id}>
                 {category.name}
               </option>
             ))}
-          </select>
+          </Select>
 
           {errors.categoryId?.[0] && (
             <p id="categoryId-error" className="mt-1.5 text-sm text-red-500" role="alert">

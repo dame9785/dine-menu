@@ -3,6 +3,7 @@ import { createCategorySchema, updateCategorySchema } from '@/schemas/category';
 import { toast } from 'sonner';
 import { useState, useTransition } from 'react';
 import { CategoryViewModel } from '@/types/category';
+import Input from '../ui/input';
 
 type Props = {
   category?: CategoryViewModel;
@@ -80,14 +81,14 @@ export default function AddCategoryForm({ category, onOpenChange }: Props) {
           Name
         </label>
 
-        <input
+        <Input
           id="category-name"
           type="text"
+          name="category-name"
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="e.g. Breakfast"
-          className="w-full cursor-text rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm transition-all duration-200 outline-none placeholder:text-base hover:border-[#C09721] focus:border-[#C09721] focus:ring-4 focus:ring-[#C09721]/10 active:translate-y-0 active:scale-[0.98]"
-        ></input>
+        />
 
         {errors.name?.[0] && (
           <p className="mt-1 text-sm text-red-500" role="alert">

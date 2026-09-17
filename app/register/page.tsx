@@ -4,6 +4,7 @@ import { FormEvent, useState } from 'react';
 import Link from 'next/link';
 
 import { authClient } from '@/lib/auth-client';
+import Input from '@/components/ui/input';
 
 export default function RegisterPage() {
   const [name, setName] = useState('');
@@ -55,14 +56,14 @@ export default function RegisterPage() {
               Name
             </label>
 
-            <input
+            <Input
               id="name"
               type="text"
+              name="name"
               value={name}
               onChange={(event) => setName(event.target.value)}
               required
               autoComplete="name"
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none focus:border-[#C09721] focus:ring-1 focus:ring-[#C09721]"
               placeholder="Your name"
             />
           </div>
@@ -72,15 +73,15 @@ export default function RegisterPage() {
               Email
             </label>
 
-            <input
+            <Input
               id="email"
               type="email"
+              name="email"
+              placeholder="your@gmail.com"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               required
               autoComplete="email"
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none focus:border-[#C09721] focus:ring-1 focus:ring-[#C09721]"
-              placeholder="you@example.com"
             />
           </div>
 
@@ -89,15 +90,15 @@ export default function RegisterPage() {
               Password
             </label>
 
-            <input
+            <Input
               id="password"
               type="password"
+              name="password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               required
               minLength={12}
               autoComplete="new-password"
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none focus:border-[#C09721] focus:ring-1 focus:ring-[#C09721]"
               placeholder="Minimum 12 characters"
             />
           </div>

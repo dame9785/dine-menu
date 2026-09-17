@@ -1,10 +1,10 @@
 import { ApiResponse, FoodApiResponse } from '@/types/api-responses';
 import { FoodViewModel } from '@/types/food';
+import { headers } from 'next/headers';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000/api';
 
 const FOOD_API_URL = `${API_URL}/food`;
-
 export class FoodService {
   async getAll(
     page: number,
@@ -36,9 +36,16 @@ export class FoodService {
 
   async add(formData: FormData): Promise<ApiResponse<[]>> {
     try {
+      console.log('🚀 FOOD SERVICE ADD START');
+      console.log('FOOD_API_URL:', FOOD_API_URL);
+      const requestHeaders = await headers();
+
       const response = await fetch(FOOD_API_URL, {
         method: 'POST',
         body: formData,
+        headers: {
+          Cookie: requestHeaders.get('cookie') ?? '',
+        },
       });
 
       return (await response.json()) as ApiResponse<[]>;
