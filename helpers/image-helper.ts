@@ -29,6 +29,8 @@ export async function saveImage(image: File): Promise<string> {
     access: 'public',
     addRandomSuffix: false,
     contentType: image.type,
+    oidcToken: process.env.VERCEL_OIDC_TOKEN,
+    storeId: process.env.BLOB_STORE_ID,
   });
 
   return blob.url;
