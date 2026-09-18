@@ -2,7 +2,7 @@
 
 > En modern och elegant plattform för digitala restaurangmenyer, där restauranger kan hantera sina maträtter och besökare enkelt kan upptäcka, söka och filtrera bland menyer.
 
-![Dine Menu]<img src="./public/logotype.png"
+![Dine Menu]<img src="./public/img/logotype.png"
 
 ## ✨ Om projektet
 
