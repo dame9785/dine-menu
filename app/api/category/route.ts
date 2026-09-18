@@ -49,10 +49,14 @@ export async function POST(request: Request) {
     const { response } = await requireApiAdmin(request);
 
     if (response) {
-      return {
-        success: false,
-        message: 'Unauthorized',
-      };
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Unauthorized',
+          data: [],
+        },
+        { status: response.status },
+      );
     }
 
     const dto: CategoryDto = await request.json();
@@ -69,6 +73,7 @@ export async function POST(request: Request) {
       {
         success: false,
         message: 'Failed to create category',
+        data: [],
       } satisfies ApiResponse<[]>,
       { status: 500 },
     );

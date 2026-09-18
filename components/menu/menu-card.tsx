@@ -79,7 +79,7 @@ export default function MenuCard({ menuItem, categories, isAdmin, isLoggedIn }: 
               aria-label={`Actions for ${menuItem.name}`}
               className="absolute right-0 bottom-10 z-50 flex w-36 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl shadow-slate-300/40"
             >
-              <ModalAction categories={categories} menuItem={menuItem} />
+              <ModalAction isEditing={true} categories={categories} menuItem={menuItem} />
 
               <DeleteAction
                 menuItemId={menuItem.id}

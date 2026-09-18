@@ -1,6 +1,6 @@
 import { CategoryViewModel } from '@/types/category';
 import Image from 'next/image';
-import MenuAction from '@/components/menu/actions/menu-modal-actions';
+import MenuModalAction from '@/components/menu/actions/menu-modal-actions';
 import { checkAdmin } from '@/lib/auth-guard';
 
 type Props = {
@@ -55,7 +55,7 @@ export default async function Header({ categories }: Props) {
         {/* Show menu-modal action */}
         {isAuthorized.authorized && (
           <div className="relative z-20 flex shrink-0 align-top">
-            <MenuAction categories={categories ?? []} />
+            <MenuModalAction isEditing={false} categories={categories ?? []} />
           </div>
         )}
       </div>

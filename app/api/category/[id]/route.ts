@@ -34,11 +34,14 @@ export async function DELETE(request: Request, { params }: RouteParams) {
     }
 
     if (session.user.role !== 'admin') {
-      return {
-        authorized: false,
-        status: 403,
-        message: 'You are not authorized.',
-      };
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'You are not authorized.',
+          data: [],
+        },
+        { status: 403 },
+      );
     }
 
     const { id } = await params;
@@ -91,11 +94,14 @@ export async function PUT(request: Request, { params }: RouteParams) {
     }
 
     if (session.user.role !== 'admin') {
-      return {
-        authorized: false,
-        status: 403,
-        message: 'You are not authorized.',
-      };
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'You are not authorized.',
+          data: [],
+        },
+        { status: 403 },
+      );
     }
 
     const { id } = await params;

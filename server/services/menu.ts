@@ -3,7 +3,7 @@ import { AddMenuItemDto, MenuItemViewModel } from '@/types/menu';
 import { MenuRepository } from '../repositories/menu';
 import { MenuMapper } from '../mapping/menu';
 import { saveImage } from '@/helpers/image-helper';
-import { updateMenuSchema } from '@/schemas/menu';
+import { UpdateMenuDto, updateMenuSchema } from '@/schemas/menu';
 import { FavoriteRepository } from '../repositories/favorite';
 
 const menuRepository = new MenuRepository();
@@ -107,11 +107,12 @@ export class MenuService {
         };
       }
 
-      const dto = validation.data;
+      const validatedData = validation.data;
+      let imageUrl: string = '';
 
       // Bara uppdatera bilden om användaren valt en ny
       if (image instanceof File && image.size > 0) {
-        const imageUrl = await saveImage(image);
+        imageUrl = await saveImage(image);
 
         if (!imageUrl) {
           return {
@@ -119,11 +120,9 @@ export class MenuService {
             message: 'Could not upload the image',
           } satisfies ApiResponse<[]>;
         }
-
-        dto.imageUrl = imageUrl;
       }
 
-      const data = await menuRepository.update(menuItemId, dto);
+      const data = await menuRepository.update(menuItemId, validatedData, imageUrl);
       const viewModel = MenuMapper.menuItemDboToViewModel(data.menuItem);
 
       return {

@@ -169,7 +169,7 @@ export class MenuRepository {
     return menuItem;
   }
 
-  async update(menuId: number, dto: UpdateMenuDto): Promise<GetMenuItemResult> {
+  async update(menuId: number, dto: UpdateMenuDto, imageUrl: string): Promise<GetMenuItemResult> {
     const menuItem = await prisma.menuitem.update({
       where: {
         id: menuId,
@@ -178,7 +178,7 @@ export class MenuRepository {
         name: dto.name,
         description: dto.description,
         price: dto.price,
-        imageUrl: dto.imageUrl,
+        imageUrl: imageUrl,
         category: {
           connect: {
             id: dto.categoryId,

@@ -11,13 +11,12 @@ import { MenuItemViewModel } from '@/types/menu';
 
 type Props = {
   categories: CategoryViewModel[];
-  menuItem: MenuItemViewModel;
+  menuItem?: MenuItemViewModel;
+  isEditing: boolean;
 };
 
-export default function MenuActions({ categories, menuItem }: Props) {
+export default function MenuActions({ categories, menuItem, isEditing }: Props) {
   const [isOpen, setIsOpen] = useState(false);
-
-  const isEditing = Boolean(menuItem);
 
   return (
     <>
