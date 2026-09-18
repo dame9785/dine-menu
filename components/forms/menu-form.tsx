@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useState, useTransition, useEffect } from 'react';
 import { toast } from 'sonner';
 
 import { addMenuItem, updateMenuItem } from '@/actions/menu';
@@ -18,12 +18,13 @@ import SubmitButton from '@/components/ui/submit-button';
 type Props = {
   categories: CategoryViewModel[];
   menuItem: MenuItemViewModel | undefined;
-  open?: boolean;
   onOpenChange?: (open: boolean) => void;
 };
 
+type FormErrors = Record<string, string[]>;
+
 export default function MenuForm({ menuItem, onOpenChange, categories }: Props) {
-  const [errors, setErrors] = useState<Record<string, string[]>>({});
+  const [errors, setErrors] = useState<FormErrors>({});
   const [isPending, startTransition] = useTransition();
 
   const [name, setName] = useState(menuItem?.name ?? '');
@@ -36,13 +37,19 @@ export default function MenuForm({ menuItem, onOpenChange, categories }: Props) 
 
   const isEditMode = !!menuItem;
 
-  const clearError = (field: string) => {
+  useEffect(() => {
+    return () => {
+      if (imagePreview?.startsWith('blob:')) {
+        URL.revokeObjectURL(imagePreview);
+      }
+    };
+  }, [imagePreview]);
+
+  const clearError = (field: keyof FormErrors) => {
     setErrors((prev) => {
-      const newErrors = { ...prev };
-
-      delete newErrors[field];
-
-      return newErrors;
+      const next = { ...prev };
+      delete next[field];
+      return next;
     });
   };
 
@@ -90,10 +97,26 @@ export default function MenuForm({ menuItem, onOpenChange, categories }: Props) 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    const formValues = {
+      name: name.trim(),
+      description: description.trim(),
+      price,
+      categoryId,
+      image,
+    };
+
+    const validate = isEditMode ? updateMenuSchema.safeParse(formValues) : addMenuSchema.safeParse(formValues);
+
+    if (!validate.success) {
+      setErrors(validate.error.flatten().fieldErrors);
+      return;
+    }
+
+    // Skapa FormData först efter valideringen
     const formData = new FormData();
 
-    formData.append('name', name);
-    formData.append('description', description);
+    formData.append('name', name.trim());
+    formData.append('description', description.trim());
     formData.append('price', price);
     formData.append('categoryId', categoryId);
 
@@ -102,39 +125,27 @@ export default function MenuForm({ menuItem, onOpenChange, categories }: Props) 
     }
 
     startTransition(async () => {
-      const validate = isEditMode
-        ? updateMenuSchema.safeParse({
-            name,
-            description,
-            price: Number(price),
-            categoryId: Number(categoryId),
-            ...(image ? { image } : {}),
-          })
-        : addMenuSchema.safeParse({
-            name,
-            description,
-            price: Number(price),
-            categoryId: Number(categoryId),
-            image,
-          });
+      try {
+        const response = isEditMode ? await updateMenuItem(menuItem.id, formData) : await addMenuItem(formData);
 
-      if (!validate.success) {
-        setErrors(validate.error.flatten().fieldErrors);
-        return;
+        if (!response.success) {
+          if (response.errors) {
+            setErrors(response.errors);
+          }
+
+          toast.error(response.message);
+          return;
+        }
+
+        toast.success(response.message, {
+          duration: 1000,
+        });
+
+        handleClose();
+      } catch (error) {
+        console.error('Error on update or add menu item action', error);
+        toast.error('Something went wrong..');
       }
-
-      const response = isEditMode ? await updateMenuItem(menuItem.id, formData) : await addMenuItem(formData);
-
-      if (!response.success) {
-        toast.error(response.message);
-        return;
-      }
-
-      toast.success(response.message, {
-        duration: 1000,
-      });
-
-      handleClose();
     });
   };
 
@@ -142,7 +153,9 @@ export default function MenuForm({ menuItem, onOpenChange, categories }: Props) 
     <form onSubmit={handleSubmit} className="space-y-5 p-6">
       {/* Name */}
       <div>
-        <label className="mb-2 block text-sm font-medium text-slate-700">Name</label>
+        <label htmlFor="name" className="mb-2 block text-sm font-medium text-slate-700">
+          Name
+        </label>
 
         <Input
           value={name}
@@ -152,7 +165,10 @@ export default function MenuForm({ menuItem, onOpenChange, categories }: Props) 
           }}
           type="text"
           name="name"
+          id="name"
           placeholder="e.g. Margherita Pizza"
+          aria-invalid={!!errors.name}
+          aria-describedby={errors.name ? 'name-error' : undefined}
         />
 
         {errors.name?.[0] && (
@@ -164,7 +180,9 @@ export default function MenuForm({ menuItem, onOpenChange, categories }: Props) 
 
       {/* Description */}
       <div>
-        <label className="mb-2 block text-sm font-medium text-slate-700">Description</label>
+        <label htmlFor="description" className="mb-2 block text-sm font-medium text-slate-700">
+          Description
+        </label>
 
         <TextArea
           value={description}
@@ -174,6 +192,10 @@ export default function MenuForm({ menuItem, onOpenChange, categories }: Props) 
           }}
           placeholder="Describe the dish..."
           rows={5}
+          id="description"
+          name="description"
+          aria-invalid={!!errors.description}
+          aria-describedby={errors.description ? 'description-error' : undefined}
         />
 
         {errors.description?.[0] && (
@@ -213,6 +235,8 @@ export default function MenuForm({ menuItem, onOpenChange, categories }: Props) 
           accept="image/png,image/jpeg,image/webp"
           onChange={handleImageChange}
           className="hidden"
+          aria-invalid={!!errors.image}
+          aria-describedby={errors.image ? 'image-error' : undefined}
         />
 
         {errors.image?.[0] && (
@@ -226,7 +250,9 @@ export default function MenuForm({ menuItem, onOpenChange, categories }: Props) 
       <div className="grid grid-cols-2 gap-4">
         {/* Price */}
         <div>
-          <label className="mb-2 block text-sm font-medium text-slate-700">Price (€)</label>
+          <label htmlFor="price" className="mb-2 block text-sm font-medium text-slate-700">
+            Price (€)
+          </label>
           <Input
             value={price}
             onChange={(e) => {
@@ -235,10 +261,12 @@ export default function MenuForm({ menuItem, onOpenChange, categories }: Props) 
             }}
             id="price"
             type="number"
-            name="pricce"
+            name="price"
             min="0"
             step="0.01"
             placeholder="129"
+            aria-invalid={!!errors.price}
+            aria-describedby={errors.price ? 'price-error' : undefined}
           />
 
           {errors.price?.[0] && (
@@ -250,10 +278,16 @@ export default function MenuForm({ menuItem, onOpenChange, categories }: Props) 
 
         {/* Category */}
         <div>
-          <label className="mb-2 block text-sm font-medium text-slate-700">Category</label>
+          <label htmlFor="categoryId" className="mb-2 block text-sm font-medium text-slate-700">
+            Category
+          </label>
 
           <Select
+            id="categoryId"
             value={categoryId}
+            name="categoryId"
+            aria-invalid={!!errors.categoryId}
+            aria-describedby={errors.categoryId ? 'categoryId-error' : undefined}
             onChange={(e) => {
               setCategoryId(e.target.value);
               clearError('categoryId');
@@ -276,7 +310,7 @@ export default function MenuForm({ menuItem, onOpenChange, categories }: Props) 
       </div>
 
       <div className="flex gap-3 border-t border-slate-100 pt-5">
-        <SubmitButton isLoading={isPending}>Save menu</SubmitButton>
+        <SubmitButton isLoading={isPending}>{isEditMode ? 'Update menu' : 'Save menu'}</SubmitButton>
       </div>
     </form>
   );

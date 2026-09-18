@@ -1,3 +1,4 @@
+import { AddMenuDto, UpdateMenuDto } from '@/schemas/menu';
 import { ApiResponse, MenuApiResponse } from '@/types/api-responses';
 import { MenuItemViewModel } from '@/types/menu';
 import { headers } from 'next/headers';
@@ -62,11 +63,16 @@ export class MenuService {
     }
   }
 
-  async update(menuItemId: number, formData: FormData): Promise<ApiResponse<[]>> {
+  async update(menuItemId: number, data: UpdateMenuDto): Promise<ApiResponse<[]>> {
     try {
+      const requestHeaders = await headers();
       const response = await fetch(`${MENU_API_URL}/${menuItemId}`, {
         method: 'PUT',
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json',
+          Cookie: requestHeaders.get('cookie') ?? '',
+        },
+        body: JSON.stringify(data),
       });
 
       return (await response.json()) as ApiResponse<[]>;
@@ -124,6 +130,7 @@ export class MenuService {
       const response = await fetch(`${MENU_API_URL}/favorite/${menuItemId}`, {
         method: 'POST',
         headers: {
+          'Content-Type': 'application/json',
           Cookie: requestHeaders.get('cookie') ?? '',
         },
       });

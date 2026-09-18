@@ -4,10 +4,12 @@ import { MenuService } from '@/services/menu';
 import { revalidatePath } from 'next/cache';
 import { checkAdmin, requireSession } from '@/lib/auth-guard';
 import { ApiResponse } from '@/types/api-responses';
+import { AddMenuDto, addMenuSchema, UpdateMenuDto, updateMenuSchema } from '@/schemas/menu';
+import { ActionResponse } from '@/types/action-response';
 
 const menuService = new MenuService();
 
-export async function addMenuItem(formData: FormData): Promise<{ success: boolean; message: string }> {
+export async function addMenuItem(formData: FormData): Promise<ActionResponse> {
   try {
     const adminCheck = await checkAdmin();
 
@@ -15,6 +17,25 @@ export async function addMenuItem(formData: FormData): Promise<{ success: boolea
       return {
         success: false,
         message: adminCheck.message,
+      };
+    }
+
+    const imageValue = formData.get('image');
+
+    const values = {
+      name: formData.get('name'),
+      description: formData.get('description'),
+      price: formData.get('price'),
+      categoryId: formData.get('categoryId'),
+      image: imageValue instanceof File && imageValue.size > 0 ? imageValue : null,
+    };
+
+    const validate = addMenuSchema.safeParse(values);
+    if (!validate.success) {
+      return {
+        success: false,
+        message: 'Invalid form data.',
+        errors: validate.error.flatten().fieldErrors,
       };
     }
 
@@ -42,7 +63,7 @@ export async function addMenuItem(formData: FormData): Promise<{ success: boolea
   }
 }
 
-export async function deleteMenuItem(menuItemId: number): Promise<{ success: boolean; message: string }> {
+export async function deleteMenuItem(menuItemId: number): Promise<ActionResponse> {
   try {
     const adminCheck = await checkAdmin();
 
@@ -79,7 +100,7 @@ export async function deleteMenuItem(menuItemId: number): Promise<{ success: boo
   }
 }
 
-export async function updateMenuItem(menuItemId: number, formData: FormData) {
+export async function updateMenuItem(menuItemId: number, formData: FormData): Promise<ActionResponse> {
   try {
     const adminCheck = await checkAdmin();
 
@@ -90,8 +111,16 @@ export async function updateMenuItem(menuItemId: number, formData: FormData) {
       };
     }
 
-    const response = await menuService.update(menuItemId, formData);
+    const validate = updateMenuSchema.safeParse(formData);
+    if (!validate.success) {
+      return {
+        success: false,
+        message: 'Invalid form data.',
+        errors: validate.error.flatten().fieldErrors,
+      };
+    }
 
+    const response = await menuService.update(menuItemId, validate.data);
     if (!response.success) {
       return {
         success: false,
@@ -116,8 +145,8 @@ export async function updateMenuItem(menuItemId: number, formData: FormData) {
   }
 }
 
-export async function addFavorite(menuItemId: number) {
-  const session = requireSession();
+export async function addFavorite(menuItemId: number): Promise<ActionResponse> {
+  const session = await requireSession();
   if (!session) {
     return {
       success: false,
@@ -150,9 +179,9 @@ export async function addFavorite(menuItemId: number) {
   }
 }
 
-export async function deleteFavorite(menuItemId: number) {
+export async function deleteFavorite(menuItemId: number): Promise<ActionResponse> {
   try {
-    const session = requireSession();
+    const session = await requireSession();
     if (!session) {
       return {
         success: false,
@@ -191,6 +220,7 @@ export async function getFavoriteIds(): Promise<ApiResponse<number[]>> {
       return {
         success: false,
         message: 'You need to be logged in.',
+        data: [],
       };
     }
 
