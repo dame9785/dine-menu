@@ -17,7 +17,7 @@ export default async function DetailCard({ menuItem, categories }: Props) {
     <article className="group relative overflow-hidden rounded-2xl border border-[#C09721]/30 bg-[#FFFCF5] shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#C09721] hover:shadow-md hover:shadow-[#C09721]/15">
       {isAdmin && (
         <div className="absolute top-5 right-5 z-30 rounded-2xl border border-[#C09721]/30 bg-[#FFFCF5]">
-          <ModalAction menuItem={menuItem} categories={categories} />
+          <ModalAction isEditing={false} menuItem={menuItem} categories={categories} />
         </div>
       )}
 
