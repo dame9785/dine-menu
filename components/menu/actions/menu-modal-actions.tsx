@@ -11,13 +11,13 @@ import { MenuItemViewModel } from '@/types/menu';
 
 type Props = {
   categories: CategoryViewModel[];
-  menuItemId?: MenuItemViewModel;
+  menuItem: MenuItemViewModel;
 };
 
-export default function MenuActions({ categories, menuItemId }: Props) {
+export default function MenuActions({ categories, menuItem }: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const isEditing = Boolean(menuItemId);
+  const isEditing = Boolean(menuItem);
 
   return (
     <>
@@ -27,7 +27,7 @@ export default function MenuActions({ categories, menuItemId }: Props) {
         <AddModalAction onClick={() => setIsOpen(true)} />
       )}
 
-      <Modal menuItemId={menuItemId} categories={categories} open={isOpen} onOpenChange={setIsOpen} />
+      <Modal menuItem={menuItem} categories={categories} open={isOpen} onOpenChange={setIsOpen} />
     </>
   );
 }

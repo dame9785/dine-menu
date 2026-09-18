@@ -13,7 +13,6 @@ type Props = {
 
 export default async function DetailCard({ menuItem, categories }: Props) {
   const isAdmin = (await checkAdmin()).authorized;
-  console.log(isAdmin);
   return (
     <article className="group relative overflow-hidden rounded-2xl border border-[#C09721]/30 bg-[#FFFCF5] shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#C09721] hover:shadow-md hover:shadow-[#C09721]/15">
       {isAdmin && (
@@ -120,7 +119,7 @@ export default async function DetailCard({ menuItem, categories }: Props) {
               </div>
             </div>
 
-            <FavoriteAction menuItem={menuItem.id} isFavorite={menuItem.isFavorite} />
+            <FavoriteAction menuItemId={menuItem.id} isFavorite={menuItem.isFavorite} />
           </div>
         </div>
       </div>

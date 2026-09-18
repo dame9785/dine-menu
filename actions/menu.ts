@@ -4,7 +4,7 @@ import { MenuService } from '@/services/menu';
 import { revalidatePath } from 'next/cache';
 import { checkAdmin, requireSession } from '@/lib/auth-guard';
 import { ApiResponse } from '@/types/api-responses';
-import { AddMenuDto, addMenuSchema, UpdateMenuDto, updateMenuSchema } from '@/schemas/menu';
+import { addMenuSchema, updateMenuSchema } from '@/schemas/menu';
 import { ActionResponse } from '@/types/action-response';
 
 const menuService = new MenuService();
@@ -111,7 +111,17 @@ export async function updateMenuItem(menuItemId: number, formData: FormData): Pr
       };
     }
 
-    const validate = updateMenuSchema.safeParse(formData);
+    const imageValue = formData.get('image');
+
+    const values = {
+      name: formData.get('name'),
+      description: formData.get('description'),
+      price: formData.get('price'),
+      categoryId: formData.get('categoryId'),
+      image: imageValue instanceof File && imageValue.size > 0 ? imageValue : null,
+    };
+
+    const validate = addMenuSchema.safeParse(values);
     if (!validate.success) {
       return {
         success: false,
@@ -120,7 +130,8 @@ export async function updateMenuItem(menuItemId: number, formData: FormData): Pr
       };
     }
 
-    const response = await menuService.update(menuItemId, validate.data);
+    const response = await menuService.add(formData);
+
     if (!response.success) {
       return {
         success: false,
@@ -129,7 +140,6 @@ export async function updateMenuItem(menuItemId: number, formData: FormData): Pr
     }
 
     revalidatePath('/');
-    revalidatePath('/category');
 
     return {
       success: true,

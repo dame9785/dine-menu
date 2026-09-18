@@ -32,7 +32,7 @@ export default function MenuCard({ menuItem, categories, isAdmin, isLoggedIn }: 
         className="block focus:outline-none focus-visible:ring-4 focus-visible:ring-[#C09721]/20"
       >
         <div className="relative h-70 overflow-hidden bg-slate-100">
-          <MenuImage src={menuItem.imageUrl || '/img/menu-placeholder.png'} alt={menuItem.name} />
+          <MenuImage src={menuItem.imageUrl || '/img/menu/menu-placeholder.png'} alt={menuItem.name} />
 
           <div
             aria-hidden="true"
@@ -82,7 +82,7 @@ export default function MenuCard({ menuItem, categories, isAdmin, isLoggedIn }: 
               <ModalAction categories={categories} menuItem={menuItem} />
 
               <DeleteAction
-                menuItem={menuItem.id}
+                menuItemId={menuItem.id}
                 deleteMenuAction={deleteMenuItem}
                 onDeleted={() => setIsMenuOpen(false)}
               />
