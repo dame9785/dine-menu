@@ -4,7 +4,7 @@
 
 ## ✨ Om projektet
 
-**Dine Menu** är ett fullstackprojekt med fokus på att skapa en användarvänlig och skalbar plattform för restauranger och deras menyer.
+**Dine Menu** är ett fullstackprojekt med fokus på att skapa en användarvänlig plattform för restauranger och deras menyer.
 
 Målet är att restaurangföretag ska kunna registrera sig, administrera sina menyer och publicera maträtter, medan vanliga användare kan utforska menyer från olika restauranger.
 
