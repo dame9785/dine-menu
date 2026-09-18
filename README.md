@@ -2,15 +2,13 @@
 
 > En modern och elegant plattform för digitala restaurangmenyer, där restauranger kan hantera sina maträtter och besökare enkelt kan upptäcka, söka och filtrera bland menyer.
 
-![Dine Menu](https://placehold.co/1200x500/FBF8F0/C09721?text=Dine+Menu)
+![Dine Menu]<img src="./public/logotype.png"
 
 ## ✨ Om projektet
 
 **Dine Menu** är ett fullstackprojekt med fokus på att skapa en användarvänlig och skalbar plattform för restauranger och deras menyer.
 
 Målet är att restaurangföretag ska kunna registrera sig, administrera sina menyer och publicera maträtter, medan vanliga användare kan utforska menyer från olika restauranger.
-
-Projektet kombinerar en elegant användarupplevelse med rollbaserad åtkomst, autentisering och en tydlig arkitektur mellan frontend, tjänstelager och databas.
 
 ---
 
@@ -19,7 +17,7 @@ Projektet kombinerar en elegant användarupplevelse med rollbaserad åtkomst, au
 ### För besökare och användare
 
 - 🔎 Söka efter maträtter och beskrivningar
-- 🗂️ Filtrera maträtter efter kategori
+- 🗂️ Filtrera maträtter efter kategori & maträtter
 - 🏪 Filtrera efter restaurang – planerad funktion
 - ↕️ Sortera maträtter
 - ❤️ Spara maträtter som favoriter
@@ -103,16 +101,16 @@ MySQL / TiDB Cloud
 
 ### Exempel på ansvarsfördelning
 
-| Lager | Ansvar |
-|---|---|
-| Components | Presentation, formulär och användarinteraktion |
-| Server Actions | Hantera klientanrop och uppdatera data |
-| API Routes | Exponera backend-endpoints |
-| Services | Affärslogik och samordning |
-| Repositories | Kommunikation med databasen |
-| Mappers | Konvertera databasobjekt till ViewModels |
-| Schemas | Validering med Zod |
-| Auth Guards | Kontrollera sessioner och användarbehörighet |
+| Lager          | Ansvar                                         |
+| -------------- | ---------------------------------------------- |
+| Components     | Presentation, formulär och användarinteraktion |
+| Server Actions | Hantera klientanrop och uppdatera data         |
+| API Routes     | Exponera backend-endpoints                     |
+| Services       | Affärslogik och samordning                     |
+| Repositories   | Kommunikation med databasen                    |
+| Mappers        | Konvertera databasobjekt till ViewModels       |
+| Schemas        | Validering med Zod                             |
+| Auth Guards    | Kontrollera sessioner och användarbehörighet   |
 
 ---
 
@@ -169,18 +167,6 @@ types/
 ## 🔐 Autentisering och säkerhet
 
 Dine Menu använder **Better Auth** för autentisering med e-post och lösenord.
-
-Projektet innehåller bland annat:
-
-- Sessionsbaserad autentisering
-- Skyddade routes
-- Kontroll av administratörsbehörighet
-- Inloggning och registrering
-- Lösenordsåterställning
-- Validering av användarinmatning
-- Begränsning av kommentarsfunktioner till inloggade användare
-
-Hemliga nycklar och anslutningssträngar ska lagras i miljövariabler och aldrig committas till Git.
 
 ---
 
@@ -246,86 +232,6 @@ http://localhost:3000
 
 ---
 
-## 🧪 Tillgängliga scripts
-
-```bash
-npm run dev       # Starta utvecklingsservern
-npm run build     # Bygg projektet för produktion
-npm run start     # Starta produktionsservern
-npm run lint      # Kör linting
-```
-
----
-
-## 🎨 Design
-
-Dine Menu använder en varm och elegant design med fokus på en premiumliknande restaurangupplevelse.
-
-### Designprinciper
-
-- Ljus och varm bakgrund
-- Guldfärgade accenter
-- Tydlig typografi
-- Runda komponenter och kontroller
-- Diskreta borders och skuggor
-- Responsiv layout
-- Tydliga loading-, error- och empty states
-
-### Färgpalett
-
-| Färg | Hex |
-|---|---|
-| Primär guld | `#C09721` |
-| Ljus guld | `#E8DAB8` |
-| Mörk guld | `#A77F18` |
-| Varm bakgrund | `#FBF8F0` |
-
----
-
-## 🗺️ Roadmap
-
-- [x] Skapa och visa maträtter
-- [x] Kategorier
-- [x] Sökning och filtrering
-- [x] Sortering
-- [x] Pagination
-- [x] Favoriter
-- [x] Better Auth
-- [x] Adminskydd
-- [x] Kommentarsfunktion
-- [x] Lösenordsåterställning
-- [ ] Företagskonton
-- [ ] Restaurangprofiler
-- [ ] Menyer kopplade till restauranger
-- [ ] Företagsspecifika behörigheter
-- [ ] Publika restaurangsidor
-- [ ] Utökad sökning mellan restauranger
-
----
-
-## 📌 Projektets mål
-
-Dine Menu utvecklas med målet att bli en plattform där restauranger kan digitalisera och administrera sina menyer på ett enkelt sätt.
-
-Projektet fungerar även som ett praktiskt fullstackprojekt för att utveckla kunskaper inom:
-
-- Modern React- och Next.js-utveckling
-- TypeScript
-- Backendarkitektur
-- Databashantering med Prisma
-- Autentisering och auktorisering
-- API-design
-- Validering
-- Deployment och miljökonfiguration
-
----
-
 ## 👨‍💻 Utvecklare
 
 Skapat av **David Söderberg**.
-
----
-
-## 📄 Licens
-
-Detta projekt är för närvarande ett privat utvecklingsprojekt. Lägg till en licens här om projektet senare ska publiceras som open source.
