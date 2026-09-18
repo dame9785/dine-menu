@@ -21,7 +21,7 @@ export default function Filtering({ categories, searchParam, categoryParam, sort
         {/* Search */}
         <div className="relative flex-1">
           <label htmlFor="search" className="sr-only">
-            Search menu
+            Search menuu
           </label>
 
           <input
