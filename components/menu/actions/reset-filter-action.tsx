@@ -1,14 +1,17 @@
 'use client';
 
 import { RotateCcw, Loader2 } from 'lucide-react';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
 
 export default function ResetFilteringButton() {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   const handleReset = () => {
-    redirect('/');
+    startTransition(() => {
+      router.replace('/');
+    });
   };
 
   return (
@@ -16,15 +19,20 @@ export default function ResetFilteringButton() {
       type="button"
       onClick={handleReset}
       disabled={isPending}
-      className="group flex cursor-pointer items-center gap-3 rounded-xl border border-[#C09721]/30 bg-white p-3 font-medium text-slate-600 shadow-sm transition-all duration-200 ease-out outline-none hover:-translate-y-0.5 hover:border-[#C09721] hover:bg-[#FFFCF5] hover:text-[#A77F18] hover:shadow-md hover:shadow-[#C09721]/15 focus:border-[#C09721] focus:ring-4 focus:ring-[#C09721]/10 active:translate-y-0 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70"
+      aria-label="Reset all filters"
+      className="group inline-flex h-12 w-55 cursor-pointer items-center justify-center gap-2.5 rounded-xl border border-[#C09721]/35 bg-white px-4 text-sm font-semibold tracking-wide text-slate-600 shadow-sm transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-[#C09721] hover:bg-[#FFFCF5] hover:text-[#A77F18] hover:shadow-lg hover:shadow-[#C09721]/10 focus-visible:ring-4 focus-visible:ring-[#C09721]/15 focus-visible:outline-none active:translate-y-0 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
     >
       {isPending ? (
-        <Loader2 size={17} className="animate-spin" />
+        <Loader2 size={17} aria-hidden="true" className="animate-spin text-[#C09721]" />
       ) : (
-        <RotateCcw size={17} className="transition-transform duration-300 group-hover:-rotate-45" />
+        <RotateCcw
+          size={17}
+          aria-hidden="true"
+          className="text-[#C09721] transition-transform duration-300 group-hover:-rotate-90"
+        />
       )}
 
-      <span>{isPending ? 'Resetting...' : 'Reset filtering'}</span>
+      <span>{isPending ? 'Resetting...' : 'Reset filters'}</span>
     </button>
   );
 }

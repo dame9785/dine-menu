@@ -50,66 +50,78 @@ export default async function MenuPage({ searchParams }: Props) {
   const categories = categoryResponse.data ?? [];
 
   const menuItemList = menuResponse.data ?? [];
-  console.log(menuItemList);
 
   const totalPages = menuResponse.pagination?.totalPages ?? 0;
 
   const totalMenuItemsCount = menuResponse.pagination?.totalItems ?? 0;
 
   return (
-    <div className="container mx-auto max-w-7xl">
-      {/* Header */}
-      <Header categories={categories} />
+    <main className="min-h-screen bg-[#FBF8F0]">
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        {/* Header */}
+        <Header categories={categories} />
 
-      {/* Filtering */}
-      <Filtering
-        categories={categories}
-        searchParam={searchParam}
-        categoryParam={categoryParam}
-        sortByParam={sortByParam}
-        favoritesParam={favoritesParam}
-      />
-
-      {/* Menu controls */}
-      <section
-        className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
-        aria-label="Menu controls"
-      >
-        <div className="group flex items-center gap-3 rounded-xl border border-[#C09721]/30 bg-white p-3 font-medium text-slate-600 shadow-sm transition-all duration-200 ease-out outline-none hover:-translate-y-0.5 hover:border-[#C09721] hover:bg-[#FFFCF5] hover:text-[#A77F18] hover:shadow-md hover:shadow-[#C09721]/15 focus:border-[#C09721] focus:ring-4 focus:ring-[#C09721]/10 active:translate-y-0 active:scale-[0.98]">
-          <Utensils size={16} aria-hidden="true" />
-
-          <span className="tracking-wider">{totalMenuItemsCount} items</span>
+        {/* Filtering */}
+        <div className="mt-10">
+          <Filtering
+            categories={categories}
+            searchParam={searchParam}
+            categoryParam={categoryParam}
+            sortByParam={sortByParam}
+            favoritesParam={favoritesParam}
+          />
         </div>
 
-        {/* Filter actions */}
-        <FilterButtons
-          currentPage={currentPage}
-          searchParam={searchParam}
-          categoryParam={categoryParam}
-          sortByParam={sortByParam}
-        />
-      </section>
+        {/* Menu controls */}
+        <section
+          className="mt-8 mb-7 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+          aria-label="Menu controls"
+        >
+          {/* Item count */}
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#C09721]/25 bg-[#E8DAB8]/40 text-[#765315]">
+              <Utensils size={17} strokeWidth={1.6} aria-hidden="true" />
+            </div>
 
-      {/* Menu list */}
-      <Suspense fallback={<LoadingSpinner />}>
-        <MenuItemList menuItems={menuItemList} categories={categories} />
-      </Suspense>
+            <div>
+              <p className="text-sm font-semibold text-[#765315]">Our Menu</p>
 
-      {/* Pagination */}
-      {menuItemList.length > 0 && totalPages > 1 && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          basePath="/"
-          ariaLabel="Menu items pagination"
-          queryParams={{
-            search: searchParam,
-            category: categoryParam,
-            sortBy: sortByParam,
-            favorites: favoritesParam,
-          }}
-        />
-      )}
-    </div>
+              <p className="text-xs tracking-wide text-slate-500">{totalMenuItemsCount} culinary selections</p>
+            </div>
+          </div>
+
+          {/* Filter actions */}
+          <FilterButtons
+            currentPage={currentPage}
+            searchParam={searchParam}
+            categoryParam={categoryParam}
+            sortByParam={sortByParam}
+          />
+        </section>
+
+        {/* Menu list */}
+        <Suspense fallback={<LoadingSpinner />}>
+          <MenuItemList menuItems={menuItemList} categories={categories} />
+        </Suspense>
+
+        {/* Pagination */}
+        {menuItemList.length > 0 && totalPages > 1 && (
+          <div className="mt-10">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              basePath="/"
+              ariaLabel="Menu items pagination"
+              queryParams={{
+                search: searchParam,
+                category: categoryParam,
+                sortBy: sortByParam,
+                favorites: favoritesParam,
+              }}
+            />
+          </div>
+        )}
+      </div>
+    </main>
   );
 }

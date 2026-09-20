@@ -23,9 +23,11 @@ const navigationItems = [
 
 type Props = {
   isAdmin: boolean;
+  companyName?: string | null;
+  isCompany: boolean;
 };
 
-export default function Sidebar({ isAdmin }: Props) {
+export default function Sidebar({ isAdmin, companyName, isCompany }: Props) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -103,19 +105,22 @@ export default function Sidebar({ isAdmin }: Props) {
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        {/* Logo */}
+        {/* Logo & Company */}
         <header className="border-b border-[#C09721]/20 px-6 py-5">
-          <Link href="/" onClick={closeMenu} aria-label="Go to Dine Menu home" className="flex items-center gap-3">
-            <div className="flex">
-              <h2 className="font-semibold tracking-[0.08em] text-[#A77F18] uppercase">Dine Menu</h2>
+          {isCompany && companyName && (
+            <div className="mt-4 border-t border-[#C09721]/15 pt-4">
+              <div className="mb-2 flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#C09721]" />
 
-              <div className="ml-3 border-l border-[#C09721]/20 pl-3">
-                <p className="font-semibold tracking-[0.08em] text-[#A77F18] uppercase">Restaurant</p>
-
-                <p className="font-medium tracking-[0.04em] text-slate-400">Essentials</p>
+                <p className="text-[10px] font-semibold tracking-[0.16em] text-[#C09721] uppercase">Your Restaurant</p>
               </div>
+
+              <p className="truncate text-lg font-bold tracking-tight text-[#765315]" title={companyName}>
+                {companyName}
+              </p>
+              <p className="mt-0.5 text-xs text-slate-400">Company account</p>
             </div>
-          </Link>
+          )}
         </header>
 
         {/* Navigation */}

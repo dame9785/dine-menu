@@ -19,15 +19,18 @@ export default async function MenuItemList({ categories, menuItems }: Props) {
   return (
     <>
       {/* Menu items */}
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
         {menuItems.length === 0 ? (
-          <div className="col-span-full flex min-h-72 flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white shadow-sm">
-            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#E8DAB8]">
-              <Search className="text-slate-600" size={26} />
+          <div className="col-span-full flex min-h-80 flex-col items-center justify-center rounded-3xl border border-[#C09721]/20 bg-white/60 px-6 text-center shadow-sm">
+            <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-2xl border border-[#C09721]/20 bg-[#E8DAB8]/40">
+              <Search className="text-[#765315]" size={26} strokeWidth={1.5} />
             </div>
 
-            <h2 className="text-lg font-semibold text-slate-600">No menu items found</h2>
-            <span className="text-l mt-1 text-slate-600">No menu items match your current filter</span>
+            <h2 className="text-xl font-semibold tracking-wide text-[#765315]">No menu items found</h2>
+
+            <p className="mt-2 max-w-sm text-sm leading-6 text-slate-500">
+              We couldt find any dishes matching your current selection. Try adjusting your filters.
+            </p>
           </div>
         ) : (
           menuItems.map((item) => (

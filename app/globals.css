@@ -36,13 +36,10 @@ h3 {
   outline-offset: 3px;
 }
 
-/* För användare som föredrar mindre animationer */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    scroll-behavior: auto !important;
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
+/* Inputs och selects använder sin egen fokusdesign */
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none !important;
+  outline-offset: 0;
 }

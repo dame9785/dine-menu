@@ -1,5 +1,7 @@
 import { CategoryViewModel } from '@/types/category';
 import { Search } from 'lucide-react';
+import CustomSelect from '@/components/ui/custom-select';
+import Input from '../ui/input';
 
 type Props = {
   categories: CategoryViewModel[];
@@ -19,25 +21,26 @@ export default function Filtering({ categories, searchParam, categoryParam, sort
         className="flex flex-col gap-3 rounded-2xl border border-[#C09721]/30 bg-[#FBF8F0] p-4 shadow-sm md:flex-row md:items-center"
       >
         {/* Search */}
-        <div className="relative flex-1">
+        <div className="group relative flex-1">
           <label htmlFor="search" className="sr-only">
             Search menu
           </label>
 
-          <input
+          <Input
             id="search"
             type="search"
             name="search"
             defaultValue={searchParam}
             placeholder="Search menu..."
-            className="w-full cursor-text rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm transition-all duration-200 outline-none placeholder:text-base hover:border-[#C09721] focus:border-[#C09721] focus:ring-4 focus:ring-[#C09721]/10 active:translate-y-0 active:scale-[0.98]"
+            className="text-sm"
           />
 
           {/* Search icon – höger */}
           <Search
             size={18}
+            strokeWidth={1.7}
             aria-hidden="true"
-            className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-[#C09721]"
+            className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-[#C09721]/70 transition-all duration-300 group-focus-within:scale-110 group-focus-within:text-[#A77F18] group-hover:scale-110 group-hover:text-[#C09721]"
           />
         </div>
 
@@ -47,20 +50,19 @@ export default function Filtering({ categories, searchParam, categoryParam, sort
             <label htmlFor="category" className="sr-only">
               Category
             </label>
-            <select
+            <CustomSelect
               name="category"
-              id="category"
-              defaultValue={categoryParam}
-              className="w-full cursor-pointer rounded-xl border border-[#C09721]/30 bg-white px-4 py-2.5 text-base font-semibold text-slate-600 shadow-sm transition-all duration-200 outline-none hover:border-[#C09721]/60 focus:border-[#C09721] focus:ring-4 focus:ring-[#C09721]/10 md:w-44"
-            >
-              <option value="">All Categories</option>
-
-              {categories.map((category) => (
-                <option value={category.name} key={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
+              value={categoryParam}
+              placeholder="All Categories"
+              className="md:w-44"
+              options={[
+                { label: 'All Categories', value: '' },
+                ...categories.map((category) => ({
+                  label: category.name,
+                  value: category.name,
+                })),
+              ]}
+            />
           </div>
         )}
 
@@ -69,18 +71,19 @@ export default function Filtering({ categories, searchParam, categoryParam, sort
           <label htmlFor="sortBy" className="sr-only">
             Sort menu
           </label>
-          <select
-            id="sortBy"
+          <CustomSelect
             name="sortBy"
-            defaultValue={sortByParam}
-            className="w-full cursor-pointer rounded-xl border border-[#C09721]/30 bg-white px-4 py-2.5 text-base font-semibold text-slate-600 shadow-sm transition-all duration-200 outline-none hover:border-[#C09721]/60 focus:border-[#C09721] focus:ring-4 focus:ring-[#C09721]/10 md:w-44"
-          >
-            <option value="">Sort by</option>
-            <option value="asc">Ascending</option>
-            <option value="desc">Descending</option>
-            <option value="lowest">Lowest first</option>
-            <option value="highest">Highest first</option>
-          </select>
+            value={sortByParam}
+            placeholder="Sort by"
+            className="md:w-44"
+            options={[
+              { label: 'Sort by', value: '' },
+              { label: 'Ascending', value: 'asc' },
+              { label: 'Descending', value: 'desc' },
+              { label: 'Lowest first', value: 'lowest' },
+              { label: 'Highest first', value: 'highest' },
+            ]}
+          />
         </div>
 
         {/* Preserve favorite filter when active */}
