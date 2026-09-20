@@ -13,20 +13,42 @@ export class MenuService {
     categoryParam: string,
     filterParam: string,
     sortBy: string,
+    userId?: string,
   ): Promise<MenuApiResponse> {
     try {
       const requestHeaders = await headers();
-      const response = await fetch(
-        `${MENU_API_URL}?page=${page}&search=${encodeURIComponent(searchParams)}&category=${encodeURIComponent(categoryParam)}&filter=${encodeURIComponent(filterParam)}&sortBy=${encodeURIComponent(sortBy)}`,
-        {
-          method: 'GET',
-          headers: {
-            Cookie: requestHeaders.get('cookie') ?? '',
-          },
-        },
-      );
 
-      return (await response.json()) as MenuApiResponse;
+      const url =
+        `${MENU_API_URL}?page=${page}` +
+        `&search=${encodeURIComponent(searchParams)}` +
+        `&category=${encodeURIComponent(categoryParam)}` +
+        `&filter=${encodeURIComponent(filterParam)}` +
+        `&sortBy=${encodeURIComponent(sortBy)}`;
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          Cookie: requestHeaders.get('cookie') ?? '',
+        },
+        cache: 'no-store',
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+
+        console.error('API error:', errorText);
+
+        return {
+          success: false,
+          message: 'Failed to fetch menu items.',
+          data: [],
+          pagination: null,
+        };
+      }
+
+      const result = (await response.json()) as MenuApiResponse;
+
+      return result;
     } catch (error) {
       console.error('error api/menu/get:', error);
 
@@ -38,7 +60,6 @@ export class MenuService {
       } satisfies MenuApiResponse;
     }
   }
-
   async add(formData: FormData): Promise<ApiResponse<[]>> {
     try {
       const requestHeaders = await headers();

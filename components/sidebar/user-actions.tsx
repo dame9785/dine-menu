@@ -37,7 +37,9 @@ export default function UserActions() {
               </div>
               <div className="min-w-0">
                 <p className="text-m truncate font-semibold text-[#5F4A20]">{session.user.name}</p>
-                <p className="truncate text-sm text-gray-500">{session.user.email}</p>
+                <Link href="/account/settings" className="font-bold underline">
+                  Account settings{' '}
+                </Link>
               </div>
               <button
                 type="button"
