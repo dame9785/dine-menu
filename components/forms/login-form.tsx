@@ -2,37 +2,36 @@
 
 import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
 
 import { authClient } from '@/lib/auth-client';
-import { loginSchema } from '@/schemas/account';
 
 import Input from '@/components/ui/input';
 import SubmitButton from '@/components/ui/submit-button';
 import FormField from '@/components/ui/form-field';
-
-type FormErrors = Record<string, string[]>;
+import { loginSchema } from '@/schemas/account';
 
 export default function LoginForm() {
   const router = useRouter();
 
+  const [errors, setErrors] = useState<{
+    email?: string[];
+    password?: string[];
+    general?: string;
+  }>({});
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [isPending, setIsPending] = useState(false);
+  const [isPending, setPending] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    setErrors({});
-
     const formData = {
-      email: email.trim().toLowerCase(),
+      email,
       password,
     };
 
-    // Validate form data
     const validation = loginSchema.safeParse(formData);
 
     if (!validation.success) {
@@ -40,36 +39,37 @@ export default function LoginForm() {
       return;
     }
 
-    const { email: validatedEmail, password: validatedPassword } = validation.data;
-
-    setIsPending(true);
-
-    try {
-      const { error } = await authClient.signIn.email({
-        email: validatedEmail,
-        password: validatedPassword,
-      });
-
-      if (error) {
-        toast.error(error.message || 'Invalid email or password.');
-        return;
-      }
-
-      toast.success('Logged in successfully!');
-
-      router.push('/');
-      router.refresh();
-    } catch (error) {
-      console.error('Login error:', error);
-
-      toast.error('Something went wrong. Please try again.');
-    } finally {
-      setIsPending(false);
-    }
+    authClient.signIn.email(
+      {
+        email: formData.email,
+        password: formData.password,
+      },
+      {
+        onRequest: () => {
+          setPending(true);
+        },
+        onResponse: () => {
+          setPending(false);
+        },
+        onSuccess: () => {
+          router.push('/');
+        },
+        onError: ({ error }) => {
+          setErrors({
+            general: error.message || 'Something went wrong. Please try again.',
+          });
+        },
+      },
+    );
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
+      {errors.general && (
+        <p role="alert" className="rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+          {errors.general}
+        </p>
+      )}
       {/* Email */}
       <FormField label="Email address" htmlFor="email" error={errors.email?.[0]}>
         <Input
@@ -87,7 +87,7 @@ export default function LoginForm() {
       </FormField>
 
       {/* Password */}
-      <FormField label="Password" htmlFor="password" error={errors.password?.[0]}>
+      <FormField label="Password" htmlFor="password">
         <Input
           id="password"
           name="password"

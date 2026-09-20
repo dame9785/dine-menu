@@ -1,25 +1,13 @@
-'use client';
-
-import { useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { authClient } from '@/lib/auth-client';
-
 import LoginForm from '@/components/forms/login-form';
+import { getSession } from '@/lib/auth-guard';
+import { redirect } from 'next/navigation';
 
-export default function LoginPage() {
-  const router = useRouter();
-  const { data: session, isPending } = authClient.useSession();
+export default async function LoginPage() {
+  const sesion = await getSession();
 
-  //Redirect to home page if already logged in
-  useEffect(() => {
-    if (!isPending && session) {
-      router.replace('/');
-    }
-  }, [session, isPending, router]);
-
-  if (isPending || session) {
-    return null;
+  if (sesion) {
+    return redirect('/');
   }
 
   return (
