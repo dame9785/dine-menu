@@ -1,11 +1,18 @@
 import { Prisma } from '@/generated/prisma/client';
 
 /**
- * Menu item with category and user-specific favorites.
+ * Menu item with category, company and user-specific favorites.
  */
 export type MenuWithCategory = Prisma.menuitemGetPayload<{
   include: {
     category: true;
+
+    company: {
+      select: {
+        id: true;
+        name: true;
+      };
+    };
 
     Favorite: {
       select: {
@@ -68,6 +75,17 @@ export type GetAllMenuResult = {
   totalPages: number;
 };
 
+/**
+ * Company view model.
+ */
+export type CompanyViewModel = {
+  id: number;
+  name: string;
+};
+
+/**
+ * Menu item view model.
+ */
 export type MenuItemViewModel = {
   id: number;
   name: string;
@@ -78,5 +96,6 @@ export type MenuItemViewModel = {
   updatedAt: Date;
   category: string;
   categoryId: number;
+  company: CompanyViewModel | null;
   isFavorite: boolean;
 };

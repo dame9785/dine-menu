@@ -138,11 +138,14 @@ export class MenuRepository {
 
         include: {
           category: true,
-          company: true,
 
-          /**
-           * Only fetch the current user's favorites.
-           */
+          company: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+
           Favorite: {
             where: userId
               ? {
@@ -185,6 +188,13 @@ export class MenuRepository {
       include: {
         category: true,
 
+        company: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+
         Favorite: {
           where: userId
             ? {
@@ -201,7 +211,6 @@ export class MenuRepository {
       },
     });
   }
-
   /**
    * FIND MENU ITEM OWNED BY USER
    */

@@ -44,7 +44,7 @@ export default function MenuCard({ menuItem, categories, isLoggedIn }: Props) {
               aria-hidden="true"
               className="rounded-full border border-[#C09721]/30 bg-white px-3 py-1.5 text-xs font-semibold text-slate-600 shadow-sm backdrop-blur-md"
             >
-              {menuItem.category}
+              {menuItem.company?.name}
             </span>
           </div>
         </div>
