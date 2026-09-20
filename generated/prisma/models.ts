@@ -10,6 +10,7 @@
  */
 export type * from './models/category'
 export type * from './models/menuitem'
+export type * from './models/Company'
 export type * from './models/User'
 export type * from './models/Session'
 export type * from './models/Account'

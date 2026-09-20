@@ -9,7 +9,6 @@ const categoryService = new CategoryService();
 export async function deleteCategory(categoryId: number) {
   try {
     const response = await categoryService.delete(categoryId);
-    console.log(response);
 
     if (!response.success) {
       return {

@@ -49,6 +49,31 @@ export async function requireAdmin() {
   return session;
 }
 
+export async function checkCompanyPermision() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    return {
+      authorized: false,
+      message: 'You do not have permission to add menu.',
+    };
+  }
+
+  const user = await prisma.user.findUnique({
+    where: {
+      id: session.user.id,
+    },
+    select: {
+      role: true,
+      company: true,
+    },
+  });
+
+  console.log(user);
+}
+
 export async function checkAdmin() {
   const session = await auth.api.getSession({
     headers: await headers(),

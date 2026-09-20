@@ -2,12 +2,15 @@
 
 import { authClient } from '@/lib/auth-client';
 import { FormEvent, useState } from 'react';
+import { useRouter } from 'next/navigation';
+
 import Input from '@/components/ui/input';
 import SubmitButton from '@/components/ui/submit-button';
 import FormField from '../ui/form-field';
+
 import { registerAccountSchema } from '@/schemas/account';
+import { createCompany } from '@/actions/company';
 import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
 
 type FormErrors = Record<string, string[]>;
 
@@ -17,19 +20,16 @@ export default function RegisterForm() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [company, setCompany] = useState('');
 
   const [errors, setErrors] = useState<FormErrors>({});
-  const [isPending, setIsPending] = useState(false);
-
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [isPending, setIsPending] = useState(false);
 
   const clearError = (field: keyof FormErrors) => {
     setErrors((prev) => {
       const next = { ...prev };
-
       delete next[field];
-
       return next;
     });
   };
@@ -37,41 +37,57 @@ export default function RegisterForm() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
+    setErrors({});
     setError('');
-    setLoading(true);
+    setIsPending(true);
 
     const data = {
-      name,
-      email,
+      name: name.trim(),
+      email: email.trim(),
       password,
+      company: company.trim(),
     };
 
-    // Validate form data
     const validation = registerAccountSchema.safeParse(data);
 
     if (!validation.success) {
       setErrors(validation.error.flatten().fieldErrors);
-      setLoading(false);
+      setIsPending(false);
       return;
     }
 
-    setIsPending(true);
-
     try {
-      const { data, error } = await authClient.signUp.email({
-        name,
-        email,
-        password,
+      // Skapa användarkonto
+      const { error: signUpError } = await authClient.signUp.email({
+        name: data.name,
+        email: data.email,
+        password: data.password,
       });
 
-      if (error) {
-        setError(error.message || 'Registration failed.');
+      if (signUpError) {
+        setError(signUpError.message || 'Registration failed.');
         return;
       }
 
-      toast.success('Account successfully register!');
+      // Skapa företag om företagsnamn har angetts
+      if (data.company) {
+        const companyResponse = await createCompany(data.company);
+
+        if (!companyResponse.success) {
+          toast.warning('Account created, but company registration failed.');
+
+          router.push('/');
+          return;
+        }
+      }
+
+      toast.success('Account successfully registered!');
+
       router.push('/');
-    } catch {
+      router.refresh();
+    } catch (error) {
+      console.error('Registration error:', error);
+
       setError('Something went wrong. Please try again.');
     } finally {
       setIsPending(false);
@@ -81,7 +97,7 @@ export default function RegisterForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       {/* Name */}
-      <FormField label="name" htmlFor="email" error={errors.name?.[0]}>
+      <FormField label="name" htmlFor="name" error={errors.name?.[0]}>
         <Input
           id="name"
           name="name"
@@ -94,7 +110,7 @@ export default function RegisterForm() {
           }}
           placeholder="Enter your name"
           autoComplete="name"
-          disabled={loading}
+          disabled={isPending}
           aria-invalid={!!errors.name}
           aria-describedby={errors.name ? 'name-error' : undefined}
         />
@@ -114,9 +130,29 @@ export default function RegisterForm() {
           }}
           placeholder="Enter your email"
           autoComplete="email"
-          disabled={loading}
+          disabled={isPending}
           aria-invalid={!!errors.email}
           aria-describedby={errors.email ? 'email-error' : undefined}
+        />
+      </FormField>
+
+      {/* Company */}
+      <FormField label="company" htmlFor="company" error={errors.company?.[0]}>
+        <Input
+          id="company"
+          name="company"
+          type="text"
+          value={company}
+          onChange={(event) => {
+            setCompany(event.target.value);
+            clearError('company');
+            setError('');
+          }}
+          placeholder="Enter company name (optional)"
+          autoComplete="organization"
+          disabled={isPending}
+          aria-invalid={!!errors.company}
+          aria-describedby={errors.company ? 'company-error' : undefined}
         />
       </FormField>
 
@@ -133,15 +169,16 @@ export default function RegisterForm() {
             setError('');
           }}
           placeholder="Enter password"
-          autoComplete="password"
-          disabled={loading}
+          autoComplete="new-password"
+          disabled={isPending}
           aria-invalid={!!errors.password}
           aria-describedby={errors.password ? 'password-error' : undefined}
         />
       </FormField>
 
+      {/* General error */}
       {error && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-600">{error}</p>}
-      <SubmitButton disabled={isPending}>{isPending ? 'Register...' : 'Register account'}</SubmitButton>
+      <SubmitButton disabled={isPending}>{isPending ? 'Registering...' : 'Register account'}</SubmitButton>
     </form>
   );
 }

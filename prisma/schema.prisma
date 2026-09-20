@@ -28,7 +28,24 @@ model menuitem {
   Favorite    Favorite[]
   category    category   @relation(fields: [categoryId], references: [id], onDelete: Cascade, map: "MenuItem_categoryId_fkey")
 
+  companyId Int?
+  company   Company? @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
   @@index([categoryId], map: "MenuItem_categoryId_fkey")
+  @@index([companyId])
+}
+
+model Company {
+  id        Int      @id @default(autoincrement())
+  name      String
+  ownerId   String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  owner     User       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  menuitems menuitem[]
+
+  @@map("company")
 }
 
 model User {
@@ -43,6 +60,7 @@ model User {
   Favorite      Favorite[]
   accounts      Account[]
   sessions      Session[]
+  company       Company?
 
   @@map("user")
 }

@@ -52,6 +52,11 @@ export type category = Prisma.categoryModel
  */
 export type menuitem = Prisma.menuitemModel
 /**
+ * Model Company
+ * 
+ */
+export type Company = Prisma.CompanyModel
+/**
  * Model User
  * 
  */
