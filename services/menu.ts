@@ -60,28 +60,6 @@ export class MenuService {
       } satisfies MenuApiResponse;
     }
   }
-  async add(formData: FormData): Promise<ApiResponse<[]>> {
-    try {
-      const requestHeaders = await headers();
-
-      const response = await fetch(MENU_API_URL, {
-        method: 'POST',
-        body: formData,
-        headers: {
-          Cookie: requestHeaders.get('cookie') ?? '',
-        },
-      });
-
-      return (await response.json()) as ApiResponse<[]>;
-    } catch (error) {
-      console.error('error api/menu/post:', error);
-
-      return {
-        success: false,
-        message: 'Could not connect to the server.',
-      } satisfies ApiResponse<[]>;
-    }
-  }
 
   async update(menuItemId: number, formData: FormData): Promise<ApiResponse<[]>> {
     try {

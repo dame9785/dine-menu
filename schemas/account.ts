@@ -25,11 +25,7 @@ export const registerAccountSchema = z.object({
     .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
     .regex(/[0-9]/, 'Password must contain at least one number'),
 
-  company: z
-    .string()
-    .trim()
-    .min(1, 'You must enter a company name')
-    .max(100, 'Company name cannot exceed 100 characters'),
+  company: z.string().trim().max(100, 'Company name cannot exceed 100 characters').optional().or(z.literal('')),
 });
 
 export const resetPasswordSchema = z

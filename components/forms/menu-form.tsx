@@ -131,7 +131,6 @@ export default function MenuForm({ menuItem, onOpenChange, categories }: Props) 
     startTransition(async () => {
       try {
         const response = isEditMode ? await updateMenuItem(menuItem.id, formData) : await addMenuItem(formData);
-
         if (!response.success) {
           if (response.errors) {
             setErrors(response.errors);

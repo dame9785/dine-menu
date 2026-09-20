@@ -1,7 +1,7 @@
 import { CategoryViewModel } from '@/types/category';
 import Image from 'next/image';
 import MenuModalAction from '@/components/menu/actions/menu-modal-actions';
-import { checkAdmin } from '@/lib/auth-guard';
+import { checkCompanyPermision } from '@/lib/auth-guard';
 
 type Props = {
   categories: CategoryViewModel[];
@@ -9,7 +9,7 @@ type Props = {
 
 export default async function Header({ categories }: Props) {
   //Check if user is admin
-  const isAuthorized = await checkAdmin();
+  const isAuthorized = await checkCompanyPermision();
 
   return (
     <header className="relative mb-8 overflow-hidden rounded-3xl border border-[#A77F18] shadow-lg">

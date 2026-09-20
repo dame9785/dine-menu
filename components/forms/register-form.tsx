@@ -17,6 +17,8 @@ type FormErrors = Record<string, string[]>;
 export default function RegisterForm() {
   const router = useRouter();
 
+  const [createCompanyAccount, setCreateCompanyAccount] = useState(false);
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -42,10 +44,10 @@ export default function RegisterForm() {
     setIsPending(true);
 
     const data = {
-      name: name.trim(),
-      email: email.trim(),
+      name: name,
+      email: email,
       password,
-      company: company.trim(),
+      company: company,
     };
 
     const validation = registerAccountSchema.safeParse(data);
@@ -136,25 +138,52 @@ export default function RegisterForm() {
         />
       </FormField>
 
-      {/* Company */}
-      <FormField label="company" htmlFor="company" error={errors.company?.[0]}>
-        <Input
-          id="company"
-          name="company"
-          type="text"
-          value={company}
+      {/* Create company */}
+      <div className="flex items-center gap-3">
+        <input
+          id="createCompanyAccount"
+          name="createCompanyAccount"
+          type="checkbox"
+          checked={createCompanyAccount}
           onChange={(event) => {
-            setCompany(event.target.value);
+            const checked = event.target.checked;
+
+            setCreateCompanyAccount(checked);
             clearError('company');
             setError('');
+
+            if (!checked) {
+              setCompany('');
+            }
           }}
-          placeholder="Enter company name (optional)"
-          autoComplete="organization"
           disabled={isPending}
-          aria-invalid={!!errors.company}
-          aria-describedby={errors.company ? 'company-error' : undefined}
+          className="h-4 w-4"
         />
-      </FormField>
+
+        <label htmlFor="createCompanyAccount" className="text-sm">
+          I want to create a company account
+        </label>
+      </div>
+      {createCompanyAccount && (
+        <FormField label="company" htmlFor="company" error={errors.company?.[0]}>
+          <Input
+            id="company"
+            name="company"
+            type="text"
+            value={company}
+            onChange={(event) => {
+              setCompany(event.target.value);
+              clearError('company');
+              setError('');
+            }}
+            placeholder="Enter company name"
+            autoComplete="organization"
+            disabled={isPending}
+            aria-invalid={!!errors.company}
+            aria-describedby={errors.company ? 'company-error' : undefined}
+          />
+        </FormField>
+      )}
 
       {/* Password */}
       <FormField label="password" htmlFor="password" error={errors.password?.[0]}>

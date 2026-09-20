@@ -1,52 +1,57 @@
 import { ApiResponse, MenuApiResponse } from '@/types/api-responses';
-import { AddMenuItemDto, MenuItemViewModel } from '@/types/menu';
+import { MenuItemViewModel, MenuResult } from '@/types/menu';
 import { MenuRepository } from '../repositories/menu';
 import { MenuMapper } from '../mapping/menu';
 import { saveImage } from '@/helpers/image-helper';
-import { UpdateMenuDto, updateMenuSchema } from '@/schemas/menu';
+import { AddMenuDto, UpdateMenuDto, updateMenuSchema } from '@/schemas/menu';
 import { FavoriteRepository } from '../repositories/favorite';
+import { CompanyRepository } from '@/server/repositories/company';
+import { getSession } from '@/lib/auth-guard';
 
 const menuRepository = new MenuRepository();
 const favoriteRepository = new FavoriteRepository();
+const companyRepository = new CompanyRepository();
 
 export class MenuService {
-  async add(formData: FormData): Promise<ApiResponse<[]>> {
+  async add(data: AddMenuDto): Promise<MenuResult> {
     try {
-      const name = formData.get('name');
-      const description = formData.get('description');
-      const price = formData.get('price');
-      const categoryId = formData.get('categoryId');
-      const image = formData.get('image');
-
-      if (
-        typeof name !== 'string' ||
-        typeof description !== 'string' ||
-        typeof price !== 'string' ||
-        typeof categoryId !== 'string'
-      ) {
-        return {
-          success: false,
-          message: 'Invalid menu data.',
-        } satisfies ApiResponse<[]>;
-      }
-
       let imageUrl = '';
-      if (image instanceof File) {
-        imageUrl = await saveImage(image);
+
+      if (data.image instanceof File && data.image.size > 0) {
+        imageUrl = await saveImage(data.image);
+
         if (!imageUrl) {
           return {
             success: false,
             message: 'Could not upload the image',
-          } satisfies ApiResponse<[]>;
+          } satisfies MenuResult;
         }
       }
 
-      const dto: AddMenuItemDto = {
-        name,
-        description,
-        price: Number(price),
-        categoryId: Number(categoryId),
-        imageUrl: imageUrl,
+      const session = await getSession();
+
+      if (!session) {
+        return {
+          success: false,
+          message: 'You need to be logged in.',
+        };
+      }
+
+      const userId = session.user.id;
+
+      const companyId = await companyRepository.getUserCompanyId(userId);
+      if (!companyId) {
+        return {
+          success: false,
+          message: 'No company found..',
+        };
+      }
+
+      const dto: AddMenuDto = {
+        ...data,
+        categoryId: Number(data.categoryId),
+        imageUrl,
+        companyId,
       };
 
       const result = await menuRepository.addMenu(dto);
@@ -61,75 +66,52 @@ export class MenuService {
       return {
         success: true,
         message: 'Menu successfully created.',
-      } satisfies ApiResponse<[]>;
+      };
     } catch (error) {
-      console.error('Server error', error);
+      console.error('Server error:', error);
 
       return {
         success: false,
         message: 'Something went wrong while creating a new menu.',
-      } satisfies ApiResponse<[]>;
+      };
     }
   }
 
-  async update(menuItemId: number, formData: FormData): Promise<ApiResponse<MenuItemViewModel>> {
+  async update(menuItemId: number, data: UpdateMenuDto): Promise<MenuResult> {
     try {
-      const name = formData.get('name');
-      const description = formData.get('description');
-      const price = formData.get('price');
-      const categoryId = formData.get('categoryId');
-      const image = formData.get('image');
+      const session = await getSession();
 
-      if (
-        typeof name !== 'string' ||
-        typeof description !== 'string' ||
-        typeof price !== 'string' ||
-        typeof categoryId !== 'string'
-      ) {
+      if (!session) {
         return {
           success: false,
-          message: 'Invalid menu data.',
-        } satisfies ApiResponse<[]>;
-      }
-
-      const validation = updateMenuSchema.safeParse({
-        name,
-        description,
-        price: Number(price),
-        categoryId: Number(categoryId),
-        ...(image instanceof File && image.size > 0 ? { image } : {}),
-      });
-
-      if (!validation.success) {
-        return {
-          success: false,
-          message: 'Invalid menu data.',
+          message: 'You need to be logged in.',
         };
       }
 
-      const validatedData = validation.data;
-      let imageUrl: string = '';
+      const userId = session.user.id;
 
-      // Bara uppdatera bilden om användaren valt en ny
-      if (image instanceof File && image.size > 0) {
-        imageUrl = await saveImage(image);
+      const validatedData = updateMenuSchema.parse(data);
+
+      let imageUrl: string | undefined;
+
+      // Uppdatera bara bilden om användaren valt en ny
+      if (validatedData.image instanceof File && validatedData.image.size > 0) {
+        imageUrl = await saveImage(validatedData.image);
 
         if (!imageUrl) {
           return {
             success: false,
             message: 'Could not upload the image',
-          } satisfies ApiResponse<[]>;
+          };
         }
       }
 
-      const data = await menuRepository.update(menuItemId, validatedData, imageUrl);
-      const viewModel = MenuMapper.menuItemDboToViewModel(data.menuItem);
+      const result = await menuRepository.update(menuItemId, validatedData, imageUrl, userId);
 
       return {
         success: true,
         message: 'Menu successfully updated.',
-        data: viewModel,
-      } satisfies ApiResponse<MenuItemViewModel>;
+      };
     } catch (error) {
       console.error('Server error', error);
 
@@ -174,25 +156,46 @@ export class MenuService {
     }
   }
 
-  async delete(menuItemId: number): Promise<ApiResponse<[]>> {
+  async delete(menuItemId: number): Promise<MenuResult> {
     try {
-      await menuRepository.delete(menuItemId);
+      const session = await getSession();
+
+      if (!session) {
+        return {
+          success: false,
+          message: 'You need to be logged in.',
+        };
+      }
+
+      const userId = session.user.id;
+
+      const companyId = await companyRepository.getUserCompanyId(userId);
+
+      if (!companyId) {
+        return {
+          success: false,
+          message: 'No company found.',
+        };
+      }
+      const result = await menuRepository.delete(menuItemId, companyId, userId);
+
       return {
-        success: true,
-        message: 'Category successfully deleted',
-      } satisfies ApiResponse<[]>;
+        success: result.success,
+        message: result.message,
+      };
     } catch (error) {
       console.error('Server error', error);
       return {
         success: false,
         message: 'Something went wrong while deleting the menu.',
-      } satisfies ApiResponse<[]>;
+      } satisfies MenuResult;
     }
   }
 
   async getById(menuItemId: number): Promise<ApiResponse<MenuItemViewModel>> {
     try {
       const menuItemData = await menuRepository.getById(menuItemId);
+
       if (!menuItemData) {
         return {
           success: true,
@@ -201,6 +204,7 @@ export class MenuService {
       }
 
       const viewModel = MenuMapper.menuItemDboToViewModel(menuItemData);
+
       return {
         success: true,
         message: 'Menu managed to retrieve',

@@ -36,13 +36,9 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
-    console.log('1. HEJ API');
-
     const session = await auth.api.getSession({
       headers: request.headers,
     });
-
-    console.log('2. Session', session);
 
     const userId = session?.user?.id;
 
@@ -57,11 +53,7 @@ export async function GET(request: NextRequest) {
 
     const sortByParam = request.nextUrl.searchParams.get('sortBy') ?? '';
 
-    console.log('3. Calling menuService.getAll');
-
     const result = await menuService.getAll(page, searchParam, categoryParam, filterParam, sortByParam, userId);
-
-    console.log('4. Menu result', result);
 
     return NextResponse.json(result, {
       status: 200,

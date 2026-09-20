@@ -36,7 +36,12 @@ export default function DeleteMenuButton({ menuItemId, deleteMenuAction, onDelet
   const deleteAction = async () => {
     try {
       const response = await deleteMenuAction(menuItemId);
-
+      console.log('RESP', response);
+      if (response.success) {
+        console.log('SUCCESS');
+      } else {
+        console.log('ERROR');
+      }
       if (response.success) {
         onDeleted();
         toast.success(response.message, {

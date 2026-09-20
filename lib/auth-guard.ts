@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { request } from 'http';
 
 export async function requireSession() {
   const session = await auth.api.getSession({
@@ -68,10 +69,22 @@ export async function checkCompanyPermision() {
     select: {
       role: true,
       company: true,
+      id: true,
     },
   });
 
-  console.log(user);
+  if (!user || user.role !== 'company') {
+    return {
+      authorized: false,
+      message: 'You do not have permission to add menu.',
+    };
+  }
+
+  return {
+    userId: user.id,
+    authorized: true,
+    message: 'You have permission to add menu.',
+  };
 }
 
 export async function checkAdmin() {

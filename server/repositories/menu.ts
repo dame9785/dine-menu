@@ -1,7 +1,7 @@
 import { Prisma } from '@/generated/prisma/client';
 import { prisma } from '@/lib/prisma';
-import { UpdateMenuDto } from '@/schemas/menu';
-import { AddMenuItemDto } from '@/types/menu';
+import { AddMenuDto, UpdateMenuDto } from '@/schemas/menu';
+import { AddMenuItemDto, MenuResult } from '@/types/menu';
 
 type MenuWithCategory = Prisma.menuitemGetPayload<{
   include: {
@@ -26,16 +26,23 @@ export type GetMenuItemResult = {
 };
 
 export class MenuRepository {
-  async addMenu(dto: AddMenuItemDto) {
+  async addMenu(dto: AddMenuDto) {
     return await prisma.menuitem.create({
       data: {
         name: dto.name,
         description: dto.description,
         price: dto.price,
         imageUrl: dto.imageUrl,
+
         category: {
           connect: {
             id: dto.categoryId,
+          },
+        },
+
+        company: {
+          connect: {
+            id: dto.companyId,
           },
         },
       },
@@ -147,12 +154,43 @@ export class MenuRepository {
     };
   }
 
-  async delete(menuId: number) {
-    return await prisma.menuitem.delete({
-      where: {
-        id: menuId,
-      },
-    });
+  async delete(menuId: number, companyId: number, userId: string) {
+    try {
+      const existingMenuItem = await prisma.menuitem.findFirst({
+        where: {
+          id: menuId,
+          companyId,
+          company: {
+            ownerId: userId,
+          },
+        },
+      });
+
+      if (!existingMenuItem) {
+        return {
+          success: false,
+          message: 'You dont have permision to delete this item.',
+        };
+      }
+
+      await prisma.menuitem.delete({
+        where: {
+          id: menuId,
+        },
+      });
+
+      return {
+        success: true,
+        message: 'Menu item deleted successfully.',
+      };
+    } catch (error) {
+      console.error('Delete menu item error:', error);
+
+      return {
+        success: false,
+        message: 'Something went wrong while deleting the menu item.',
+      };
+    }
   }
 
   async getById(menuId: number): Promise<MenuWithCategory | null> {
@@ -169,7 +207,36 @@ export class MenuRepository {
     return menuItem;
   }
 
-  async update(menuId: number, dto: UpdateMenuDto, imageUrl: string): Promise<GetMenuItemResult> {
+  async update(menuId: number, dto: UpdateMenuDto, imageUrl?: string, userId?: string): Promise<MenuResult> {
+    const existingMenuItem = await prisma.menuitem.findUnique({
+      where: {
+        id: menuId,
+      },
+      include: {
+        company: {
+          select: {
+            ownerId: true,
+          },
+        },
+      },
+    });
+
+    // Kontrollera att maträtten finns
+    if (!existingMenuItem) {
+      return {
+        success: false,
+        message: 'Couldt not found the menu item.',
+      };
+    }
+
+    // Kontrollera att användaren äger företaget
+    if (!existingMenuItem.company || existingMenuItem.company.ownerId !== userId) {
+      return {
+        success: false,
+        message: 'You are not authorized to modify this menu item.',
+      };
+    }
+
     const menuItem = await prisma.menuitem.update({
       where: {
         id: menuId,
@@ -178,7 +245,11 @@ export class MenuRepository {
         name: dto.name,
         description: dto.description,
         price: dto.price,
-        imageUrl: imageUrl,
+
+        ...(imageUrl && {
+          imageUrl,
+        }),
+
         category: {
           connect: {
             id: dto.categoryId,
@@ -192,7 +263,9 @@ export class MenuRepository {
     });
 
     return {
-      menuItem,
+      success: true,
+      message: 'Success',
+      data: menuId,
     };
   }
 }

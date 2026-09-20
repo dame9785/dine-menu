@@ -58,38 +58,35 @@ export default function MenuCard({ menuItem, categories, isAdmin, isLoggedIn }: 
         </div>
       )}
 
-      {isAdmin && (
-        <div className="absolute right-5 bottom-5 z-40">
-          <button
-            type="button"
-            onClick={() => setIsMenuOpen((prev) => !prev)}
-            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-[#C09721]/30 bg-white shadow-sm transition hover:bg-[#FFFCF5] hover:text-slate-900 focus:outline-none focus-visible:ring-4 focus-visible:ring-[#C09721]/20"
-            aria-label={`Open actions for ${menuItem.name}`}
-            aria-expanded={isMenuOpen}
-            aria-haspopup="menu"
-            aria-controls={`menu-actions-${menuItem.id}`}
+      <div className="absolute right-5 bottom-5 z-40">
+        <button
+          type="button"
+          onClick={() => setIsMenuOpen((prev) => !prev)}
+          className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-[#C09721]/30 bg-white shadow-sm transition hover:bg-[#FFFCF5] hover:text-slate-900 focus:outline-none focus-visible:ring-4 focus-visible:ring-[#C09721]/20"
+          aria-label={`Open actions for ${menuItem.name}`}
+          aria-expanded={isMenuOpen}
+          aria-haspopup="menu"
+          aria-controls={`menu-actions-${menuItem.id}`}
+        >
+          <MoreVertical size={17} aria-hidden="true" />
+        </button>
+
+        {isMenuOpen && (
+          <div
+            id={`menu-actions-${menuItem.id}`}
+            role="menu"
+            aria-label={`Actions for ${menuItem.name}`}
+            className="absolute right-0 bottom-10 z-50 flex w-36 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl shadow-slate-300/40"
           >
-            <MoreVertical size={17} aria-hidden="true" />
-          </button>
-
-          {isMenuOpen && (
-            <div
-              id={`menu-actions-${menuItem.id}`}
-              role="menu"
-              aria-label={`Actions for ${menuItem.name}`}
-              className="absolute right-0 bottom-10 z-50 flex w-36 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl shadow-slate-300/40"
-            >
-              <ModalAction isEditing={true} categories={categories} menuItem={menuItem} />
-
-              <DeleteAction
-                menuItemId={menuItem.id}
-                deleteMenuAction={deleteMenuItem}
-                onDeleted={() => setIsMenuOpen(false)}
-              />
-            </div>
-          )}
-        </div>
-      )}
+            <ModalAction isEditing={true} categories={categories} menuItem={menuItem} />
+            <DeleteAction
+              menuItemId={menuItem.id}
+              deleteMenuAction={deleteMenuItem}
+              onDeleted={() => setIsMenuOpen(false)}
+            />
+          </div>
+        )}
+      </div>
     </article>
   );
 }

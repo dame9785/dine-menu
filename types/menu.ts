@@ -4,8 +4,9 @@ export interface AddMenuItemDto {
   name: string;
   description: string;
   price: number;
-  imageUrl: string;
   categoryId: number;
+  companyId: number;
+  imageUrl: string;
 }
 
 export interface MenuItemViewModel {
@@ -19,4 +20,10 @@ export interface MenuItemViewModel {
   category: string;
   categoryId: number;
   isFavorite: boolean;
+}
+
+export interface MenuResult {
+  success: boolean;
+  message: string;
+  data?: number;
 }

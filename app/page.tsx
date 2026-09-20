@@ -10,6 +10,7 @@ import Header from '@/components/menu/header';
 import { Utensils } from 'lucide-react';
 import FilterButtons from '@/components/menu/actions/filter-buttons';
 import Pagination from '@/components/pagination/pagination';
+import { checkCompanyPermision } from '@/lib/auth-guard';
 
 const categoryService = new CategoryService();
 
