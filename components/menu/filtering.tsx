@@ -2,6 +2,7 @@ import { CategoryViewModel } from '@/types/category';
 import { Search } from 'lucide-react';
 import CustomSelect from '@/components/ui/custom-select';
 import Input from '../ui/input';
+import Select from '../ui/select';
 
 type Props = {
   categories: CategoryViewModel[];
@@ -50,19 +51,20 @@ export default function Filtering({ categories, searchParam, categoryParam, sort
             <label htmlFor="category" className="sr-only">
               Category
             </label>
-            <CustomSelect
+            <Select
               name="category"
-              value={categoryParam}
-              placeholder="All Categories"
-              className="md:w-44"
-              options={[
-                { label: 'All Categories', value: '' },
-                ...categories.map((category) => ({
-                  label: category.name,
-                  value: category.name,
-                })),
-              ]}
-            />
+              id="category"
+              defaultValue={categoryParam}
+              className="w-full cursor-pointer rounded-xl border border-[#C09721]/30 bg-white px-4 py-2.5 text-base font-semibold text-slate-600 shadow-sm transition-all duration-200 outline-none hover:border-[#C09721]/60 focus:border-[#C09721] focus:ring-4 focus:ring-[#C09721]/10 md:w-44"
+            >
+              <option value="">All Categories</option>
+
+              {categories.map((category) => (
+                <option value={category.name} key={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </Select>
           </div>
         )}
 
@@ -71,19 +73,18 @@ export default function Filtering({ categories, searchParam, categoryParam, sort
           <label htmlFor="sortBy" className="sr-only">
             Sort menu
           </label>
-          <CustomSelect
+          <Select
+            id="sortBy"
             name="sortBy"
-            value={sortByParam}
-            placeholder="Sort by"
-            className="md:w-44"
-            options={[
-              { label: 'Sort by', value: '' },
-              { label: 'Ascending', value: 'asc' },
-              { label: 'Descending', value: 'desc' },
-              { label: 'Lowest first', value: 'lowest' },
-              { label: 'Highest first', value: 'highest' },
-            ]}
-          />
+            defaultValue={sortByParam}
+            className="w-full cursor-pointer rounded-xl border border-[#C09721]/30 bg-white px-4 py-2.5 text-base font-semibold text-slate-600 shadow-sm transition-all duration-200 outline-none hover:border-[#C09721]/60 focus:border-[#C09721] focus:ring-4 focus:ring-[#C09721]/10 md:w-44"
+          >
+            <option value="">Sort by</option>
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+            <option value="lowest">Lowest first</option>
+            <option value="highest">Highest first</option>
+          </Select>
         </div>
 
         {/* Preserve favorite filter when active */}

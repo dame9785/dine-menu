@@ -48,7 +48,6 @@ export default async function MenuPage({ searchParams }: Props) {
   ]);
 
   const categories = categoryResponse.data ?? [];
-
   const menuItemList = menuResponse.data ?? [];
 
   const totalPages = menuResponse.pagination?.totalPages ?? 0;
