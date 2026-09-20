@@ -1,33 +1,25 @@
-import { ApiResponse, MenuApiResponse } from '@/types/api-responses';
-import { FavoriteResult, MenuItemViewModel, MenuResult } from '@/types/menu';
-import { MenuRepository } from '../repositories/menu';
-import { MenuMapper } from '../mapping/menu';
-import { saveImage } from '@/helpers/image-helper';
+import { FavoriteResult, MenuItemViewModel, MenuListResult, MenuResult } from '@/types/menu';
+
 import { AddMenuDto, UpdateMenuDto, updateMenuSchema } from '@/schemas/menu';
+
+import { MenuRepository } from '../repositories/menu';
 import { FavoriteRepository } from '../repositories/favorite';
+import { MenuMapper } from '../mapping/menu';
+
 import { CompanyRepository } from '@/server/repositories/company';
 import { getSession } from '@/lib/auth-guard';
+import { saveImage } from '@/helpers/image-helper';
 
 const menuRepository = new MenuRepository();
 const favoriteRepository = new FavoriteRepository();
 const companyRepository = new CompanyRepository();
 
 export class MenuService {
-  async add(data: AddMenuDto): Promise<MenuResult<null>> {
+  /**
+   * ADD MENU ITEM
+   */
+  async add(data: AddMenuDto): Promise<MenuResult<MenuItemViewModel>> {
     try {
-      let imageUrl = '';
-
-      if (data.image instanceof File && data.image.size > 0) {
-        imageUrl = await saveImage(data.image);
-
-        if (!imageUrl) {
-          return {
-            success: false,
-            message: 'Could not upload the image',
-          };
-        }
-      }
-
       const session = await getSession();
 
       if (!session) {
@@ -39,44 +31,71 @@ export class MenuService {
 
       const userId = session.user.id;
 
+      /**
+       * Company ID is always fetched from the
+       * authenticated user.
+       */
       const companyId = await companyRepository.getUserCompanyId(userId);
+
       if (!companyId) {
         return {
           success: false,
-          message: 'No company found..',
+          message: 'You do not have a registered company.',
         };
       }
 
-      const dto: AddMenuDto = {
-        ...data,
-        categoryId: Number(data.categoryId),
+      let imageUrl = '';
+
+      /**
+       * Upload image only when a valid file exists.
+       */
+      if (data.image instanceof File && data.image.size > 0) {
+        imageUrl = await saveImage(data.image);
+
+        if (!imageUrl) {
+          return {
+            success: false,
+            message: 'Could not upload the image.',
+          };
+        }
+      }
+
+      /**
+       * Repository-specific input.
+       *
+       * Do not pass the original DTO directly.
+       */
+      const repositoryData = {
+        name: data.name,
+        description: data.description,
+        price: data.price,
         imageUrl,
+        categoryId: Number(data.categoryId),
         companyId,
       };
 
-      const result = await menuRepository.addMenu(dto);
+      const result = await menuRepository.addMenu(repositoryData);
 
-      if (!result) {
-        return {
-          success: false,
-          message: 'Something went wrong while creating a new menu.',
-        };
-      }
+      const viewModel = MenuMapper.menuItemDboToViewModel(result);
 
       return {
         success: true,
-        message: 'Menu successfully created.',
+        message: 'Menu item created successfully.',
+        data: viewModel,
       };
     } catch (error) {
-      console.error('Server error:', error);
+      console.error('MenuService.add failed:', error);
 
       return {
         success: false,
-        message: 'Something went wrong while creating a new menu.',
+        message: 'Unable to create menu item.',
       };
     }
   }
 
+  /**
+   * UPDATE MENU ITEM
+   */
   async update(menuItemId: number, data: UpdateMenuDto): Promise<MenuResult<null>> {
     try {
       const session = await getSession();
@@ -90,41 +109,89 @@ export class MenuService {
 
       const userId = session.user.id;
 
-      const validatedData = updateMenuSchema.parse(data);
+      /**
+       * Validate incoming data.
+       */
+      const validation = updateMenuSchema.safeParse(data);
+
+      if (!validation.success) {
+        return {
+          success: false,
+          message: 'Invalid menu item data.',
+        };
+      }
+
+      const validatedData = validation.data;
 
       let imageUrl: string | undefined;
 
-      // Uppdatera bara bilden om användaren valt en ny
+      /**
+       * Upload a new image if provided.
+       */
       if (validatedData.image instanceof File && validatedData.image.size > 0) {
         imageUrl = await saveImage(validatedData.image);
 
         if (!imageUrl) {
           return {
             success: false,
-            message: 'Could not upload the image',
+            message: 'Could not upload the image.',
           };
         }
       }
 
-      await menuRepository.update(menuItemId, validatedData, imageUrl, userId);
+      /**
+       * Repository-specific input.
+       */
+      const repositoryData = {
+        name: validatedData.name,
+        description: validatedData.description,
+        price: validatedData.price,
+        categoryId: Number(validatedData.categoryId),
+
+        ...(imageUrl !== undefined && {
+          imageUrl,
+        }),
+      };
+
+      const updated = await menuRepository.update(menuItemId, repositoryData, userId);
+
+      if (!updated) {
+        return {
+          success: false,
+          message: 'Menu item not found or you are not authorized to modify it.',
+        };
+      }
 
       return {
         success: true,
-        message: 'Menu successfully updated.',
+        message: 'Menu item updated successfully.',
+        data: null,
       };
     } catch (error) {
-      console.error('Server error', error);
+      console.error('MenuService.update failed:', error);
 
       return {
         success: false,
-        message: 'Something went wrong while updating menu item.',
+        message: 'Unable to update menu item.',
       };
     }
   }
 
+  /**
+   * GET MENU ITEM BY ID
+   */
   async getById(menuItemId: number): Promise<MenuResult<MenuItemViewModel>> {
     try {
-      const data = await menuRepository.getById(menuItemId);
+      const session = await getSession();
+
+      /**
+       * The endpoint can be public.
+       * userId is optional and only used for
+       * determining the current user's favorite.
+       */
+      const userId = session?.user.id;
+
+      const data = await menuRepository.getById(menuItemId, userId);
 
       if (!data) {
         return {
@@ -141,26 +208,41 @@ export class MenuService {
         data: viewModel,
       };
     } catch (error) {
-      console.error('Failed to retrieve menu item:', error);
+      console.error('MenuService.getById failed:', error);
 
       return {
         success: false,
-        message: 'An error occurred while retrieving the menu item.',
+        message: 'Unable to retrieve menu item.',
       };
     }
   }
 
+  /**
+   * GET ALL MENU ITEMS
+   */
   async getAll(
     page: number,
     searchParam: string,
     categoryParam: string,
     favorites: boolean,
     sortByParam: string,
-  ): Promise<MenuResult<MenuItemViewModel[]>> {
+  ): Promise<MenuListResult<MenuItemViewModel[]>> {
     try {
       const session = await getSession();
 
       const userId = session?.user.id;
+
+      /**
+       * Favorites require authentication.
+       */
+      if (favorites && !userId) {
+        return {
+          success: false,
+          message: 'You need to be logged in to view favorites.',
+          data: [],
+          pagination: null,
+        };
+      }
 
       const result = await menuRepository.getAll(page, searchParam, categoryParam, favorites, sortByParam, userId);
 
@@ -168,46 +250,31 @@ export class MenuService {
 
       return {
         success: true,
-        message: 'Retrieval of menu items succeeded.',
+        message: 'Menu items retrieved successfully.',
         data: viewModel,
         pagination: {
           totalItems: result.totalNumberOfMenuItems,
-          currentPage: page,
+          currentPage: result.currentPage,
           pageSize: result.pageSize,
           totalPages: result.totalPages,
         },
       };
     } catch (error) {
-      console.error('Server error:', error);
+      console.error('MenuService.getAll failed:', error);
 
       return {
         success: false,
-        message: 'Something went wrong while getting menu items.',
+        message: 'Unable to retrieve menu items.',
+        data: [],
+        pagination: null,
       };
     }
   }
 
-  async delete(menuItemId: number, userId: string): Promise<MenuResult<null>> {
-    try {
-      const companyId = await companyRepository.getUserCompanyId(userId);
-      if (!companyId) {
-        return {
-          success: false,
-          message: 'You do not have a registered company.',
-        };
-      }
-      return await menuRepository.delete(menuItemId, companyId, userId);
-    } catch (error) {
-      console.error('Delete menu item error:', error);
-
-      return {
-        success: false,
-        message: 'Something went wrong while deleting the menu item.',
-      };
-    }
-  }
-
-  async addFavorite(menuItemId: number): Promise<MenuResult<null>> {
+  /**
+   * DELETE MENU ITEM
+   */
+  async delete(menuItemId: number): Promise<MenuResult<null>> {
     try {
       const session = await getSession();
 
@@ -219,18 +286,64 @@ export class MenuService {
       }
 
       const userId = session.user.id;
-      const result = await favoriteRepository.addFavorite(userId, menuItemId);
-      return result;
+
+      /**
+       * Repository verifies ownership.
+       */
+      const deleted = await menuRepository.delete(menuItemId, userId);
+
+      if (!deleted) {
+        return {
+          success: false,
+          message: 'Menu item not found or you are not authorized to delete it.',
+        };
+      }
+
+      return {
+        success: true,
+        message: 'Menu item deleted successfully.',
+        data: null,
+      };
     } catch (error) {
-      console.error('Add menu item to favorite error:', error);
+      console.error('MenuService.delete failed:', error);
 
       return {
         success: false,
-        message: 'Something went wrong while adding menu item to favorite.',
+        message: 'Unable to delete menu item.',
       };
     }
   }
 
+  /**
+   * ADD FAVORITE
+   */
+  async addFavorite(menuItemId: number): Promise<MenuResult<null>> {
+    try {
+      const session = await getSession();
+
+      if (!session) {
+        return {
+          success: false,
+          message: 'You need to be logged in.',
+        };
+      }
+
+      const result = await favoriteRepository.addFavorite(session.user.id, menuItemId);
+
+      return result;
+    } catch (error) {
+      console.error('MenuService.addFavorite failed:', error);
+
+      return {
+        success: false,
+        message: 'Unable to add menu item to favorites.',
+      };
+    }
+  }
+
+  /**
+   * DELETE FAVORITE
+   */
   async deleteFavorite(menuItemId: number): Promise<MenuResult<null>> {
     try {
       const session = await getSession();
@@ -241,18 +354,23 @@ export class MenuService {
           message: 'You need to be logged in.',
         };
       }
+
       const result = await favoriteRepository.deleteFavorite(session.user.id, menuItemId);
+
       return result;
     } catch (error) {
-      console.error('Delete menu item as favorite error:', error);
+      console.error('MenuService.deleteFavorite failed:', error);
 
       return {
         success: false,
-        message: 'Something went wrong while deleting menu item to favorite.',
+        message: 'Unable to remove menu item from favorites.',
       };
     }
   }
 
+  /**
+   * GET FAVORITE IDS
+   */
   async getFavoriteIds(): Promise<FavoriteResult> {
     try {
       const session = await getSession();
@@ -263,14 +381,14 @@ export class MenuService {
           message: 'You need to be logged in.',
         };
       }
-      const result = await favoriteRepository.getFavoriteIds(session.user.id);
-      return result;
+
+      return await favoriteRepository.getFavoriteIds(session.user.id);
     } catch (error) {
-      console.error('Get all favorite Ids error:', error);
+      console.error('MenuService.getFavoriteIds failed:', error);
 
       return {
         success: false,
-        message: 'Something went wrong while getting favorite Ids',
+        message: 'Unable to retrieve favorite IDs.',
       };
     }
   }

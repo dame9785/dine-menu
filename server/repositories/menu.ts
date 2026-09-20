@@ -1,33 +1,18 @@
 import { Prisma } from '@/generated/prisma/client';
 import { prisma } from '@/lib/prisma';
-import { AddMenuDto, UpdateMenuDto } from '@/schemas/menu';
-import { AddMenuItemDto, MenuResult } from '@/types/menu';
 
-type MenuWithCategory = Prisma.menuitemGetPayload<{
-  include: {
-    category: true;
-    Favorite: {
-      select: {
-        id: true;
-      };
-    };
-  };
-}>;
+import { CreateMenuRepositoryInput, UpdateMenuRepositoryInput } from '@/types/menu-repository';
 
-export type GetAllMenuResult = {
-  menuItems: MenuWithCategory[];
-  totalNumberOfMenuItems: number;
-  pageSize: number;
-  totalPages: number;
-};
-
-export type GetMenuItemResult = {
-  menuItem: MenuWithCategory;
-};
+import { GetAllMenuResult, MenuWithCategory } from '@/types/menu';
 
 export class MenuRepository {
-  async addMenu(dto: AddMenuDto) {
-    return await prisma.menuitem.create({
+  private readonly pageSize = 6;
+
+  /**
+   * CREATE MENU ITEM
+   */
+  async addMenu(dto: CreateMenuRepositoryInput) {
+    return prisma.menuitem.create({
       data: {
         name: dto.name,
         description: dto.description,
@@ -46,9 +31,22 @@ export class MenuRepository {
           },
         },
       },
+
+      include: {
+        category: true,
+
+        Favorite: {
+          select: {
+            id: true,
+          },
+        },
+      },
     });
   }
 
+  /**
+   * GET ALL MENU ITEMS
+   */
   async getAll(
     page: number,
     searchParam: string,
@@ -57,14 +55,12 @@ export class MenuRepository {
     sortBy: string,
     userId?: string,
   ): Promise<GetAllMenuResult> {
-    const pageSize = 6;
-
     const currentPage = Number.isFinite(page) && page > 0 ? Math.floor(page) : 1;
 
-    const skip = (currentPage - 1) * pageSize;
+    const skip = (currentPage - 1) * this.pageSize;
 
-    const search = searchParam?.trim() ?? '';
-    const category = categoryParam?.trim() ?? '';
+    const search = searchParam.trim();
+    const category = categoryParam.trim();
 
     const orderBy =
       sortBy === 'lowest'
@@ -73,45 +69,61 @@ export class MenuRepository {
           ? { price: 'desc' as const }
           : { createdAt: 'desc' as const };
 
-    const where: Prisma.menuitemWhereInput = {
-      AND: [
-        search
-          ? {
-              OR: [
-                {
-                  name: {
-                    contains: search,
-                  },
-                },
-                {
-                  description: {
-                    contains: search,
-                  },
-                },
-              ],
-            }
-          : {},
+    const conditions: Prisma.menuitemWhereInput[] = [];
 
-        category
-          ? {
-              category: {
-                name: category,
-              },
-            }
-          : {},
+    /**
+     * Search filter.
+     */
+    if (search) {
+      conditions.push({
+        OR: [
+          {
+            name: {
+              contains: search,
+            },
+          },
+          {
+            description: {
+              contains: search,
+            },
+          },
+        ],
+      });
+    }
 
-        // Favorites filter
-        favorites && userId
-          ? {
-              Favorite: {
-                some: {
-                  userId,
-                },
-              },
-            }
-          : {},
-      ],
-    };
+    /**
+     * Category filter.
+     */
+    if (category) {
+      conditions.push({
+        category: {
+          name: category,
+        },
+      });
+    }
+
+    /**
+     * Favorites filter.
+     *
+     * Service ensures that userId exists when
+     * favorites is true.
+     */
+    if (favorites && userId) {
+      conditions.push({
+        Favorite: {
+          some: {
+            userId,
+          },
+        },
+      });
+    }
+
+    const where: Prisma.menuitemWhereInput =
+      conditions.length > 0
+        ? {
+            AND: conditions,
+          }
+        : {};
 
     const [totalNumberOfMenuItems, menuItems] = await Promise.all([
       prisma.menuitem.count({
@@ -121,126 +133,112 @@ export class MenuRepository {
       prisma.menuitem.findMany({
         where,
         orderBy,
+        skip,
+        take: this.pageSize,
+
         include: {
           category: true,
+          company: true,
+
+          /**
+           * Only fetch the current user's favorites.
+           */
           Favorite: {
-            where: {
-              userId: userId ?? '__unauthenticated__',
-            },
+            where: userId
+              ? {
+                  userId,
+                }
+              : {
+                  userId: '__unauthenticated__',
+                },
+
             select: {
               id: true,
             },
           },
         },
-        skip,
-        take: pageSize,
       }),
     ]);
 
-    const totalPages = Math.ceil(totalNumberOfMenuItems / pageSize);
+    const totalPages = Math.ceil(totalNumberOfMenuItems / this.pageSize);
 
     return {
-      totalNumberOfMenuItems,
       menuItems,
+      totalNumberOfMenuItems,
+      currentPage,
+      pageSize: this.pageSize,
       totalPages,
-      pageSize,
     };
   }
 
-  async delete(menuId: number, companyId: number, userId: string) {
-    try {
-      const existingMenuItem = await prisma.menuitem.findFirst({
-        where: {
-          id: menuId,
-          companyId,
-          company: {
-            ownerId: userId,
-          },
-        },
-      });
-
-      if (!existingMenuItem) {
-        return {
-          success: false,
-          message: 'You dont have permision to delete this item.',
-        };
-      }
-
-      await prisma.menuitem.delete({
-        where: {
-          id: menuId,
-        },
-      });
-
-      return {
-        success: true,
-        message: 'Menu item deleted successfully.',
-      };
-    } catch (error) {
-      console.error('Delete menu item error:', error);
-
-      return {
-        success: false,
-        message: 'Something went wrong while deleting the menu item.',
-      };
-    }
-  }
-
-  async getById(menuId: number): Promise<MenuWithCategory | null> {
-    const menuItem = await prisma.menuitem.findUnique({
+  /**
+   * GET MENU ITEM BY ID
+   *
+   * Only fetches the current user's favorite.
+   */
+  async getById(menuItemId: number, userId?: string): Promise<MenuWithCategory | null> {
+    return prisma.menuitem.findUnique({
       where: {
-        id: menuId,
+        id: menuItemId,
       },
+
       include: {
         category: true,
-        Favorite: true,
-      },
-    });
 
-    return menuItem;
-  }
+        Favorite: {
+          where: userId
+            ? {
+                userId,
+              }
+            : {
+                userId: '__unauthenticated__',
+              },
 
-  async update(menuId: number, dto: UpdateMenuDto, imageUrl?: string, userId?: string): Promise<MenuResult> {
-    const existingMenuItem = await prisma.menuitem.findUnique({
-      where: {
-        id: menuId,
-      },
-      include: {
-        company: {
           select: {
-            ownerId: true,
+            id: true,
           },
         },
       },
     });
+  }
 
-    // Kontrollera att maträtten finns
-    if (!existingMenuItem) {
-      return {
-        success: false,
-        message: 'Couldt not found the menu item.',
-      };
-    }
-
-    // Kontrollera att användaren äger företaget
-    if (!existingMenuItem.company || existingMenuItem.company.ownerId !== userId) {
-      return {
-        success: false,
-        message: 'You are not authorized to modify this menu item.',
-      };
-    }
-
-    const menuItem = await prisma.menuitem.update({
+  /**
+   * FIND MENU ITEM OWNED BY USER
+   */
+  async findOwnedByUser(menuItemId: number, userId: string) {
+    return prisma.menuitem.findFirst({
       where: {
-        id: menuId,
+        id: menuItemId,
+
+        company: {
+          ownerId: userId,
+        },
       },
+    });
+  }
+
+  /**
+   * UPDATE MENU ITEM
+   */
+  async update(menuItemId: number, dto: UpdateMenuRepositoryInput, userId: string): Promise<boolean> {
+    const existingMenuItem = await this.findOwnedByUser(menuItemId, userId);
+
+    if (!existingMenuItem) {
+      return false;
+    }
+
+    await prisma.menuitem.update({
+      where: {
+        id: menuItemId,
+      },
+
       data: {
         name: dto.name,
         description: dto.description,
         price: dto.price,
 
-        ...(imageUrl && {
-          imageUrl,
+        ...(dto.imageUrl !== undefined && {
+          imageUrl: dto.imageUrl,
         }),
 
         category: {
@@ -249,16 +247,27 @@ export class MenuRepository {
           },
         },
       },
-      include: {
-        category: true,
-        Favorite: true,
+    });
+
+    return true;
+  }
+
+  /**
+   * DELETE MENU ITEM
+   */
+  async delete(menuItemId: number, userId: string): Promise<boolean> {
+    const existingMenuItem = await this.findOwnedByUser(menuItemId, userId);
+
+    if (!existingMenuItem) {
+      return false;
+    }
+
+    await prisma.menuitem.delete({
+      where: {
+        id: menuItemId,
       },
     });
 
-    return {
-      success: true,
-      message: 'Success',
-      data: menuId,
-    };
+    return true;
   }
 }

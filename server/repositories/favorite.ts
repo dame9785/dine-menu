@@ -1,17 +1,29 @@
 import { prisma } from '@/lib/prisma';
+
 import { FavoriteResult, MenuResult } from '@/types/menu';
 
 export class FavoriteRepository {
-  async addFavorite(userId: string, menuItemId: number): Promise<MenuResult> {
+  /**
+   * ADD FAVORITE
+   */
+  async addFavorite(userId: string, menuItemId: number): Promise<MenuResult<null>> {
     try {
-      const data = await prisma.favorite.upsert({
+      /**
+       * upsert prevents duplicate favorites.
+       *
+       * Requires a composite unique key:
+       * userId_menuItemId
+       */
+      await prisma.favorite.upsert({
         where: {
           userId_menuItemId: {
             userId,
             menuItemId,
           },
         },
+
         update: {},
+
         create: {
           userId,
           menuItemId,
@@ -20,65 +32,89 @@ export class FavoriteRepository {
 
       return {
         success: true,
-        message: 'Successfully added to favorites',
+        message: 'Menu item added to favorites successfully.',
+        data: null,
       };
     } catch (error) {
-      console.error('Add  menu item to favorite error:', error);
+      console.error('FavoriteRepository.addFavorite failed:', error);
 
       return {
         success: false,
-        message: 'Something went wrong while adding the menu item to favorite.',
+        message: 'Unable to add menu item to favorites.',
       };
     }
   }
-  async deleteFavorite(userId: string, menuItemId: number): Promise<MenuResult> {
+
+  /**
+   * DELETE FAVORITE
+   */
+  async deleteFavorite(userId: string, menuItemId: number): Promise<MenuResult<null>> {
     try {
-      await prisma.favorite.delete({
+      /**
+       * deleteMany does not throw P2025 if
+       * the favorite does not exist.
+       */
+      const result = await prisma.favorite.deleteMany({
         where: {
-          userId_menuItemId: {
-            userId,
-            menuItemId,
-          },
+          userId,
+          menuItemId,
         },
       });
 
+      if (result.count === 0) {
+        return {
+          success: false,
+          message: 'Favorite not found.',
+        };
+      }
+
       return {
         success: true,
-        message: 'Successfully delete as favorites',
+        message: 'Menu item removed from favorites successfully.',
+        data: null,
       };
     } catch (error) {
-      console.error('Delete menu item as favorite error:', error);
+      console.error('FavoriteRepository.deleteFavorite failed:', error);
 
       return {
         success: false,
-        message: 'Something went wrong while deleting the menu item from favorite.',
+        message: 'Unable to remove menu item from favorites.',
       };
     }
   }
-  // Hämta alla favorit-ID:n för en användare
+
+  /**
+   * GET FAVORITE IDS
+   */
   async getFavoriteIds(userId: string): Promise<FavoriteResult> {
     try {
       const favorites = await prisma.favorite.findMany({
         where: {
           userId,
         },
+
         select: {
           menuItemId: true,
         },
+
+        orderBy: {
+          menuItemId: 'asc',
+        },
       });
 
-      const favoritesIds = favorites.map((favorite) => favorite.menuItemId);
+      const favoriteIds = favorites.map((favorite) => favorite.menuItemId);
+
       return {
         success: true,
-        message: 'Successfully getting all favorites',
-        data: favoritesIds,
+        message: 'Favorite IDs retrieved successfully.',
+        data: favoriteIds,
       };
     } catch (error) {
-      console.error('Error get favorite-repository:', error);
+      console.error('FavoriteRepository.getFavoriteIds failed:', error);
 
       return {
         success: false,
-        message: 'Something went wrong while getting all favorites',
+        message: 'Unable to retrieve favorite IDs.',
       };
     }
   }

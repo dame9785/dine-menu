@@ -1,142 +1,86 @@
 'use server';
 
-import { MenuService } from '@/server/services/menu';
 import { revalidatePath } from 'next/cache';
-import { checkCompanyPermision, requireSession } from '@/lib/auth-guard';
-import { ApiResponse } from '@/types/api-responses';
-import { AddMenuDto, addMenuSchema, UpdateMenuDto, updateMenuSchema } from '@/schemas/menu';
+
+import { checkCompanyPermision } from '@/lib/auth-guard';
+import { addMenuSchema, updateMenuSchema } from '@/schemas/menu';
+import { MenuService } from '@/server/services/menu';
 import { ActionResponse } from '@/types/action-response';
 import { FavoriteResult, MenuResult } from '@/types/menu';
-import { Console } from 'console';
 
 const menuService = new MenuService();
 
+/**
+ * Extracts and normalizes menu form data.
+ */
+function getMenuFormValues(formData: FormData) {
+  const image = formData.get('image');
+
+  return {
+    name: formData.get('name'),
+    description: formData.get('description'),
+    price: formData.get('price'),
+    categoryId: formData.get('categoryId'),
+    image: image instanceof File && image.size > 0 ? image : null,
+  };
+}
+
+/**
+ * Validates a menu item ID.
+ */
+function isValidMenuItemId(menuItemId: number): boolean {
+  return Number.isInteger(menuItemId) && menuItemId > 0;
+}
+
+/**
+ * Checks whether the current user has company permissions.
+ */
+async function authorizeCompanyAction(): Promise<{
+  authorized: boolean;
+  message: string;
+}> {
+  const permission = await checkCompanyPermision();
+
+  if (!permission.authorized || !permission.userId) {
+    return {
+      authorized: false,
+      message: permission.message,
+    };
+  }
+
+  return {
+    authorized: true,
+    message: '',
+  };
+}
+
+/**
+ * Adds a new menu item.
+ */
 export async function addMenuItem(formData: FormData): Promise<ActionResponse> {
   try {
-    const permision = await checkCompanyPermision();
-    const userId = permision.userId;
+    const permission = await authorizeCompanyAction();
 
-    if (!permision.authorized || !userId) {
+    if (!permission.authorized) {
       return {
         success: false,
-        message: permision.message,
+        message: permission.message,
       };
     }
 
-    const imageValue = formData.get('image');
+    const values = getMenuFormValues(formData);
+    const validation = addMenuSchema.safeParse(values);
 
-    const values = {
-      name: formData.get('name'),
-      description: formData.get('description'),
-      price: formData.get('price'),
-      categoryId: formData.get('categoryId'),
-      image: imageValue instanceof File && imageValue.size > 0 ? imageValue : null,
-    };
-
-    const validate = addMenuSchema.safeParse(values);
-    if (!validate.success) {
+    if (!validation.success) {
       return {
         success: false,
         message: 'Invalid form data.',
-        errors: validate.error.flatten().fieldErrors,
+        errors: validation.error.flatten().fieldErrors,
       };
     }
 
-    const data: AddMenuDto = validate.data;
+    const response = await menuService.add(validation.data);
 
-    const response = await menuService.add(data);
-    if (!response.success) {
-      return {
-        success: false,
-        message: response.message,
-      };
-    }
-
-    revalidatePath('/');
-
-    return {
-      success: true,
-      message: response.message,
-    };
-  } catch (error) {
-    console.error('DELETE MENU ITEM ACTION ERROR.', error);
-    return {
-      success: false,
-      message: 'Something went wrong.',
-    };
-  }
-}
-
-export async function updateMenuItem(menuItemId: number, formData: FormData): Promise<ActionResponse> {
-  try {
-    const permision = await checkCompanyPermision();
-    const userId = permision.userId;
-
-    if (!permision.authorized || !userId) {
-      return {
-        success: false,
-        message: permision.message,
-      };
-    }
-
-    const imageValue = formData.get('image');
-
-    const values = {
-      name: formData.get('name'),
-      description: formData.get('description'),
-      price: formData.get('price'),
-      categoryId: formData.get('categoryId'),
-      image: imageValue instanceof File && imageValue.size > 0 ? imageValue : null,
-    };
-
-    const validate = updateMenuSchema.safeParse(values);
-    if (!validate.success) {
-      return {
-        success: false,
-        message: 'Invalid form data.',
-        errors: validate.error.flatten().fieldErrors,
-      };
-    }
-
-    const data: UpdateMenuDto = validate.data;
-    const response = await menuService.update(menuItemId, data);
-
-    if (!response.success) {
-      return {
-        success: false,
-        message: response.message,
-      };
-    }
-
-    revalidatePath('/');
-
-    return {
-      success: true,
-      message: response.message,
-    };
-  } catch (error) {
-    console.error('Update menu error:', error);
-
-    return {
-      success: false,
-      message: 'Something went wrong.',
-    };
-  }
-}
-
-export async function deleteMenuItem(menuItemId: number): Promise<MenuResult> {
-  try {
-    const permisions = await checkCompanyPermision();
-    const userId = permisions.userId;
-
-    if (!permisions.authorized || !userId) {
-      return {
-        success: false,
-        message: permisions.message,
-      };
-    }
-
-    const response = await menuService.delete(menuItemId, userId);
     if (!response.success) {
       return {
         success: false,
@@ -152,18 +96,136 @@ export async function deleteMenuItem(menuItemId: number): Promise<MenuResult> {
       message: response.message,
     };
   } catch (error) {
-    console.error('DELETE MENU ITEM ACTION ERROR:', error);
+    console.error('Add menu item action failed:', error);
 
     return {
       success: false,
-      message: 'Something went wrong.',
+      message: 'Something went wrong while adding the menu item.',
     };
   }
 }
 
+/**
+ * Updates an existing menu item.
+ */
+export async function updateMenuItem(menuItemId: number, formData: FormData): Promise<ActionResponse> {
+  try {
+    if (!isValidMenuItemId(menuItemId)) {
+      return {
+        success: false,
+        message: 'Invalid menu item ID.',
+      };
+    }
+
+    const permission = await authorizeCompanyAction();
+
+    if (!permission.authorized) {
+      return {
+        success: false,
+        message: permission.message,
+      };
+    }
+
+    const values = getMenuFormValues(formData);
+    const validation = updateMenuSchema.safeParse(values);
+
+    if (!validation.success) {
+      return {
+        success: false,
+        message: 'Invalid form data.',
+        errors: validation.error.flatten().fieldErrors,
+      };
+    }
+
+    const response = await menuService.update(menuItemId, validation.data);
+
+    if (!response.success) {
+      return {
+        success: false,
+        message: response.message,
+      };
+    }
+
+    revalidatePath('/');
+    revalidatePath('/category');
+    revalidatePath(`/menu/${menuItemId}`);
+
+    return {
+      success: true,
+      message: response.message,
+    };
+  } catch (error) {
+    console.error('Update menu item action failed:', error);
+
+    return {
+      success: false,
+      message: 'Something went wrong while updating the menu item.',
+    };
+  }
+}
+
+/**
+ * Deletes a menu item.
+ */
+export async function deleteMenuItem(menuItemId: number): Promise<MenuResult> {
+  try {
+    if (!isValidMenuItemId(menuItemId)) {
+      return {
+        success: false,
+        message: 'Invalid menu item ID.',
+      };
+    }
+
+    const permission = await authorizeCompanyAction();
+
+    if (!permission.authorized) {
+      return {
+        success: false,
+        message: permission.message,
+      };
+    }
+
+    const response = await menuService.delete(menuItemId);
+
+    if (!response.success) {
+      return {
+        success: false,
+        message: response.message,
+      };
+    }
+
+    revalidatePath('/');
+    revalidatePath('/category');
+
+    return {
+      success: true,
+      message: response.message,
+      data: null,
+    };
+  } catch (error) {
+    console.error('Delete menu item action failed:', error);
+
+    return {
+      success: false,
+      message: 'Something went wrong while deleting the menu item.',
+    };
+  }
+}
+
+/**
+ * Adds a menu item to the current user's favorites.
+ */
 export async function addFavorite(menuItemId: number): Promise<ActionResponse> {
   try {
+    if (!isValidMenuItemId(menuItemId)) {
+      return {
+        success: false,
+        message: 'Invalid menu item ID.',
+      };
+    }
+
     const response = await menuService.addFavorite(menuItemId);
+
     if (!response.success) {
       return {
         success: false,
@@ -178,18 +240,29 @@ export async function addFavorite(menuItemId: number): Promise<ActionResponse> {
       message: response.message,
     };
   } catch (error) {
-    console.error('ADD MENU AS FAVORITE ERROR:', error);
+    console.error('Add favorite action failed:', error);
 
     return {
       success: false,
-      message: 'Something went wrong.',
+      message: 'Something went wrong while adding the favorite.',
     };
   }
 }
 
+/**
+ * Removes a menu item from the current user's favorites.
+ */
 export async function deleteFavorite(menuItemId: number): Promise<ActionResponse> {
   try {
+    if (!isValidMenuItemId(menuItemId)) {
+      return {
+        success: false,
+        message: 'Invalid menu item ID.',
+      };
+    }
+
     const response = await menuService.deleteFavorite(menuItemId);
+
     if (!response.success) {
       return {
         success: false,
@@ -204,33 +277,27 @@ export async function deleteFavorite(menuItemId: number): Promise<ActionResponse
       message: response.message,
     };
   } catch (error) {
-    console.error('DELETE MENU ACTION ERROR:', error);
+    console.error('Delete favorite action failed:', error);
 
     return {
       success: false,
-      message: 'Couldt remove menu as favorite.',
+      message: 'Could not remove the menu item from favorites.',
     };
   }
 }
 
+/**
+ * Gets the current user's favorite menu item IDs.
+ */
 export async function getFavoriteIds(): Promise<FavoriteResult> {
   try {
-    const session = await requireSession();
-    if (!session) {
-      return {
-        success: false,
-        message: 'You need to be logged in.',
-      };
-    }
-
-    const result = await menuService.getFavoriteIds();
-    return result;
+    return await menuService.getFavoriteIds();
   } catch (error) {
-    console.error('getFavoriteIds error:', error);
+    console.error('Get favorite IDs action failed:', error);
 
     return {
       success: false,
-      message: 'Could not get favorite IDs.',
+      message: 'Could not retrieve favorite IDs.',
     };
   }
 }
