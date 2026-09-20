@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 
-import { MenuService } from '@/services/menu';
+import { MenuService } from '@/server/services/menu';
 import { CategoryService } from '@/services/category';
 
 import DetailCard from '@/components/menu/menu-detail-card';
@@ -21,7 +21,10 @@ export default async function MenuDetailPage({ params }: Props) {
   const menuService = new MenuService();
   const categoryService = new CategoryService();
 
-  const [menuResponse, categoryResponse] = await Promise.all([menuService.getById(id), categoryService.getAll(1)]);
+  const [menuResponse, categoryResponse] = await Promise.all([
+    menuService.getById(Number(id)),
+    categoryService.getAll(1),
+  ]);
 
   if (!menuResponse.data) {
     return notFound();

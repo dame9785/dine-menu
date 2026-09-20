@@ -22,7 +22,7 @@ type Props = {
   isLoggedIn: boolean;
 };
 
-export default function MenuCard({ menuItem, categories, isAdmin, isLoggedIn }: Props) {
+export default function MenuCard({ menuItem, categories, isLoggedIn }: Props) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (

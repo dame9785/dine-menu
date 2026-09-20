@@ -1,24 +1,26 @@
 'use client';
 
 import { Heart, LayoutList, Loader2 } from 'lucide-react';
-import { useState } from 'react';
-
-import { getFavoriteIds } from '@/actions/menu';
-import { toast } from 'sonner';
-import { redirect } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useTransition } from 'react';
 
 type Props = {
-  currentPage: number;
+  isFavorite: boolean;
   searchParam: string;
   sortByParam: string;
   categoryParam: string;
 };
 
 export default function FavoriteFilterButton({ searchParam, sortByParam, categoryParam }: Props) {
-  const [isFavorite, setIsFavorite] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const createParams = (filter?: string) => {
+  const [isPending, startTransition] = useTransition();
+
+  // Läs favoritstatus direkt från URL
+  const isFavorite = searchParams.get('favorites') === 'true';
+
+  const createParams = (favorites: boolean) => {
     const params = new URLSearchParams();
 
     params.set('page', '1');
@@ -35,64 +37,36 @@ export default function FavoriteFilterButton({ searchParam, sortByParam, categor
       params.set('sortBy', sortByParam);
     }
 
-    if (filter) {
-      params.set('favorites', filter);
+    if (favorites) {
+      params.set('favorites', 'true');
     }
 
     return params;
   };
 
-  const showAllFavorites = () => {
-    setIsFavorite(false);
+  const handleClick = () => {
+    const params = createParams(!isFavorite);
 
-    const params = new URLSearchParams();
-
-    params.set('page', '1');
-
-    redirect(`/?${params.toString()}`);
-  };
-
-  const showFavorites = async () => {
-    if (isFavorite) {
-      showAllFavorites();
-      return;
-    }
-
-    try {
-      setIsLoading(true);
-
-      const result = await getFavoriteIds();
-
-      if (!result.success || !result.data || result.data.length === 0) {
-        toast.warning(result.message);
-        return;
-      }
-
-      setIsFavorite(true);
-
-      const params = createParams(result.data.join(','));
-
-      redirect(`/?${params.toString()}`);
-    } finally {
-      setIsLoading(false);
-    }
+    startTransition(() => {
+      router.push(`/?${params.toString()}`);
+    });
   };
 
   return (
     <button
-      onClick={showFavorites}
+      onClick={handleClick}
       type="button"
-      disabled={isLoading}
+      disabled={isPending}
       className="group flex cursor-pointer items-center gap-3 rounded-xl border border-[#C09721]/30 bg-white p-3 font-medium text-slate-600 shadow-sm transition-all duration-200 ease-out outline-none hover:-translate-y-0.5 hover:border-[#C09721] hover:bg-[#FFFCF5] hover:text-[#A77F18] hover:shadow-md hover:shadow-[#C09721]/15 focus:border-[#C09721] focus:ring-4 focus:ring-[#C09721]/10 active:translate-y-0 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
     >
-      {isLoading ? (
+      {isPending ? (
         <>
-          <Loader2 size={19} className="animate-spin" />
-          <p>Laddar...</p>
+          <Loader2 size={19} className="animate-spin text-[#C09721]" />
+          <p>Filtrerar...</p>
         </>
       ) : isFavorite ? (
         <>
-          <LayoutList size={19} className="transition-transform duration-200 group-hover:scale-110" />
+          <LayoutList size={19} />
           <p>Visa alla</p>
         </>
       ) : (

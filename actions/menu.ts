@@ -6,7 +6,8 @@ import { checkCompanyPermision, requireSession } from '@/lib/auth-guard';
 import { ApiResponse } from '@/types/api-responses';
 import { AddMenuDto, addMenuSchema, UpdateMenuDto, updateMenuSchema } from '@/schemas/menu';
 import { ActionResponse } from '@/types/action-response';
-import { MenuResult } from '@/types/menu';
+import { FavoriteResult, MenuResult } from '@/types/menu';
+import { Console } from 'console';
 
 const menuService = new MenuService();
 
@@ -135,8 +136,7 @@ export async function deleteMenuItem(menuItemId: number): Promise<MenuResult> {
       };
     }
 
-    const response = await menuService.delete(menuItemId);
-
+    const response = await menuService.delete(menuItemId, userId);
     if (!response.success) {
       return {
         success: false,
@@ -162,16 +162,8 @@ export async function deleteMenuItem(menuItemId: number): Promise<MenuResult> {
 }
 
 export async function addFavorite(menuItemId: number): Promise<ActionResponse> {
-  const session = await requireSession();
-  if (!session) {
-    return {
-      success: false,
-      message: 'You need to be logged in.',
-    };
-  }
-
   try {
-    const response = await menuService.addFavorite(session.user.id, menuItemId);
+    const response = await menuService.addFavorite(menuItemId);
     if (!response.success) {
       return {
         success: false,
@@ -197,15 +189,7 @@ export async function addFavorite(menuItemId: number): Promise<ActionResponse> {
 
 export async function deleteFavorite(menuItemId: number): Promise<ActionResponse> {
   try {
-    const session = await requireSession();
-    if (!session) {
-      return {
-        success: false,
-        message: 'You need to be logged in.',
-      };
-    }
-
-    const response = await menuService.deleteFavorite(session.user.id, menuItemId);
+    const response = await menuService.deleteFavorite(menuItemId);
     if (!response.success) {
       return {
         success: false,
@@ -229,19 +213,17 @@ export async function deleteFavorite(menuItemId: number): Promise<ActionResponse
   }
 }
 
-export async function getFavoriteIds(): Promise<ApiResponse<number[]>> {
+export async function getFavoriteIds(): Promise<FavoriteResult> {
   try {
     const session = await requireSession();
     if (!session) {
       return {
         success: false,
         message: 'You need to be logged in.',
-        data: [],
       };
     }
 
-    const result = await menuService.getFavoriteIds(session.user.id);
-
+    const result = await menuService.getFavoriteIds();
     return result;
   } catch (error) {
     console.error('getFavoriteIds error:', error);
@@ -249,7 +231,6 @@ export async function getFavoriteIds(): Promise<ApiResponse<number[]>> {
     return {
       success: false,
       message: 'Could not get favorite IDs.',
-      data: [],
     };
   }
 }

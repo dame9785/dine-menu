@@ -18,7 +18,7 @@ export class MenuMapper {
       id: menuItem.id,
       name: menuItem.name,
       description: menuItem.description,
-      price: menuItem.price,
+      price: Number(menuItem.price),
       imageUrl: menuItem.imageUrl ?? '',
       createdAt: menuItem.createdAt,
       updatedAt: menuItem.updatedAt,

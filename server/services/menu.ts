@@ -1,5 +1,5 @@
 import { ApiResponse, MenuApiResponse } from '@/types/api-responses';
-import { MenuItemViewModel, MenuResult } from '@/types/menu';
+import { FavoriteResult, MenuItemViewModel, MenuResult } from '@/types/menu';
 import { MenuRepository } from '../repositories/menu';
 import { MenuMapper } from '../mapping/menu';
 import { saveImage } from '@/helpers/image-helper';
@@ -13,7 +13,7 @@ const favoriteRepository = new FavoriteRepository();
 const companyRepository = new CompanyRepository();
 
 export class MenuService {
-  async add(data: AddMenuDto): Promise<MenuResult> {
+  async add(data: AddMenuDto): Promise<MenuResult<null>> {
     try {
       let imageUrl = '';
 
@@ -24,7 +24,7 @@ export class MenuService {
           return {
             success: false,
             message: 'Could not upload the image',
-          } satisfies MenuResult;
+          };
         }
       }
 
@@ -60,7 +60,7 @@ export class MenuService {
         return {
           success: false,
           message: 'Something went wrong while creating a new menu.',
-        } satisfies ApiResponse<[]>;
+        };
       }
 
       return {
@@ -77,7 +77,7 @@ export class MenuService {
     }
   }
 
-  async update(menuItemId: number, data: UpdateMenuDto): Promise<MenuResult> {
+  async update(menuItemId: number, data: UpdateMenuDto): Promise<MenuResult<null>> {
     try {
       const session = await getSession();
 
@@ -106,7 +106,7 @@ export class MenuService {
         }
       }
 
-      const result = await menuRepository.update(menuItemId, validatedData, imageUrl, userId);
+      await menuRepository.update(menuItemId, validatedData, imageUrl, userId);
 
       return {
         success: true,
@@ -118,7 +118,35 @@ export class MenuService {
       return {
         success: false,
         message: 'Something went wrong while updating menu item.',
-      } satisfies ApiResponse<MenuItemViewModel>;
+      };
+    }
+  }
+
+  async getById(menuItemId: number): Promise<MenuResult<MenuItemViewModel>> {
+    try {
+      const data = await menuRepository.getById(menuItemId);
+
+      if (!data) {
+        return {
+          success: false,
+          message: 'Menu item not found.',
+        };
+      }
+
+      const viewModel = MenuMapper.menuItemDboToViewModel(data);
+
+      return {
+        success: true,
+        message: 'Menu item retrieved successfully.',
+        data: viewModel,
+      };
+    } catch (error) {
+      console.error('Failed to retrieve menu item:', error);
+
+      return {
+        success: false,
+        message: 'An error occurred while retrieving the menu item.',
+      };
     }
   }
 
@@ -126,13 +154,18 @@ export class MenuService {
     page: number,
     searchParam: string,
     categoryParam: string,
-    filterParam: string,
+    favorites: boolean,
     sortByParam: string,
-    userId?: string,
-  ): Promise<MenuApiResponse> {
+  ): Promise<MenuResult<MenuItemViewModel[]>> {
     try {
-      const result = await menuRepository.getAll(page, searchParam, categoryParam, filterParam, sortByParam, userId);
+      const session = await getSession();
+
+      const userId = session?.user.id;
+
+      const result = await menuRepository.getAll(page, searchParam, categoryParam, favorites, sortByParam, userId);
+
       const viewModel = result.menuItems.map((item) => MenuMapper.menuItemDboToViewModel(item));
+
       return {
         success: true,
         message: 'Retrieval of menu items succeeded.',
@@ -143,20 +176,38 @@ export class MenuService {
           pageSize: result.pageSize,
           totalPages: result.totalPages,
         },
-      } satisfies MenuApiResponse;
+      };
     } catch (error) {
-      console.error('Server error', error);
+      console.error('Server error:', error);
 
       return {
         success: false,
         message: 'Something went wrong while getting menu items.',
-        data: [],
-        pagination: null,
-      } satisfies MenuApiResponse;
+      };
     }
   }
 
-  async delete(menuItemId: number): Promise<MenuResult> {
+  async delete(menuItemId: number, userId: string): Promise<MenuResult<null>> {
+    try {
+      const companyId = await companyRepository.getUserCompanyId(userId);
+      if (!companyId) {
+        return {
+          success: false,
+          message: 'You do not have a registered company.',
+        };
+      }
+      return await menuRepository.delete(menuItemId, companyId, userId);
+    } catch (error) {
+      console.error('Delete menu item error:', error);
+
+      return {
+        success: false,
+        message: 'Something went wrong while deleting the menu item.',
+      };
+    }
+  }
+
+  async addFavorite(menuItemId: number): Promise<MenuResult<null>> {
     try {
       const session = await getSession();
 
@@ -168,136 +219,59 @@ export class MenuService {
       }
 
       const userId = session.user.id;
-
-      const companyId = await companyRepository.getUserCompanyId(userId);
-
-      if (!companyId) {
-        return {
-          success: false,
-          message: 'No company found.',
-        };
-      }
-      const result = await menuRepository.delete(menuItemId, companyId, userId);
+      const result = await favoriteRepository.addFavorite(userId, menuItemId);
+      return result;
+    } catch (error) {
+      console.error('Add menu item to favorite error:', error);
 
       return {
-        success: result.success,
-        message: result.message,
+        success: false,
+        message: 'Something went wrong while adding menu item to favorite.',
       };
-    } catch (error) {
-      console.error('Server error', error);
-      return {
-        success: false,
-        message: 'Something went wrong while deleting the menu.',
-      } satisfies MenuResult;
     }
   }
 
-  async getById(menuItemId: number): Promise<ApiResponse<MenuItemViewModel>> {
+  async deleteFavorite(menuItemId: number): Promise<MenuResult<null>> {
     try {
-      const menuItemData = await menuRepository.getById(menuItemId);
+      const session = await getSession();
 
-      if (!menuItemData) {
-        return {
-          success: true,
-          message: 'menu item could not be found',
-        } satisfies ApiResponse<MenuItemViewModel>;
-      }
-
-      const viewModel = MenuMapper.menuItemDboToViewModel(menuItemData);
-
-      return {
-        success: true,
-        message: 'Menu managed to retrieve',
-        data: viewModel,
-      } satisfies ApiResponse<MenuItemViewModel>;
-    } catch (error) {
-      console.error('Server error', error);
-      return {
-        success: false,
-        message: 'Something went wrong while getting the menu item.',
-      } satisfies ApiResponse<[]>;
-    }
-  }
-
-  async addFavorite(userId: string, menuItemId: number): Promise<ApiResponse<[]>> {
-    if (!menuItemId) {
-      return {
-        success: false,
-        message: 'A valid menu ID must be specified.',
-      } satisfies ApiResponse<null>;
-    }
-
-    try {
-      const result = favoriteRepository.addFavorite(userId, menuItemId);
-      if (!result) {
+      if (!session) {
         return {
           success: false,
-          message: 'You must be logged in to add favorites.',
-        } satisfies ApiResponse<[]>;
-      }
-
-      return {
-        success: true,
-        message: 'Successfully saved as a favorite',
-      } satisfies ApiResponse<[]>;
-    } catch (error) {
-      console.error('Error adding favorite:', error);
-
-      return {
-        success: false,
-        message: 'An error occurred while adding the favorite.',
-      } satisfies ApiResponse<[]>;
-    }
-  }
-
-  async deleteFavorite(userId: string, menuItemId: number): Promise<ApiResponse<[]>> {
-    try {
-      if (!userId) {
-        return {
-          success: false,
-          message: 'You must be logged in to add favorites.',
-        } satisfies ApiResponse<[]>;
-      }
-
-      await favoriteRepository.deleteFavorite(userId, menuItemId);
-      return {
-        success: true,
-        message: 'Menu item removed from favorites.',
-      } satisfies ApiResponse<[]>;
-    } catch (error) {
-      console.error('ERROR WHILE DELETING FAVORITE MENU ITEM', error);
-      return {
-        success: false,
-        message: 'An error occurred while remove the favorite.',
-      } satisfies ApiResponse<[]>;
-    }
-  }
-
-  async getFavoriteIds(userId: string): Promise<ApiResponse<number[]>> {
-    try {
-      if (!userId) {
-        return {
-          success: false,
-          message: 'You must be logged in to get favorites.',
-          data: [],
+          message: 'You need to be logged in.',
         };
       }
-
-      const favoriteIds = await favoriteRepository.getFavoriteIds(userId);
-
-      return {
-        success: true,
-        message: 'Favorite IDs retrieved successfully.',
-        data: favoriteIds,
-      } satisfies ApiResponse<number[]>;
+      const result = await favoriteRepository.deleteFavorite(session.user.id, menuItemId);
+      return result;
     } catch (error) {
-      console.error('ERROR WHILE GETTING FAVORITE IDS', error);
+      console.error('Delete menu item as favorite error:', error);
 
       return {
         success: false,
-        message: 'An error occurred while getting favorite IDs.',
-        data: [],
-      } satisfies ApiResponse<number[]>;
+        message: 'Something went wrong while deleting menu item to favorite.',
+      };
+    }
+  }
+
+  async getFavoriteIds(): Promise<FavoriteResult> {
+    try {
+      const session = await getSession();
+
+      if (!session) {
+        return {
+          success: false,
+          message: 'You need to be logged in.',
+        };
+      }
+      const result = await favoriteRepository.getFavoriteIds(session.user.id);
+      return result;
+    } catch (error) {
+      console.error('Get all favorite Ids error:', error);
+
+      return {
+        success: false,
+        message: 'Something went wrong while getting favorite Ids',
+      };
     }
   }
 }

@@ -1,4 +1,5 @@
 import { Decimal } from '@prisma/client/runtime/client';
+import { Pagination } from './api-responses';
 
 export interface AddMenuItemDto {
   name: string;
@@ -13,7 +14,7 @@ export interface MenuItemViewModel {
   id: number;
   name: string;
   description: string;
-  price: Decimal;
+  price: number;
   imageUrl: string;
   createdAt: Date;
   updatedAt: Date;
@@ -22,8 +23,15 @@ export interface MenuItemViewModel {
   isFavorite: boolean;
 }
 
-export interface MenuResult {
+export interface MenuResult<T> {
   success: boolean;
   message: string;
-  data?: number;
+  data?: T;
+  pagination?: Pagination;
+}
+
+export interface FavoriteResult {
+  success: boolean;
+  message: string;
+  data?: number[];
 }

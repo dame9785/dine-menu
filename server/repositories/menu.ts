@@ -53,7 +53,7 @@ export class MenuRepository {
     page: number,
     searchParam: string,
     categoryParam: string,
-    filterParam: string,
+    favorites: boolean,
     sortBy: string,
     userId?: string,
   ): Promise<GetAllMenuResult> {
@@ -73,16 +73,8 @@ export class MenuRepository {
           ? { price: 'desc' as const }
           : { createdAt: 'desc' as const };
 
-    const filterIds = filterParam
-      ? filterParam
-          .split(',')
-          .map(Number)
-          .filter((id) => !Number.isNaN(id))
-      : [];
-
-    const where = {
+    const where: Prisma.menuitemWhereInput = {
       AND: [
-        // Search
         search
           ? {
               OR: [
@@ -100,7 +92,6 @@ export class MenuRepository {
             }
           : {},
 
-        // Category
         category
           ? {
               category: {
@@ -110,10 +101,12 @@ export class MenuRepository {
           : {},
 
         // Favorites filter
-        filterIds.length > 0
+        favorites && userId
           ? {
-              id: {
-                in: filterIds,
+              Favorite: {
+                some: {
+                  userId,
+                },
               },
             }
           : {},
