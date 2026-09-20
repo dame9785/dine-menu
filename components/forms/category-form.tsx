@@ -5,6 +5,7 @@ import { useState, useTransition } from 'react';
 import { CategoryViewModel } from '@/types/category';
 import Input from '../ui/input';
 import SubmitButton from '../ui/submit-button';
+import FormField from '../ui/form-field';
 
 type Props = {
   category?: CategoryViewModel;
@@ -12,10 +13,12 @@ type Props = {
   onOpenChange?: (open: boolean) => void;
 };
 
+type FormErrors = Record<string, string[]>;
+
 export default function AddCategoryForm({ category, onOpenChange }: Props) {
   const [name, setName] = useState(category?.name ?? '');
   const [isPending, startTransition] = useTransition();
-  const [errors, setErrors] = useState<Record<string, string[]>>({});
+  const [errors, setErrors] = useState<FormErrors>({});
 
   const isEditMode = !!category;
 
@@ -32,6 +35,16 @@ export default function AddCategoryForm({ category, onOpenChange }: Props) {
   const handleClose = () => {
     resetForm();
     onOpenChange?.(false);
+  };
+
+  const clearError = (field: keyof FormErrors) => {
+    setErrors((prev) => {
+      const next = { ...prev };
+
+      delete next[field];
+
+      return next;
+    });
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -56,7 +69,7 @@ export default function AddCategoryForm({ category, onOpenChange }: Props) {
         : await createCategory(validate.data);
 
       if (!response) {
-        toast.error('Något gick fel');
+        toast.error('Something went wrong...');
         return;
       }
 
@@ -75,32 +88,27 @@ export default function AddCategoryForm({ category, onOpenChange }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6">
-      <div>
-        <label htmlFor="category-name" className="mb-2 block text-sm font-medium text-slate-700">
-          Name
-        </label>
-
+      <FormField label="Category name" htmlFor="name" error={errors.name?.[0]}>
         <Input
-          id="category-name"
-          type="text"
-          name="category-name"
+          id="name"
+          name="name"
+          type="name"
           value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="e.g. Breakfast"
+          onChange={(event) => {
+            setName(event.target.value);
+            clearError('name');
+          }}
+          placeholder="Enter category name"
+          autoComplete="name"
+          disabled={isPending}
+          aria-invalid={!!errors.name}
+          aria-describedby={errors.name ? 'name-error' : undefined}
         />
-
-        {errors.name?.[0] && (
-          <p className="mt-1 text-sm text-red-500" role="alert">
-            {errors.name[0]}
-          </p>
-        )}
-      </div>
+      </FormField>
 
       {/* Submit */}
       <div className="flex gap-3 border-t border-slate-100 pt-5">
-        <SubmitButton>
-          {isPending ? (isEditMode ? 'Updating...' : 'Adding...') : isEditMode ? 'Update' : 'Add'}
-        </SubmitButton>
+        <SubmitButton disabled={isPending}>{isPending ? 'Updating...' : 'Adding'}</SubmitButton>
       </div>
     </form>
   );

@@ -11,6 +11,8 @@ import Input from '../ui/input';
 import { updateAccountSchema } from '@/schemas/account';
 import { authClient } from '@/lib/auth-client';
 
+import FormField from '@/components/ui/form-field';
+
 type Props = {
   user: {
     id: string;
@@ -60,6 +62,16 @@ export default function AccountSettingsForm({ user }: Props) {
 
     fetchSessions();
   }, []);
+
+  const clearError = (field: keyof FormErrors) => {
+    setErrors((prev) => {
+      const next = { ...prev };
+
+      delete next[field];
+
+      return next;
+    });
+  };
 
   /**
    * Revoke all other sessions
@@ -202,81 +214,71 @@ export default function AccountSettingsForm({ user }: Props) {
 
   return (
     <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-8 md:grid-cols-2">
-      {/* Account Settings Card */}
       <div className="rounded-2xl border border-[#C09721] bg-white p-10 shadow-lg">
-        {/* Header */}
         <div className="mb-10 text-center">
           <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-[#FBF8F0]">
             <UserRound className="h-7 w-7 text-[#C09721]" />
           </div>
 
           <h1 className="text-3xl font-semibold text-gray-900">Account settings</h1>
-
           <p className="mt-3 text-base leading-relaxed text-gray-600">Update your account information below.</p>
         </div>
 
         {/* Account Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Email */}
-          <div className="form-group">
-            <label htmlFor="email" className="mb-2 block text-base font-medium text-gray-800">
-              Email address
-            </label>
-
+          <FormField label="Email address" htmlFor="email" error={errors.email?.[0]}>
             <Input
               id="email"
               name="email"
               type="email"
               value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              onChange={(event) => {
+                setEmail(event.target.value);
+                clearError('email');
+              }}
               placeholder="Enter your email"
               autoComplete="email"
               disabled={isPending}
               aria-invalid={!!errors.email}
               aria-describedby={errors.email ? 'email-error' : undefined}
             />
-
-            {errors.email?.[0] && (
-              <p id="email-error" className="mt-2 text-sm text-red-500" role="alert">
-                {errors.email[0]}
-              </p>
-            )}
-          </div>
+          </FormField>
 
           {/* Name */}
-          <div className="form-group">
-            <label htmlFor="name" className="mb-2 block text-base font-medium text-gray-800">
-              Full name
-            </label>
-
+          <FormField label="Full name" htmlFor="name" error={errors.name?.[0]}>
             <Input
               id="name"
               name="name"
               type="text"
               value={name}
-              onChange={(event) => setName(event.target.value)}
+              onChange={(event) => {
+                setName(event.target.value);
+                clearError('name');
+              }}
               placeholder="Enter your name"
               autoComplete="name"
               disabled={isPending}
               aria-invalid={!!errors.name}
               aria-describedby={errors.name ? 'name-error' : undefined}
             />
-
-            {errors.name?.[0] && (
-              <p id="name-error" className="mt-2 text-sm text-red-500" role="alert">
-                {errors.name[0]}
-              </p>
-            )}
-          </div>
+          </FormField>
 
           {/* Submit */}
           <SubmitButton disabled={isPending}>{isPending ? 'Updating...' : 'Update account'}</SubmitButton>
         </form>
 
         {/* Navigation */}
-        <div className="mt-8 text-center">
+        <div className="mt-8 flex flex-col items-center justify-center gap-3 text-center">
           <Link href="/" className="text-base text-gray-600 transition-colors hover:text-[#C09721] hover:underline">
             Back to home
+          </Link>
+
+          <Link
+            href="/account/forgot-password"
+            className="text-base font-medium text-[#C09721] transition-colors hover:text-[#96751A] hover:underline"
+          >
+            Forgot your password?
           </Link>
         </div>
       </div>

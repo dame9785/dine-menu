@@ -7,37 +7,57 @@ import { LockKeyhole } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { authClient } from '@/lib/auth-client';
+import { resetPasswordSchema } from '@/schemas/account';
+
 import Input from '@/components/ui/input';
 import SubmitButton from '@/components/ui/submit-button';
+import FormField from '../ui/form-field';
+
+type FormErrors = Record<string, string[]>;
 
 export default function ResetPasswordForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const token = searchParams.get('token');
-  const error = searchParams.get('error');
-
-  const isValidToken = Boolean(token) && !error;
 
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
+  const [errors, setErrors] = useState<FormErrors>({});
   const [isPending, setIsPending] = useState(false);
+
+  const isValidToken = !!token;
+
+  const clearError = (field: keyof FormErrors) => {
+    setErrors((prev) => {
+      const next = { ...prev };
+
+      delete next[field];
+
+      return next;
+    });
+  };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    setErrors({});
+
+    const data = {
+      password,
+      confirmPassword,
+    };
+
+    const validation = resetPasswordSchema.safeParse(data);
+
+    if (!validation.success) {
+      setErrors(validation.error.flatten().fieldErrors);
+      return;
+    }
+
     if (!token) {
-      toast.error('Invalid or expired reset link.');
-      return;
-    }
-
-    if (password.length < 8) {
-      toast.error('Password must be at least 8 characters.');
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      toast.error('Passwords do not match.');
+      toast.error('Invalid or missing reset token.');
       return;
     }
 
@@ -45,7 +65,7 @@ export default function ResetPasswordForm() {
 
     try {
       const { error } = await authClient.resetPassword({
-        newPassword: password,
+        newPassword: validation.data.password,
         token,
       });
 
@@ -57,7 +77,9 @@ export default function ResetPasswordForm() {
       toast.success('Password reset successfully!');
 
       router.push('/account/login');
-    } catch {
+    } catch (error) {
+      console.error('Password reset error:', error);
+
       toast.error('Something went wrong. Please try again.');
     } finally {
       setIsPending(false);
@@ -93,41 +115,48 @@ export default function ResetPasswordForm() {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-5">
-        <div>
-          <label htmlFor="password" className="mb-2 block text-sm font-medium text-gray-700">
-            New Password
-          </label>
-
+        {/* Password */}
+        <FormField label="New Password" htmlFor="password" error={errors.password?.[0]}>
           <Input
             id="password"
             name="password"
             type="password"
             value={password}
-            onChange={(event) => setPassword(event.target.value)}
+            onChange={(event) => {
+              setPassword(event.target.value);
+              clearError('password');
+              setErrors((prev) => {
+                const next = { ...prev };
+                delete next.confirmPassword;
+                return next;
+              });
+            }}
             placeholder="Enter new password"
-            required
-            minLength={8}
             autoComplete="new-password"
+            disabled={isPending}
+            aria-invalid={!!errors.password}
+            aria-describedby={errors.password ? 'password-error' : undefined}
           />
-        </div>
+        </FormField>
 
-        <div>
-          <label htmlFor="confirmPassword" className="mb-2 block text-sm font-medium text-gray-700">
-            Confirm Password
-          </label>
-
+        {/* Confirm Password */}
+        <FormField label="Confirm Password" htmlFor="confirmPassword" error={errors.confirmPassword?.[0]}>
           <Input
             id="confirmPassword"
             name="confirmPassword"
             type="password"
             value={confirmPassword}
-            onChange={(event) => setConfirmPassword(event.target.value)}
+            onChange={(event) => {
+              setConfirmPassword(event.target.value);
+              clearError('confirmPassword');
+            }}
             placeholder="Confirm new password"
-            required
-            minLength={8}
             autoComplete="new-password"
+            disabled={isPending}
+            aria-invalid={!!errors.confirmPassword}
+            aria-describedby={errors.confirmPassword ? 'confirmPassword-error' : undefined}
           />
-        </div>
+        </FormField>
 
         <SubmitButton disabled={isPending}>{isPending ? 'Resetting...' : 'Reset Password'}</SubmitButton>
 

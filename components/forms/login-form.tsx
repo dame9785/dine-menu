@@ -1,10 +1,17 @@
 'use client';
 
 import { FormEvent, useState } from 'react';
-import { authClient } from '@/lib/auth-client';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+
+import { authClient } from '@/lib/auth-client';
+import { loginSchema } from '@/schemas/account';
+
 import Input from '@/components/ui/input';
-import SubmitButton from '../ui/submit-button';
+import SubmitButton from '@/components/ui/submit-button';
+import FormField from '@/components/ui/form-field';
+
+type FormErrors = Record<string, string[]>;
 
 export default function LoginForm() {
   const router = useRouter();
@@ -12,81 +19,91 @@ export default function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [isPending, setIsPending] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    setError('');
-    setLoading(true);
+    setErrors({});
+
+    const formData = {
+      email: email.trim().toLowerCase(),
+      password,
+    };
+
+    // Validate form data
+    const validation = loginSchema.safeParse(formData);
+
+    if (!validation.success) {
+      setErrors(validation.error.flatten().fieldErrors);
+      return;
+    }
+
+    const { email: validatedEmail, password: validatedPassword } = validation.data;
+
+    setIsPending(true);
 
     try {
       const { error } = await authClient.signIn.email({
-        email,
-        password,
+        email: validatedEmail,
+        password: validatedPassword,
       });
 
       if (error) {
-        setError(error.message || 'Invalid email or password.');
+        toast.error(error.message || 'Invalid email or password.');
         return;
       }
 
+      toast.success('Logged in successfully!');
+
       router.push('/');
       router.refresh();
-    } catch {
-      setError('Something went wrong. Please try again.');
+    } catch (error) {
+      console.error('Login error:', error);
+
+      toast.error('Something went wrong. Please try again.');
     } finally {
-      setLoading(false);
+      setIsPending(false);
     }
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       {/* Email */}
-      <div>
-        <label htmlFor="email" className="mb-1 block text-sm font-medium text-gray-700">
-          Email
-        </label>
-
+      <FormField label="Email address" htmlFor="email" error={errors.email?.[0]}>
         <Input
           id="email"
           name="email"
           type="email"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
-          required
+          placeholder="example@live.se"
           autoComplete="email"
-          placeholder="you@example.com"
+          disabled={isPending}
+          aria-invalid={!!errors.email}
+          aria-describedby={errors.email ? 'email-error' : undefined}
         />
-      </div>
+      </FormField>
 
       {/* Password */}
-      <div>
-        <label htmlFor="password" className="mb-1 block text-sm font-medium text-gray-700">
-          Password
-        </label>
-
+      <FormField label="Password" htmlFor="password" error={errors.password?.[0]}>
         <Input
           id="password"
           name="password"
           type="password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
-          required
+          placeholder="Enter your password"
           autoComplete="current-password"
-          placeholder="Your password"
+          disabled={isPending}
+          aria-invalid={!!errors.password}
+          aria-describedby={errors.password ? 'password-error' : undefined}
         />
-      </div>
+      </FormField>
 
-      {/* Validation error message*/}
-      {error && (
-        <p role="alert" className="rounded-lg bg-red-50 p-3 text-sm text-red-600">
-          {error}
-        </p>
-      )}
-
-      <SubmitButton>{loading ? 'Logging in...' : 'Login'}</SubmitButton>
+      {/* Submit */}
+      <SubmitButton disabled={isPending}>{isPending ? 'Logging in...' : 'Login'}</SubmitButton>
     </form>
   );
 }

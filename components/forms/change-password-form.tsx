@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { authClient } from '@/lib/auth-client';
 import Input from '@/components/ui/input';
 import SubmitButton from '@/components/ui/submit-button';
+import FormField from '../ui/form-field';
 
 export default function ChangePasswordForm() {
   const router = useRouter();
@@ -20,6 +21,11 @@ export default function ChangePasswordForm() {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (!currentPassword.trim()) {
+      toast.error('Please enter your current password.');
+      return;
+    }
 
     if (newPassword.length < 8) {
       toast.error('Password must be at least 8 characters.');
@@ -77,11 +83,8 @@ export default function ChangePasswordForm() {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-5">
-        <div>
-          <label htmlFor="currentPassword" className="mb-2 block text-sm font-medium text-gray-700">
-            Current Password
-          </label>
-
+        {/* Current password */}
+        <FormField label="Current password" htmlFor="currentPassword">
           <Input
             id="currentPassword"
             name="currentPassword"
@@ -89,16 +92,13 @@ export default function ChangePasswordForm() {
             value={currentPassword}
             onChange={(event) => setCurrentPassword(event.target.value)}
             placeholder="Enter current password"
-            required
             autoComplete="current-password"
+            disabled={isPending}
           />
-        </div>
+        </FormField>
 
-        <div>
-          <label htmlFor="newPassword" className="mb-2 block text-sm font-medium text-gray-700">
-            New Password
-          </label>
-
+        {/* New password */}
+        <FormField label="New password" htmlFor="newPassword">
           <Input
             id="newPassword"
             name="newPassword"
@@ -106,17 +106,13 @@ export default function ChangePasswordForm() {
             value={newPassword}
             onChange={(event) => setNewPassword(event.target.value)}
             placeholder="Enter new password"
-            required
-            minLength={8}
             autoComplete="new-password"
+            disabled={isPending}
           />
-        </div>
+        </FormField>
 
-        <div>
-          <label htmlFor="confirmPassword" className="mb-2 block text-sm font-medium text-gray-700">
-            Confirm New Password
-          </label>
-
+        {/* Confirm new password */}
+        <FormField label="Confirm new password" htmlFor="confirmPassword">
           <Input
             id="confirmPassword"
             name="confirmPassword"
@@ -124,11 +120,10 @@ export default function ChangePasswordForm() {
             value={confirmPassword}
             onChange={(event) => setConfirmPassword(event.target.value)}
             placeholder="Confirm new password"
-            required
-            minLength={8}
             autoComplete="new-password"
+            disabled={isPending}
           />
-        </div>
+        </FormField>
 
         <SubmitButton disabled={isPending}>{isPending ? 'Changing...' : 'Change Password'}</SubmitButton>
       </form>

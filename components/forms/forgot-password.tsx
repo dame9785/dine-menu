@@ -7,20 +7,41 @@ import Link from 'next/link';
 import { authClient } from '@/lib/auth-client';
 import Input from '@/components/ui/input';
 import SubmitButton from '../ui/submit-button';
+import FormField from '../ui/form-field';
+import { forgotPasswordSchema } from '@/schemas/account';
 
 interface Props {
   onSuccess: () => void;
 }
 
+type FormErrors = Record<string, string[]>;
+
 export default function ForgotPasswordForm({ onSuccess }: Props) {
+  const [errors, setErrors] = useState<FormErrors>({});
   const [email, setEmail] = useState('');
   const [isPending, setIsPending] = useState(false);
+
+  const clearError = (field: keyof FormErrors) => {
+    setErrors((prev) => {
+      const next = { ...prev };
+
+      delete next[field];
+
+      return next;
+    });
+  };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!email.trim()) {
-      toast.error('Please enter your email address.');
+    setErrors({});
+
+    const validation = forgotPasswordSchema.safeParse({
+      email: email.trim(),
+    });
+
+    if (!validation.success) {
+      setErrors(validation.error.flatten().fieldErrors);
       return;
     }
 
@@ -28,7 +49,7 @@ export default function ForgotPasswordForm({ onSuccess }: Props) {
 
     try {
       const response = await authClient.requestPasswordReset({
-        email: email.trim(),
+        email: validation.data.email,
         redirectTo: `${window.location.origin}/account/reset-password`,
       });
 
@@ -40,7 +61,7 @@ export default function ForgotPasswordForm({ onSuccess }: Props) {
       onSuccess();
       toast.success('If the email exists, a reset link has been sent.');
     } catch (error) {
-      console.error('7. CATCH ERROR:', error);
+      console.error('Password reset error:', error);
 
       toast.error('Something went wrong. Please try again.');
     } finally {
@@ -50,25 +71,27 @@ export default function ForgotPasswordForm({ onSuccess }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
-      <div>
-        <label htmlFor="email" className="mb-2 block text-sm font-medium text-gray-700">
-          Email address
-        </label>
-
+      {/* Email*/}
+      <FormField label="Email address" htmlFor="email" error={errors.email?.[0]}>
         <Input
           id="email"
-          type="email"
           name="email"
+          type="email"
           value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          placeholder="you@example.com"
-          required
+          onChange={(event) => {
+            setEmail(event.target.value);
+            clearError('email');
+          }}
+          placeholder="Enter your email"
           autoComplete="email"
+          disabled={isPending}
+          aria-invalid={!!errors.email}
+          aria-describedby={errors.email ? 'email-error' : undefined}
         />
-      </div>
+      </FormField>
 
-      <SubmitButton>{isPending ? 'Sending...' : 'Send Reset Link'}</SubmitButton>
-
+      {/* Submit */}
+      <SubmitButton disabled={isPending}>{isPending ? 'Sending...' : 'Send Reset Link'}</SubmitButton>
       <div className="text-center">
         <Link href="/account/login" className="text-sm text-gray-500 hover:text-[#C09721] hover:underline">
           Back to Login

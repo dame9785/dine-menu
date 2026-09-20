@@ -14,6 +14,7 @@ import TextArea from '@/components/ui/textarea';
 import Select from '@/components/ui/select';
 
 import SubmitButton from '@/components/ui/submit-button';
+import FormField from '../ui/form-field';
 
 type Props = {
   categories: CategoryViewModel[];
@@ -97,6 +98,8 @@ export default function MenuForm({ menuItem, onOpenChange, categories }: Props) 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    setErrors({});
+
     const formValues = {
       name: name.trim(),
       description: description.trim(),
@@ -105,23 +108,24 @@ export default function MenuForm({ menuItem, onOpenChange, categories }: Props) 
       image,
     };
 
-    const validate = isEditMode ? updateMenuSchema.safeParse(formValues) : addMenuSchema.safeParse(formValues);
+    const validation = isEditMode ? updateMenuSchema.safeParse(formValues) : addMenuSchema.safeParse(formValues);
 
-    if (!validate.success) {
-      setErrors(validate.error.flatten().fieldErrors);
+    if (!validation.success) {
+      setErrors(validation.error.flatten().fieldErrors);
       return;
     }
 
-    // Skapa FormData först efter valideringen
+    const validatedData = validation.data;
+
     const formData = new FormData();
 
-    formData.append('name', name.trim());
-    formData.append('description', description.trim());
-    formData.append('price', price);
-    formData.append('categoryId', categoryId);
+    formData.append('name', validatedData.name);
+    formData.append('description', validatedData.description);
+    formData.append('price', String(validatedData.price));
+    formData.append('categoryId', String(validatedData.categoryId));
 
-    if (image) {
-      formData.append('image', image);
+    if (validatedData.image instanceof File) {
+      formData.append('image', validatedData.image);
     }
 
     startTransition(async () => {
@@ -143,8 +147,8 @@ export default function MenuForm({ menuItem, onOpenChange, categories }: Props) 
 
         handleClose();
       } catch (error) {
-        console.error('Error on update or add menu item action', error);
-        toast.error('Something went wrong..');
+        console.error('Error adding or updating menu item:', error);
+        toast.error('Something went wrong. Please try again.');
       }
     });
   };
@@ -152,161 +156,120 @@ export default function MenuForm({ menuItem, onOpenChange, categories }: Props) 
   return (
     <form onSubmit={handleSubmit} className="space-y-5 p-6">
       {/* Name */}
-      <div>
-        <label htmlFor="name" className="mb-2 block text-sm font-medium text-slate-700">
-          Name
-        </label>
-
+      <FormField label="name" htmlFor="name" error={errors.name?.[0]}>
         <Input
-          value={name}
-          onChange={(e) => {
-            setName(e.target.value);
-            clearError('name');
-          }}
-          type="text"
-          name="name"
           id="name"
-          placeholder="e.g. Margherita Pizza"
+          name="name"
+          type="name"
+          value={name}
+          onChange={(event) => setName(event.target.value)}
+          placeholder="Enter name"
+          autoComplete="name"
+          disabled={isPending}
           aria-invalid={!!errors.name}
           aria-describedby={errors.name ? 'name-error' : undefined}
         />
-
-        {errors.name?.[0] && (
-          <p id="name-error" className="mt-1.5 text-sm text-red-500" role="alert">
-            {errors.name[0]}
-          </p>
-        )}
-      </div>
+      </FormField>
 
       {/* Description */}
-      <div>
-        <label htmlFor="description" className="mb-2 block text-sm font-medium text-slate-700">
-          Description
-        </label>
-
+      <FormField label="description" htmlFor="description" error={errors.description?.[0]}>
         <TextArea
-          value={description}
-          onChange={(e) => {
-            setDescription(e.target.value);
-            clearError('description');
-          }}
-          placeholder="Describe the dish..."
-          rows={5}
           id="description"
           name="description"
+          value={description}
+          onChange={(event) => {
+            setDescription(event.target.value);
+            clearError('description');
+          }}
+          placeholder="Enter description"
+          disabled={isPending}
           aria-invalid={!!errors.description}
           aria-describedby={errors.description ? 'description-error' : undefined}
         />
-
-        {errors.description?.[0] && (
-          <p id="description-error" className="mt-1.5 text-sm text-red-500" role="alert">
-            {errors.description[0]}
-          </p>
-        )}
-      </div>
+      </FormField>
 
       {/* Image */}
-      <div>
-        <label
-          htmlFor={`image-${menuItem?.id ?? 'new'}`}
-          className="relative flex h-48 cursor-pointer flex-col items-center justify-center overflow-hidden rounded-xl border border-dashed border-indigo-200 bg-slate-50 p-4 transition-all duration-200 focus-within:border-[#C09721] focus-within:ring-4 focus-within:ring-indigo-500/10 hover:border-[#C09721]"
-        >
-          {imagePreview ? (
-            <Image
-              fill
-              src={imagePreview}
-              alt="Preview of uploaded image"
-              className="rounded-lg object-cover"
-              sizes="(max-width: 768px) 100vw, 448px"
-            />
-          ) : (
-            <>
-              <div className="mb-3 rounded-full bg-indigo-50 p-3 text-indigo-600">📷</div>
-              <p className="text-sm font-medium text-slate-700">Upload image</p>
-              <p className="mt-1 text-xs text-slate-400">PNG, JPG or WEBP</p>
-            </>
-          )}
-        </label>
+      <FormField label="Image" htmlFor={`image-${menuItem?.id ?? 'new'}`} error={errors.image?.[0]}>
+        <div className="relative h-56 overflow-hidden rounded-xl border border-dashed border-slate-300 bg-slate-50 transition-all duration-200 focus-within:border-[#C09721] focus-within:shadow-[0_0_0_3px_rgba(192,151,33,0.12)] hover:border-[#C09721]">
+          <label
+            htmlFor={`image-${menuItem?.id ?? 'new'}`}
+            className="absolute inset-0 z-10 flex cursor-pointer flex-col items-center justify-center p-4"
+          >
+            {imagePreview ? (
+              <Image
+                fill
+                src={imagePreview}
+                alt="Preview of uploaded image"
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 448px"
+              />
+            ) : (
+              <>
+                <div className="mb-3 rounded-full bg-indigo-50 p-3 text-indigo-600">📷</div>
 
-        <Input
-          id={`image-${menuItem?.id ?? 'new'}`}
-          type="file"
-          name="image"
-          accept="image/png,image/jpeg,image/webp"
-          onChange={handleImageChange}
-          className="hidden"
-          aria-invalid={!!errors.image}
-          aria-describedby={errors.image ? 'image-error' : undefined}
-        />
+                <p className="text-sm font-semibold text-slate-700">Upload image</p>
 
-        {errors.image?.[0] && (
-          <p id="image-error" className="mt-1.5 text-sm text-red-500" role="alert">
-            {errors.image[0]}
-          </p>
-        )}
-      </div>
+                <p className="mt-1 text-xs text-slate-400">PNG, JPG or WEBP</p>
+              </>
+            )}
+          </label>
 
-      {/* Price + Category */}
+          <Input
+            id={`image-${menuItem?.id ?? 'new'}`}
+            name="image"
+            type="file"
+            accept="image/png,image/jpeg,image/webp"
+            onChange={handleImageChange}
+            className="hidden"
+            disabled={isPending}
+            aria-invalid={!!errors.image}
+            aria-describedby={errors.image ? 'image-error' : undefined}
+          />
+        </div>
+
+        {imagePreview && <p className="mt-2 text-xs text-slate-500">Click the image to select another file.</p>}
+      </FormField>
+
       <div className="grid grid-cols-2 gap-4">
         {/* Price */}
-        <div>
-          <label htmlFor="price" className="mb-2 block text-sm font-medium text-slate-700">
-            Price (€)
-          </label>
+        <FormField label="price" htmlFor="price" error={errors.price?.[0]}>
           <Input
-            value={price}
-            onChange={(e) => {
-              setPrice(e.target.value);
-              clearError('price');
-            }}
             id="price"
-            type="number"
             name="price"
-            min="0"
-            step="0.01"
-            placeholder="129"
+            type="price"
+            value={price}
+            onChange={(event) => setPrice(event.target.value)}
+            placeholder="Enter price"
+            autoComplete="price"
+            disabled={isPending}
             aria-invalid={!!errors.price}
             aria-describedby={errors.price ? 'price-error' : undefined}
           />
-
-          {errors.price?.[0] && (
-            <p id="price-error" className="mt-1.5 text-sm text-red-500" role="alert">
-              {errors.price[0]}
-            </p>
-          )}
-        </div>
+        </FormField>
 
         {/* Category */}
-        <div>
-          <label htmlFor="categoryId" className="mb-2 block text-sm font-medium text-slate-700">
-            Category
-          </label>
-
+        <FormField label="Category" htmlFor="categoryId" error={errors.categoryId?.[0]}>
           <Select
             id="categoryId"
-            value={categoryId}
             name="categoryId"
-            aria-invalid={!!errors.categoryId}
-            aria-describedby={errors.categoryId ? 'categoryId-error' : undefined}
-            onChange={(e) => {
-              setCategoryId(e.target.value);
+            value={categoryId}
+            disabled={isPending}
+            onChange={(event) => {
+              setCategoryId(event.target.value);
               clearError('categoryId');
             }}
+            aria-invalid={!!errors.categoryId}
+            aria-describedby={errors.categoryId ? 'categoryId-error' : undefined}
           >
-            <option value="">Select</option>
+            <option value="">Select category</option>
+
             {categories.map((category) => (
               <option key={category.id} value={category.id}>
                 {category.name}
               </option>
             ))}
           </Select>
-
-          {errors.categoryId?.[0] && (
-            <p id="categoryId-error" className="mt-1.5 text-sm text-red-500" role="alert">
-              {errors.categoryId[0]}
-            </p>
-          )}
-        </div>
+        </FormField>
       </div>
 
       <div className="flex gap-3 border-t border-slate-100 pt-5">

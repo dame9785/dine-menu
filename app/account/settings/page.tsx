@@ -2,6 +2,7 @@ import { getSession } from '@/lib/auth-guard';
 import AccountSettingsForm from '@/components/forms/account-settings-form';
 import { Suspense } from 'react';
 import { redirect } from 'next/navigation';
+import Link from 'next/link';
 
 export default async function AccountSettingsPage() {
   const session = await getSession();

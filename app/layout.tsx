@@ -39,7 +39,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
 
         <Toaster
           richColors
-          position="top-right"
+          position="top-center"
           toastOptions={{
             classNames: {
               toast: 'text-base',
