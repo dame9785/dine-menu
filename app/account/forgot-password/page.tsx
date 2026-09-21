@@ -11,7 +11,7 @@ export default function ForgotPasswordPage() {
             <LockKeyholeIcon className="h-6 w-6 text-[#D4AF37]" strokeWidth={1.6} />
           </div>
 
-          <h1 className="text-2xl font-semibold text-[#e5c76b]">Register account</h1>
+          <h1 className="text-2xl font-semibold text-[#e5c76b]">Forgot your password?</h1>
         </div>
 
         <ForgotPasswordForm />

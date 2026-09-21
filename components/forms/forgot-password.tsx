@@ -81,11 +81,6 @@ export default function ForgotPasswordForm() {
 
       {/* Submit */}
       <SubmitButton disabled={isPending}>{isPending ? 'Sending...' : 'Send Reset Link'}</SubmitButton>
-      <div className="text-center">
-        <Link href="/account/login" className="text-sm text-gray-500 hover:text-[#C09721] hover:underline">
-          Back to Login
-        </Link>
-      </div>
     </form>
   );
 }

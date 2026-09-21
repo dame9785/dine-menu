@@ -1,9 +1,8 @@
 'use client';
 
-import { Suspense } from 'react';
-
 import ResetPasswordForm from '@/components/forms/reset-password-form';
-import { Link, LockKeyholeIcon } from 'lucide-react';
+import { LockKeyholeIcon } from 'lucide-react';
+import Link from 'next/link';
 
 export default function ResetPasswordPage() {
   return (
