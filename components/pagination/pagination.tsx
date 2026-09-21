@@ -30,20 +30,50 @@ export default function Pagination({
     return `${basePath}?${params.toString()}`;
   };
 
-  const pageLinkClass =
-    'flex h-9 min-w-9 items-center justify-center rounded-md border border-[#A77F18]/30 px-2 text-sm font-medium text-slate-700 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-[#C09721] hover:bg-[#FFFCF5] hover:text-[#A77F18] hover:shadow-sm hover:shadow-[#C09721]/15 active:translate-y-0 active:scale-[0.97]';
+  const pageLinkClass = `
+  flex h-11 min-w-11 shrink-0
+  items-center justify-center
+  rounded-xl
+  border border-[#C09721]/25
+  bg-[#181714]
+  px-3
+  text-sm font-semibold
+  text-[#A6A39A]
+  outline-none
+  transition-all duration-300
+
+  hover:-translate-y-0.5
+  hover:border-[#C09721]/70
+  hover:bg-[#2A2414]
+  hover:text-[#E5C76B]
+  hover:shadow-[0_0_18px_rgba(192,151,33,0.12)]
+
+  active:scale-95
+
+  focus-visible:ring-2
+  focus-visible:ring-[#C09721]/50
+`;
+
+  const disabledClass = `
+    flex h-10 w-10
+    items-center justify-center
+    rounded-lg
+    border border-[#332D1F]
+    text-[#49453B]
+    opacity-60
+  `;
 
   return (
-    <nav aria-label={ariaLabel} className="flex items-center justify-center py-6">
-      <div className="flex items-center gap-1.5 rounded-xl border border-[#A77F18]/30 bg-white p-1.5 shadow-lg">
+    <nav aria-label={ariaLabel} className="flex items-center justify-center py-7">
+      <div className="flex items-center gap-1.5 rounded-2xl border border-[#332D1F] bg-gradient-to-br from-[#1B1811] to-[#12110D] p-2 shadow-[0_8px_30px_rgba(0,0,0,0.18)]">
         {/* Previous */}
         {currentPage > 1 ? (
           <Link scroll={false} href={getPageUrl(currentPage - 1)} aria-label="Previous page" className={pageLinkClass}>
-            <ChevronLeft size={18} aria-hidden="true" />
+            <ChevronLeft size={17} strokeWidth={1.7} aria-hidden="true" />
           </Link>
         ) : (
-          <span aria-hidden="true" className="flex h-9 w-9 items-center justify-center rounded-md text-slate-300">
-            <ChevronLeft size={18} />
+          <span aria-hidden="true" className={disabledClass}>
+            <ChevronLeft size={17} strokeWidth={1.7} />
           </span>
         )}
 
@@ -54,7 +84,7 @@ export default function Pagination({
               key={page}
               aria-current="page"
               aria-label={`Page ${page}`}
-              className="flex h-9 min-w-9 items-center justify-center rounded-md border border-[#A77F18] bg-[#C09721] px-2 text-sm font-semibold text-white shadow-md shadow-[#C09721]/20"
+              className="flex h-10 min-w-10 items-center justify-center rounded-lg border border-[#C09721]/70 bg-gradient-to-br from-[#C09721] to-[#8B6914] px-2.5 text-sm font-semibold text-[#17130A] shadow-[0_0_18px_rgba(192,151,33,0.12)]"
             >
               {page}
             </span>
@@ -74,11 +104,11 @@ export default function Pagination({
         {/* Next */}
         {currentPage < totalPages ? (
           <Link scroll={false} href={getPageUrl(currentPage + 1)} aria-label="Next page" className={pageLinkClass}>
-            <ChevronRight size={18} aria-hidden="true" />
+            <ChevronRight size={17} strokeWidth={1.7} aria-hidden="true" />
           </Link>
         ) : (
-          <span aria-hidden="true" className="flex h-9 w-9 items-center justify-center rounded-md text-slate-300">
-            <ChevronRight size={18} />
+          <span aria-hidden="true" className={disabledClass}>
+            <ChevronRight size={17} strokeWidth={1.7} />
           </span>
         )}
       </div>
