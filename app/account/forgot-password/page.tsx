@@ -1,42 +1,31 @@
-'use client';
-
-import { useState } from 'react';
 import Link from 'next/link';
-import { Mail } from 'lucide-react';
 import ForgotPasswordForm from '@/components/forms/forgot-password';
+import { LockKeyholeIcon } from 'lucide-react';
 
 export default function ForgotPasswordPage() {
-  const [isSent, setIsSent] = useState(false);
-
   return (
-    <main className="flex min-h-screen items-center justify-center bg-[#FBF8F0] px-4">
-      <div className="w-full max-w-md rounded-2xl border border-[#C09721] bg-white p-8 shadow-lg">
+    <section className="relative flex min-h-screen items-center justify-center overflow-hidden">
+      <div className="w-full max-w-md rounded-2xl border border-[#C09721]/25 bg-[#121210]/95 p-8 shadow-lg">
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#FBF8F0]">
-            <Mail className="h-6 w-6 text-[#C09721]" />
+          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full border border-[#C09721]/40 bg-[#2A2414] shadow-[0_0_24px_rgba(192,151,33,0.08)]">
+            <LockKeyholeIcon className="h-6 w-6 text-[#D4AF37]" strokeWidth={1.6} />
           </div>
 
-          <h1 className="text-2xl font-semibold text-gray-900">Forgot Password?</h1>
-          <p className="mt-2 text-sm text-gray-500">
-            Enter your email address and we will send you a password reset link.
-          </p>
+          <h1 className="text-2xl font-semibold text-[#e5c76b]">Register account</h1>
         </div>
 
-        {isSent ? (
-          <div className="text-center">
-            <p className="text-sm text-gray-600">Check your inbox for a password reset link.</p>
-
+        <ForgotPasswordForm />
+        <footer className="mt-5 grid grid-cols-1 gap-2 text-[#b5b0a3]">
+          <p className="text-center text-sm">
             <Link
               href="/account/login"
-              className="mt-6 inline-block text-sm font-medium text-[#C09721] hover:underline"
+              className="font-medium transition-colors duration-200 hover:text-[#F0D98A] hover:underline hover:underline-offset-4"
             >
-              Back to Login
+              Go back to login
             </Link>
-          </div>
-        ) : (
-          <ForgotPasswordForm onSuccess={() => setIsSent(true)} />
-        )}
+          </p>
+        </footer>
       </div>
-    </main>
+    </section>
   );
 }

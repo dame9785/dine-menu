@@ -30,7 +30,6 @@ export default function LoginForm() {
 
     try {
       const formData = new FormData(evt.currentTarget);
-
       const result = await signInEmailAction(formData);
 
       if (!result.success) {

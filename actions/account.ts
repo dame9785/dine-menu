@@ -74,6 +74,64 @@ export async function signUpEmailAction(formData: FormData): Promise<ActionResul
   }
 }
 
+export async function forgotPasswordAction(formData: FormData): Promise<ActionResult> {
+  const emailValue = formData.get('email');
+
+  if (typeof emailValue !== 'string' || !emailValue.trim()) {
+    return {
+      success: false,
+      message: 'Email is required',
+      errors: {
+        email: ['Please enter your email address.'],
+      },
+    };
+  }
+
+  const email = emailValue.trim();
+
+  try {
+    await auth.api.requestPasswordReset({
+      headers: await headers(),
+      body: {
+        email,
+        redirectTo: '/account/reset-password',
+      },
+    });
+
+    return {
+      success: true,
+      message: 'Password reset email sent',
+    };
+  } catch (error) {
+    console.error('Forgot password error:', error);
+
+    if (isAPIError(error)) {
+      console.error('Better Auth error:', {
+        code: error.body?.code,
+        message: error.message,
+      });
+
+      if (error.body?.code === 'VALIDATION_ERROR') {
+        return {
+          success: false,
+          message: 'Invalid input',
+          errors: {
+            email: ['Invalid email'],
+          },
+        };
+      }
+    }
+
+    return {
+      success: false,
+      message: 'Something went wrong',
+      errors: {
+        general: ['Unable to process your request. Please try again later.'],
+      },
+    };
+  }
+}
+
 /*Sign In Email Action*/
 export async function signInEmailAction(formData: FormData): Promise<ActionResponse> {
   const email = formData.get('email')?.toString().trim() ?? '';

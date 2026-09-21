@@ -1,6 +1,5 @@
 'use client';
 
-import { authClient } from '@/lib/auth-client';
 import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -8,7 +7,6 @@ import Input from '@/components/ui/input';
 import SubmitButton from '@/components/ui/submit-button';
 import FormField from '../ui/form-field';
 
-import { registerAccountSchema } from '@/schemas/account';
 import { createCompany } from '@/actions/company';
 import { toast } from 'sonner';
 import { User2, MailBadge, Building, LockKeyhole } from 'lucide-react';
@@ -33,66 +31,6 @@ export default function RegisterForm() {
   const [error, setError] = useState('');
   const [isPending, setPending] = useState(false);
 
-  // async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-  //   event.preventDefault();
-
-  //   setErrors({});
-  //   setError('');
-  //   setIsPending(true);
-
-  //   const data = {
-  //     name: name,
-  //     email: email,
-  //     password,
-  //     company: company,
-  //   };
-
-  //   const validation = registerAccountSchema.safeParse(data);
-
-  //   if (!validation.success) {
-  //     setErrors(validation.error.flatten().fieldErrors);
-  //     setIsPending(false);
-  //     return;
-  //   }
-
-  //   try {
-  //     // Skapa användarkonto
-  //     const { error: signUpError } = await authClient.signUp.email({
-  //       name: data.name,
-  //       email: data.email,
-  //       password: data.password,
-  //     });
-
-  //     if (signUpError) {
-  //       setError(signUpError.message || 'Registration failed.');
-  //       return;
-  //     }
-
-  //     // Skapa företag om företagsnamn har angetts
-  //     if (data.company) {
-  //       const companyResponse = await createCompany(data.company);
-
-  //       if (!companyResponse.success) {
-  //         toast.warning('Account created, but company registration failed.');
-
-  //         router.push('/');
-  //         return;
-  //       }
-  //     }
-
-  //     toast.success('Account successfully registered!');
-
-  //     router.push('/');
-  //     router.refresh();
-  //   } catch (error) {
-  //     console.error('Registration error:', error);
-
-  //     setError('Something went wrong. Please try again.');
-  //   } finally {
-  //     setIsPending(false);
-  //   }
-  // }
-
   async function handleSubmit(evt: FormEvent<HTMLFormElement>) {
     evt.preventDefault();
 
@@ -101,7 +39,6 @@ export default function RegisterForm() {
 
     try {
       const formData = new FormData(evt.currentTarget);
-
       const result = await signUpEmailAction(formData);
 
       if (!result.success) {

@@ -4,73 +4,63 @@ import { FormEvent, useState } from 'react';
 import { toast } from 'sonner';
 import Link from 'next/link';
 
-import { authClient } from '@/lib/auth-client';
+import { useRouter } from 'next/navigation';
+
 import Input from '@/components/ui/input';
 import SubmitButton from '../ui/submit-button';
 import FormField from '../ui/form-field';
-import { forgotPasswordSchema } from '@/schemas/account';
+import { forgotPasswordAction } from '@/actions/account';
 
-interface Props {
-  onSuccess: () => void;
-}
+export default function ForgotPasswordForm() {
+  const router = useRouter();
 
-type FormErrors = Record<string, string[]>;
+  const [errors, setErrors] = useState<{
+    email?: string[];
+    password?: string[];
+    general?: string;
+  }>({});
 
-export default function ForgotPasswordForm({ onSuccess }: Props) {
-  const [errors, setErrors] = useState<FormErrors>({});
   const [email, setEmail] = useState('');
-  const [isPending, setIsPending] = useState(false);
+  const [isPending, setPending] = useState(false);
 
-  const clearError = (field: keyof FormErrors) => {
-    setErrors((prev) => {
-      const next = { ...prev };
+  async function handleSubmit(evt: FormEvent<HTMLFormElement>) {
+    evt.preventDefault();
 
-      delete next[field];
-
-      return next;
-    });
-  };
-
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
+    setPending(true);
     setErrors({});
 
-    const validation = forgotPasswordSchema.safeParse({
-      email: email.trim(),
-    });
-
-    if (!validation.success) {
-      setErrors(validation.error.flatten().fieldErrors);
-      return;
-    }
-
-    setIsPending(true);
-
     try {
-      const response = await authClient.requestPasswordReset({
-        email: validation.data.email,
-        redirectTo: `${window.location.origin}/account/reset-password`,
-      });
+      const formData = new FormData(evt.currentTarget);
+      const result = await forgotPasswordAction(formData);
 
-      if (response.error) {
-        toast.error(response.error.message || 'Something went wrong.');
+      if (!result.success) {
+        toast.error(result.message, { duration: 1000 });
+
+        setErrors(result.errors ?? {});
         return;
       }
 
-      onSuccess();
-      toast.success('If the email exists, a reset link has been sent.');
+      router.replace('/');
+      router.refresh();
+      return toast.success(result.message);
     } catch (error) {
-      console.error('Password reset error:', error);
+      console.error('Register user form error:', error);
 
-      toast.error('Something went wrong. Please try again.');
+      toast.error('Something went wrong. Please try again.', {
+        duration: 2000,
+      });
     } finally {
-      setIsPending(false);
+      setPending(false);
     }
-  };
+  }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
+      {errors.general && (
+        <p role="alert" className="rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+          {errors.general}
+        </p>
+      )}
       {/* Email*/}
       <FormField label="Email address" htmlFor="email" error={errors.email?.[0]}>
         <Input
@@ -80,7 +70,6 @@ export default function ForgotPasswordForm({ onSuccess }: Props) {
           value={email}
           onChange={(event) => {
             setEmail(event.target.value);
-            clearError('email');
           }}
           placeholder="Enter your email"
           autoComplete="email"
