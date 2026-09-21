@@ -5,6 +5,7 @@ import { sendEmail } from '@/lib/email';
 import { prisma } from '@/lib/prisma';
 
 import { resetPasswordEmail } from '@/lib/email-templates/reset-password-email';
+import { nextCookies } from 'better-auth/next-js';
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -89,4 +90,6 @@ export const auth = betterAuth({
     // Revoke sessions after password reset
     revokeSessionsOnPasswordReset: true,
   },
+  // ✅ Ska ligga på root-nivå
+  plugins: [nextCookies()],
 });

@@ -5,16 +5,17 @@
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-playfair);
 
-  /* Premium color palette */
-  --background: #f8f5ed;
-  --foreground: #29251f;
+  /* Dark Gold Theme */
+  --background: #0a0a09;
+  --foreground: #e8e4d8;
 
   --gold: #c09721;
-  --gold-light: #dfc77b;
-  --gold-dark: #927017;
+  --gold-light: #e5c76b;
+  --gold-dark: #8b6914;
 
-  --surface: #fffdf8;
-  --border: #e8dfcc;
+  --surface: #121210;
+  --surface-light: #1a1915;
+  --border: #3a3628;
 }
 
 * {
@@ -27,21 +28,10 @@ html {
 }
 
 body {
-  font-family: var(--font-sans), Arial, sans-serif;
-  font-size: 1rem;
-  line-height: 1.6;
-  color: var(--foreground);
-
-  /* Premium background */
-  background:
-    radial-gradient(ellipse at 0% 0%, rgba(192, 151, 33, 0.08), transparent 40%),
-    radial-gradient(ellipse at 100% 100%, rgba(192, 151, 33, 0.06), transparent 40%),
-    linear-gradient(135deg, #fbf9f3 0%, #f8f5ed 50%, #f3eee3 100%);
-
-  min-height: 100vh;
+  position: relative;
+  isolation: isolate;
 }
 
-/* Subtil dekorativ textur */
 body::before {
   content: '';
   position: fixed;
@@ -49,7 +39,7 @@ body::before {
   pointer-events: none;
   z-index: -1;
 
-  opacity: 0.35;
+  opacity: 0.18;
 
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
 }

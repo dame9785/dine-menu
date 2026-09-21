@@ -5,19 +5,24 @@ type Props = {
   htmlFor: string;
   error?: string;
   children: ReactNode;
+  icon?: ReactNode;
 };
 
-export default function FormField({ label, htmlFor, error, children }: Props) {
+export default function FormField({ label, htmlFor, error, children, icon }: Props) {
   return (
-    <div className="space-y-2">
-      <label htmlFor={htmlFor} className="block text-base font-semibold text-slate-800">
-        {label}
+    <div className="space-y-3">
+      <label htmlFor={htmlFor} className="flex items-center gap-2 text-base leading-none font-semibold text-[#D4AF37]">
+        {icon && (
+          <span className="inline-flex h-4 w-4 shrink-0 items-center justify-center text-[#C09721]">{icon}</span>
+        )}
+
+        <span>{label}</span>
       </label>
 
       {children}
 
       {error && (
-        <p id={`${htmlFor}-error`} role="alert" className="text-sm font-medium text-red-600">
+        <p id={`${htmlFor}-error`} role="alert" className="text-sm font-medium text-red-400">
           {error}
         </p>
       )}

@@ -27,7 +27,7 @@ export default function UserActions() {
   }
 
   return (
-    <div className="rounded-2xl border border-[#E8D9B5] bg-[#FFFCF5] p-4">
+    <div className="rounded-2xl p-4">
       <div className="mb-3 flex w-full flex-col items-center gap-3">
         {session?.user ? (
           <>

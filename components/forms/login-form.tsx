@@ -3,12 +3,12 @@
 import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { authClient } from '@/lib/auth-client';
-
 import Input from '@/components/ui/input';
 import SubmitButton from '@/components/ui/submit-button';
 import FormField from '@/components/ui/form-field';
-import { loginSchema } from '@/schemas/account';
+import { signInEmailAction } from '@/actions/account';
+import { toast } from 'sonner';
+import { Mail, LockKeyhole } from 'lucide-react';
 
 export default function LoginForm() {
   const router = useRouter();
@@ -19,65 +19,52 @@ export default function LoginForm() {
     general?: string;
   }>({});
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
   const [isPending, setPending] = useState(false);
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  async function handleSubmit(evt: FormEvent<HTMLFormElement>) {
+    evt.preventDefault();
 
-    const formData = {
-      email,
-      password,
-    };
+    setPending(true);
+    setErrors({});
 
-    const validation = loginSchema.safeParse(formData);
+    try {
+      const formData = new FormData(evt.currentTarget);
 
-    if (!validation.success) {
-      setErrors(validation.error.flatten().fieldErrors);
-      return;
+      const result = await signInEmailAction(formData);
+
+      if (!result.success) {
+        toast.error(result.message, { duration: 1000 });
+
+        setErrors(result.errors ?? {});
+        return;
+      }
+
+      router.push('/');
+      return toast.success(result.message);
+    } catch (error) {
+      console.error('Login form error:', error);
+
+      toast.error('Something went wrong. Please try again.', {
+        duration: 2000,
+      });
+    } finally {
+      setPending(false);
     }
-
-    authClient.signIn.email(
-      {
-        email: formData.email,
-        password: formData.password,
-      },
-      {
-        onRequest: () => {
-          setPending(true);
-        },
-        onResponse: () => {
-          setPending(false);
-        },
-        onSuccess: () => {
-          router.push('/');
-        },
-        onError: ({ error }) => {
-          setErrors({
-            general: error.message || 'Something went wrong. Please try again.',
-          });
-        },
-      },
-    );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
+    <form onSubmit={handleSubmit} className="space-y-7">
       {errors.general && (
         <p role="alert" className="rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400">
           {errors.general}
         </p>
       )}
       {/* Email */}
-      <FormField label="Email address" htmlFor="email" error={errors.email?.[0]}>
+      <FormField label="Email address" htmlFor="email" error={errors.email?.[0]} icon={<Mail className="h-4 w-4" />}>
         <Input
           id="email"
           name="email"
           type="email"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
           placeholder="example@live.se"
           autoComplete="email"
           disabled={isPending}
@@ -87,13 +74,17 @@ export default function LoginForm() {
       </FormField>
 
       {/* Password */}
-      <FormField label="Password" htmlFor="password">
+
+      <FormField
+        label="Password"
+        htmlFor="password"
+        error={errors.password?.[0]}
+        icon={<LockKeyhole className="h-4 w-4" />}
+      >
         <Input
           id="password"
           name="password"
           type="password"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
           placeholder="Enter your password"
           autoComplete="current-password"
           disabled={isPending}

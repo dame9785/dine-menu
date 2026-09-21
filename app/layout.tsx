@@ -31,7 +31,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} h-full`}>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} h-full bg-[#0A0A09]`}>
       <body className="min-h-full font-sans text-base leading-relaxed antialiased">
         <SidebarWrapper />
 
