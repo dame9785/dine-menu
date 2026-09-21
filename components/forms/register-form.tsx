@@ -11,8 +11,8 @@ import FormField from '../ui/form-field';
 import { registerAccountSchema } from '@/schemas/account';
 import { createCompany } from '@/actions/company';
 import { toast } from 'sonner';
-
-type FormErrors = Record<string, string[]>;
+import { User2, MailBadge, Building, LockKeyhole } from 'lucide-react';
+import { signUpEmailAction } from '@/actions/account';
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -24,57 +24,95 @@ export default function RegisterForm() {
   const [password, setPassword] = useState('');
   const [company, setCompany] = useState('');
 
-  const [errors, setErrors] = useState<FormErrors>({});
+  const [errors, setErrors] = useState<{
+    email?: string[];
+    password?: string[];
+    general?: string;
+  }>({});
+
   const [error, setError] = useState('');
-  const [isPending, setIsPending] = useState(false);
+  const [isPending, setPending] = useState(false);
 
-  const clearError = (field: keyof FormErrors) => {
-    setErrors((prev) => {
-      const next = { ...prev };
-      delete next[field];
-      return next;
-    });
-  };
+  // async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  //   event.preventDefault();
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  //   setErrors({});
+  //   setError('');
+  //   setIsPending(true);
 
+  //   const data = {
+  //     name: name,
+  //     email: email,
+  //     password,
+  //     company: company,
+  //   };
+
+  //   const validation = registerAccountSchema.safeParse(data);
+
+  //   if (!validation.success) {
+  //     setErrors(validation.error.flatten().fieldErrors);
+  //     setIsPending(false);
+  //     return;
+  //   }
+
+  //   try {
+  //     // Skapa användarkonto
+  //     const { error: signUpError } = await authClient.signUp.email({
+  //       name: data.name,
+  //       email: data.email,
+  //       password: data.password,
+  //     });
+
+  //     if (signUpError) {
+  //       setError(signUpError.message || 'Registration failed.');
+  //       return;
+  //     }
+
+  //     // Skapa företag om företagsnamn har angetts
+  //     if (data.company) {
+  //       const companyResponse = await createCompany(data.company);
+
+  //       if (!companyResponse.success) {
+  //         toast.warning('Account created, but company registration failed.');
+
+  //         router.push('/');
+  //         return;
+  //       }
+  //     }
+
+  //     toast.success('Account successfully registered!');
+
+  //     router.push('/');
+  //     router.refresh();
+  //   } catch (error) {
+  //     console.error('Registration error:', error);
+
+  //     setError('Something went wrong. Please try again.');
+  //   } finally {
+  //     setIsPending(false);
+  //   }
+  // }
+
+  async function handleSubmit(evt: FormEvent<HTMLFormElement>) {
+    evt.preventDefault();
+
+    setPending(true);
     setErrors({});
-    setError('');
-    setIsPending(true);
-
-    const data = {
-      name: name,
-      email: email,
-      password,
-      company: company,
-    };
-
-    const validation = registerAccountSchema.safeParse(data);
-
-    if (!validation.success) {
-      setErrors(validation.error.flatten().fieldErrors);
-      setIsPending(false);
-      return;
-    }
 
     try {
-      // Skapa användarkonto
-      const { error: signUpError } = await authClient.signUp.email({
-        name: data.name,
-        email: data.email,
-        password: data.password,
-      });
+      const formData = new FormData(evt.currentTarget);
 
-      if (signUpError) {
-        setError(signUpError.message || 'Registration failed.');
+      const result = await signUpEmailAction(formData);
+
+      if (!result.success) {
+        toast.error(result.message, { duration: 1000 });
+
+        setErrors(result.errors ?? {});
         return;
       }
 
-      // Skapa företag om företagsnamn har angetts
-      if (data.company) {
-        const companyResponse = await createCompany(data.company);
-
+      if (company) {
+        const companyResponse = await createCompany(company);
         if (!companyResponse.success) {
           toast.warning('Account created, but company registration failed.');
 
@@ -83,23 +121,29 @@ export default function RegisterForm() {
         }
       }
 
-      toast.success('Account successfully registered!');
-
-      router.push('/');
+      router.replace('/');
       router.refresh();
+      return toast.success(result.message);
     } catch (error) {
-      console.error('Registration error:', error);
+      console.error('Register user form error:', error);
 
-      setError('Something went wrong. Please try again.');
+      toast.error('Something went wrong. Please try again.', {
+        duration: 2000,
+      });
     } finally {
-      setIsPending(false);
+      setPending(false);
     }
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
+      {errors.general && (
+        <p role="alert" className="rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+          {errors.general}
+        </p>
+      )}
       {/* Name */}
-      <FormField label="name" htmlFor="name" error={errors.name?.[0]}>
+      <FormField label="name" htmlFor="name" icon={<User2 className="h-5 w-5" />}>
         <Input
           id="name"
           name="name"
@@ -107,19 +151,16 @@ export default function RegisterForm() {
           value={name}
           onChange={(event) => {
             setName(event.target.value);
-            clearError('name');
             setError('');
           }}
           placeholder="Enter your name"
           autoComplete="name"
           disabled={isPending}
-          aria-invalid={!!errors.name}
-          aria-describedby={errors.name ? 'name-error' : undefined}
         />
       </FormField>
 
       {/* Email */}
-      <FormField label="email" htmlFor="email" error={errors.email?.[0]}>
+      <FormField label="email" htmlFor="email" icon={<MailBadge className="h-5 w-5" />}>
         <Input
           id="email"
           name="email"
@@ -127,7 +168,6 @@ export default function RegisterForm() {
           value={email}
           onChange={(event) => {
             setEmail(event.target.value);
-            clearError('email');
             setError('');
           }}
           placeholder="Enter your email"
@@ -149,7 +189,6 @@ export default function RegisterForm() {
             const checked = event.target.checked;
 
             setCreateCompanyAccount(checked);
-            clearError('company');
             setError('');
 
             if (!checked) {
@@ -165,7 +204,7 @@ export default function RegisterForm() {
         </label>
       </div>
       {createCompanyAccount && (
-        <FormField label="company" htmlFor="company" error={errors.company?.[0]}>
+        <FormField label="company" htmlFor="company" icon={<Building className="h-5 w-5" />}>
           <Input
             id="company"
             name="company"
@@ -173,20 +212,22 @@ export default function RegisterForm() {
             value={company}
             onChange={(event) => {
               setCompany(event.target.value);
-              clearError('company');
               setError('');
             }}
             placeholder="Enter company name"
             autoComplete="organization"
             disabled={isPending}
-            aria-invalid={!!errors.company}
-            aria-describedby={errors.company ? 'company-error' : undefined}
           />
         </FormField>
       )}
 
       {/* Password */}
-      <FormField label="password" htmlFor="password" error={errors.password?.[0]}>
+      <FormField
+        label="password"
+        htmlFor="password"
+        icon={<LockKeyhole className="h-5 w-5" />}
+        error={errors.password?.[0]}
+      >
         <Input
           id="password"
           name="password"
@@ -194,7 +235,6 @@ export default function RegisterForm() {
           value={password}
           onChange={(event) => {
             setPassword(event.target.value);
-            clearError('password');
             setError('');
           }}
           placeholder="Enter password"

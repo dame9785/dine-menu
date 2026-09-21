@@ -14,6 +14,7 @@ export async function signUpEmailAction(formData: FormData): Promise<ActionResul
 
   try {
     await auth.api.signUpEmail({
+      headers: await headers(),
       body: {
         name,
         email,
@@ -25,12 +26,51 @@ export async function signUpEmailAction(formData: FormData): Promise<ActionResul
       success: true,
       message: 'Success',
     };
-  } catch (err) {
-    if (err instanceof Error) {
-      return { error: 'Oops! Something went wrong while registering' };
-    }
+  } catch (error) {
+    console.error('Sign in error:', error);
 
-    return { error: 'Internal Server Error' };
+    if (isAPIError(error)) {
+      if (error.body?.code === 'USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL') {
+        return {
+          success: false,
+          message: 'Sign up failed',
+          errors: {
+            general: ['Email already exist!'],
+          },
+        };
+      } else if (error.body?.code === 'PASSWORD_TOO_SHORT') {
+        return {
+          success: false,
+          message: 'Sign up failed',
+          errors: {
+            general: ['Password too short!'],
+          },
+        };
+      } else if (error.body?.code === 'VALIDATION_ERROR') {
+        return {
+          success: false,
+          message: 'Sign up failed',
+          errors: {
+            general: ['Must enter password & email'],
+          },
+        };
+      }
+
+      return {
+        success: false,
+        message: 'Sign in failed',
+        errors: {
+          general: ['Unable to sign in. Please try again.'],
+        },
+      };
+    }
+    return {
+      success: false,
+      message: 'Sign up failed',
+      errors: {
+        general: ['Unable to sign in. Please try again.'],
+      },
+    };
   }
 }
 
