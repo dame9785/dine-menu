@@ -30,6 +30,17 @@ html {
 body {
   position: relative;
   isolation: isolate;
+  min-height: 100vh;
+
+  color: var(--foreground);
+  background:
+    /* Guldglow uppe till vänster */
+    radial-gradient(ellipse at 0% 0%, rgba(192, 151, 33, 0.13), transparent 38%),
+    /* Guldglow nere till höger */ radial-gradient(ellipse at 100% 100%, rgba(139, 105, 20, 0.12), transparent 40%),
+    /* Subtilt ljus i mitten */ radial-gradient(ellipse at 50% 45%, rgba(192, 151, 33, 0.035), transparent 55%),
+    /* Grundgradient */ linear-gradient(135deg, #080807 0%, #0f0e0b 45%, #0a0a09 100%);
+
+  background-attachment: fixed;
 }
 
 body::before {
@@ -42,6 +53,20 @@ body::before {
   opacity: 0.18;
 
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+
+  opacity: 0.18;
+
+  background: linear-gradient(115deg, transparent 0%, rgba(192, 151, 33, 0.025) 50%, transparent 100%);
+
+  mask-image: linear-gradient(to bottom, black, transparent 85%);
 }
 
 /* Rubriker */
@@ -74,4 +99,29 @@ textarea:focus-visible {
 ::selection {
   background: rgba(192, 151, 33, 0.2);
   color: #29251f;
+}
+
+/* Premium scrollbar */
+.premium-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #8b6a18 transparent;
+}
+
+/* Chrome, Edge, Safari */
+.premium-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.premium-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.premium-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #c09721, #806014);
+
+  border-radius: 999px;
+}
+
+.premium-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #d6b13d, #a17b1c);
 }

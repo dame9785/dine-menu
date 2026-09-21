@@ -9,6 +9,7 @@ import FormField from '@/components/ui/form-field';
 import { signInEmailAction } from '@/actions/account';
 import { toast } from 'sonner';
 import { Mail, LockKeyhole } from 'lucide-react';
+import PasswordInput from '@/components/ui/password-input';
 
 export default function LoginForm() {
   const router = useRouter();
@@ -75,16 +76,16 @@ export default function LoginForm() {
 
       {/* Password */}
 
+      {/* Password */}
       <FormField
         label="Password"
         htmlFor="password"
         error={errors.password?.[0]}
-        icon={<LockKeyhole className="h-4 w-4" />}
+        icon={<LockKeyhole className="h-5 w-5" />}
       >
-        <Input
+        <PasswordInput
           id="password"
           name="password"
-          type="password"
           placeholder="Enter your password"
           autoComplete="current-password"
           disabled={isPending}

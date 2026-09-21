@@ -28,7 +28,7 @@ export default function MenuCard({ menuItem, categories, isAdmin, isLoggedIn }: 
   const hasCompany = Boolean(menuItem.company?.name);
 
   return (
-    <article className="group relative overflow-hidden rounded-3xl border border-[#C09721]/20 bg-[#FFFCF5] shadow-[0_4px_20px_rgba(118,83,21,0.04)] transition-all duration-500 ease-out hover:-translate-y-1 hover:border-[#C09721]/60 hover:shadow-[0_14px_35px_rgba(118,83,21,0.12)]">
+    <article className="group relative overflow-hidden rounded-3xl border border-[#C09721]/20 shadow-[0_4px_20px_rgba(118,83,21,0.04)] transition-all duration-500 ease-out hover:-translate-y-1 hover:border-[#C09721]/60 hover:shadow-[0_14px_35px_rgba(118,83,21,0.12)]">
       {/* Menu item link */}
       <Link
         href={`/menu/${menuItem.id}`}
@@ -43,27 +43,10 @@ export default function MenuCard({ menuItem, categories, isAdmin, isLoggedIn }: 
             aria-hidden="true"
             className="absolute inset-0 bg-linear-to-t from-black/65 via-black/5 to-transparent"
           />
-
-          {/* Restaurant ownership */}
-          {hasCompany && (
-            <div className="absolute right-4 bottom-4 left-4">
-              <div className="flex items-center gap-3 rounded-2xl border border-white/20 bg-black/40 px-3 py-3 text-white shadow-lg backdrop-blur-xl">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-white/20 bg-white/10">
-                  <Store size={15} strokeWidth={1.5} />
-                </div>
-
-                <div className="min-w-0">
-                  <p className="text-[9px] font-medium tracking-[0.18em] text-white/60 uppercase">Presented by</p>
-
-                  <p className="truncate text-sm font-medium tracking-wide">{menuItem.company?.name}</p>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
 
         {/* Content */}
-        <MenuCardContent menuItem={menuItem} />
+        <MenuCardContent menuItem={menuItem} hasCompany={hasCompany} />
       </Link>
 
       {/* Favorite */}

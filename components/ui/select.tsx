@@ -1,14 +1,28 @@
 import type { SelectHTMLAttributes } from 'react';
+import { ChevronDown } from 'lucide-react';
 
 type Props = SelectHTMLAttributes<HTMLSelectElement>;
 
 export default function Select({ className = '', children, ...props }: Props) {
   return (
-    <select
-      {...props}
-      className={`h-12 w-full rounded-xl border border-[#C09721]/35 bg-white px-4 text-base leading-relaxed text-[#765315] shadow-sm ring-0 transition-all duration-300 ease-out outline-none placeholder:text-sm placeholder:font-normal placeholder:tracking-wide placeholder:text-slate-400 placeholder:transition-colors placeholder:duration-300 hover:border-[#C09721]/80 hover:bg-[#FFFCF5] hover:shadow-[0_3px_12px_rgba(192,151,33,0.08)] focus:border-[#C09721] focus:bg-[#FFFCF5] focus:shadow-[0_3px_14px_rgba(192,151,33,0.10)] focus:ring-0 focus:outline-none focus:placeholder:text-[#C09721]/50 focus-visible:ring-0 focus-visible:outline-none disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-500 ${className} `}
-    >
-      {children}
-    </select>
+    <div className="group relative w-full">
+      <select
+        {...props}
+        className={`h-12 w-full appearance-none rounded-xl border border-[#C09721]/30 bg-[#181714] px-4 pr-12 text-base leading-relaxed text-[#E8E4D8] transition-colors duration-300 outline-none placeholder:text-sm placeholder:font-normal placeholder:tracking-wide placeholder:text-[#777267] hover:bg-[#141209] focus:border-[#C09721]/60 ${className} `}
+      >
+        {children}
+      </select>
+
+      {/* Custom dropdown icon */}
+      <ChevronDown
+        size={17}
+        strokeWidth={1.7}
+        aria-hidden="true"
+        className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer text-[#C09721]/70 transition-all duration-300 group-focus-within:rotate-180 group-focus-within:text-[#E5C76B] group-hover:text-[#E5C76B]"
+      />
+
+      {/* Subtle bottom accent */}
+      <span className="pointer-events-none absolute right-4 bottom-0 left-4 h-px origin-center scale-x-0 bg-linear-to-r from-transparent via-[#C09721] to-transparent transition-transform duration-300 group-focus-within:scale-x-100" />
+    </div>
   );
 }

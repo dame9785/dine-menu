@@ -11,12 +11,10 @@ type Props = {
 export default function FormField({ label, htmlFor, error, children, icon }: Props) {
   return (
     <div className="space-y-3">
-      <label htmlFor={htmlFor} className="flex items-center gap-2 text-base leading-none font-semibold text-[#D4AF37]">
-        {icon && (
-          <span className="inline-flex h-4 w-4 shrink-0 items-center justify-center text-[#C09721]">{icon}</span>
-        )}
+      <label htmlFor={htmlFor} className="flex items-center gap-2 text-base leading-5 font-semibold text-[#D4AF37]">
+        {icon && <span className="flex h-5 w-5 shrink-0 items-center justify-center text-[#C09721]">{icon}</span>}
 
-        <span>{label}</span>
+        <span className="leading-5">{label}</span>
       </label>
 
       {children}

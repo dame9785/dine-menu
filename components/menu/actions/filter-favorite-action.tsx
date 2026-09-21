@@ -58,15 +58,15 @@ export default function FavoriteFilterButton({ searchParam, sortByParam, categor
       aria-pressed={isFavorite}
       className={`group relative flex h-12 w-[220px] cursor-pointer items-center justify-center gap-3 rounded-xl border px-4 text-sm font-semibold tracking-wide transition-all duration-300 ease-out outline-none ${
         isFavorite
-          ? 'border-[#C09721] bg-[#F3EBD8] text-[#765315] shadow-[0_3px_14px_rgba(192,151,33,0.12)]'
-          : 'border-[#C09721]/30 bg-white text-slate-600 shadow-sm'
-      } hover:-translate-y-0.5 hover:border-[#C09721] hover:bg-[#FFFCF5] hover:text-[#765315] hover:shadow-[0_5px_18px_rgba(192,151,33,0.14)] focus-visible:ring-2 focus-visible:ring-[#C09721]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#FBF8F0] active:translate-y-0 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60`}
+          ? 'border-[#C09721] bg-[#2A2414] text-[#E5C76B] shadow-[0_0_20px_rgba(192,151,33,0.10)]'
+          : 'border-[#C09721]/30 bg-[#181714] text-[#B5B0A3] shadow-sm'
+      } hover:-translate-y-0.5 hover:border-[#C09721] hover:bg-[#24200F] hover:text-[#E5C76B] hover:shadow-[0_0_25px_rgba(192,151,33,0.14)] focus-visible:ring-2 focus-visible:ring-[#C09721]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A09] active:translate-y-0 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60`}
     >
       {/* Icon container */}
       <span
-        className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full transition-all duration-300 ${
-          isFavorite ? 'bg-[#E8DAB8]' : 'bg-[#FBF8F0] group-hover:bg-[#F3EBD8]'
-        } `}
+        className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[#C09721]/20 transition-all duration-300 ${
+          isFavorite ? 'bg-[#C09721]/15' : 'bg-[#24200F] group-hover:bg-[#3A2D12]'
+        }`}
       >
         {isPending ? (
           <Loader2 size={16} className="animate-spin text-[#C09721]" aria-hidden="true" />
@@ -81,7 +81,7 @@ export default function FavoriteFilterButton({ searchParam, sortByParam, categor
           <Heart
             size={16}
             strokeWidth={1.8}
-            className="text-red-600 transition-all duration-300 group-hover:scale-110 group-hover:text-red-500"
+            className="text-[#D4AF37] transition-all duration-300 group-hover:scale-110 group-hover:text-[#F0D98A]"
             aria-hidden="true"
           />
         )}

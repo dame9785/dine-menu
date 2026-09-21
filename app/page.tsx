@@ -55,7 +55,7 @@ export default async function MenuPage({ searchParams }: Props) {
   const totalMenuItemsCount = menuResponse.pagination?.totalItems ?? 0;
 
   return (
-    <main className="min-h-screen bg-[#FBF8F0]">
+    <main className="min-h-screen">
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         {/* Header */}
         <Header categories={categories} />
@@ -78,14 +78,12 @@ export default async function MenuPage({ searchParams }: Props) {
         >
           {/* Item count */}
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#C09721]/25 bg-[#E8DAB8]/40 text-[#765315]">
-              <Utensils size={17} strokeWidth={1.6} aria-hidden="true" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#C09721]/25 bg-[#181714] text-[#765315]">
+              <Utensils size={17} strokeWidth={1.6} aria-hidden="true" className="text-[#c09721]" />
             </div>
-
             <div>
-              <p className="text-sm font-semibold text-[#765315]">Our Menu</p>
-
-              <p className="text-xs tracking-wide text-slate-500">{totalMenuItemsCount} culinary selections</p>
+              <p className="text-sm font-semibold text-[#d4af37]">Our Menu</p>
+              <p className="text-xs tracking-wide text-[#b5b0a3]">{totalMenuItemsCount} culinary selections</p>
             </div>
           </div>
 

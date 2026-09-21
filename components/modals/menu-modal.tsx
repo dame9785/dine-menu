@@ -36,7 +36,7 @@ export default function MenuModal({ categories, menuItem, open, onOpenChange }: 
 
   return createPortal(
     <div
-      className="fixed inset-0 z-9999 flex items-center justify-center bg-slate-900/60 px-4 py-6 backdrop-blur-md"
+      className="premium-scrollbar fixed inset-0 z-9999 flex items-center justify-center overflow-y-auto border-[#C09721]/25 bg-[#121210]/9 px-4 py-6 backdrop-blur-md"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) {
           handleClose();
@@ -47,17 +47,17 @@ export default function MenuModal({ categories, menuItem, open, onOpenChange }: 
         role="dialog"
         aria-modal="true"
         aria-labelledby="menu-modal-title"
-        className="flex max-h-[90vh] w-full max-w-lg flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl"
+        className="flex max-h-[90vh] w-full max-w-lg flex-col overflow-hidden rounded-2xl border border-[#C09721]/25 bg-[#121210]/95 shadow-2xl"
       >
         {/* Header */}
-        <div className="shrink-0 border-b border-slate-200 px-6 py-5">
+        <div className="shrink-0 px-6 py-5">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <h2 id="menu-modal-title" className="text-lg font-semibold tracking-tight text-slate-900">
+              <h2 id="menu-modal-title" className="text-2xl font-semibold tracking-tight text-[#e8e4d8]">
                 {isEditMode ? 'Update menu' : 'Add menu'}
               </h2>
 
-              <p className="mt-1 text-sm leading-5 text-slate-500">
+              <p className="text-l mt-1 leading-5 text-[#969184]">
                 {isEditMode ? 'Update the information for this dish.' : 'Add a new dish to your menu.'}
               </p>
             </div>
@@ -66,7 +66,7 @@ export default function MenuModal({ categories, menuItem, open, onOpenChange }: 
             <button
               type="button"
               onClick={handleClose}
-              className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg text-black transition-all duration-200 hover:bg-[#C09721] hover:text-white active:scale-95"
+              className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg text-[#e8e4d8] transition-all duration-200 hover:bg-[#141209] hover:text-white active:scale-95"
               aria-label="Close modal"
             >
               <X size={19} />

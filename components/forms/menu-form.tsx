@@ -2,17 +2,17 @@
 
 import { useState, useTransition, useEffect } from 'react';
 import { toast } from 'sonner';
+import Image from 'next/image';
 
 import { addMenuItem, updateMenuItem } from '@/actions/menu';
 import { updateMenuSchema, addMenuSchema } from '@/schemas/menu';
 
 import { CategoryViewModel } from '@/types/category';
 import { MenuItemViewModel } from '@/types/menu';
-import Image from 'next/image';
+
 import Input from '@/components/ui/input';
 import TextArea from '@/components/ui/textarea';
 import Select from '@/components/ui/select';
-
 import SubmitButton from '@/components/ui/submit-button';
 import FormField from '../ui/form-field';
 
@@ -47,9 +47,10 @@ export default function MenuForm({ menuItem, onOpenChange, categories }: Props) 
   }, [imagePreview]);
 
   const clearError = (field: keyof FormErrors) => {
-    setErrors((prev) => {
-      const next = { ...prev };
+    setErrors((previous) => {
+      const next = { ...previous };
       delete next[field];
+
       return next;
     });
   };
@@ -79,12 +80,11 @@ export default function MenuForm({ menuItem, onOpenChange, categories }: Props) 
     onOpenChange?.(false);
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
 
     if (!file) return;
 
-    // Revoke previous object URL
     if (imagePreview?.startsWith('blob:')) {
       URL.revokeObjectURL(imagePreview);
     }
@@ -95,8 +95,8 @@ export default function MenuForm({ menuItem, onOpenChange, categories }: Props) 
     clearError('image');
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
     setErrors({});
 
@@ -131,6 +131,7 @@ export default function MenuForm({ menuItem, onOpenChange, categories }: Props) 
     startTransition(async () => {
       try {
         const response = isEditMode ? await updateMenuItem(menuItem.id, formData) : await addMenuItem(formData);
+
         if (!response.success) {
           if (response.errors) {
             setErrors(response.errors);
@@ -147,6 +148,7 @@ export default function MenuForm({ menuItem, onOpenChange, categories }: Props) 
         handleClose();
       } catch (error) {
         console.error('Error adding or updating menu item:', error);
+
         toast.error('Something went wrong. Please try again.');
       }
     });
@@ -159,9 +161,12 @@ export default function MenuForm({ menuItem, onOpenChange, categories }: Props) 
         <Input
           id="name"
           name="name"
-          type="name"
+          type="text"
           value={name}
-          onChange={(event) => setName(event.target.value)}
+          onChange={(event) => {
+            setName(event.target.value);
+            clearError('name');
+          }}
           placeholder="Enter name"
           autoComplete="name"
           disabled={isPending}
@@ -189,30 +194,51 @@ export default function MenuForm({ menuItem, onOpenChange, categories }: Props) 
 
       {/* Image */}
       <FormField label="Image" htmlFor={`image-${menuItem?.id ?? 'new'}`} error={errors.image?.[0]}>
-        <div className="relative h-56 overflow-hidden rounded-xl border border-dashed border-slate-300 bg-slate-50 transition-all duration-200 focus-within:border-[#C09721] focus-within:shadow-[0_0_0_3px_rgba(192,151,33,0.12)] hover:border-[#C09721]">
+        <div className="group relative h-56 overflow-hidden rounded-xl border border-dashed border-[#C09721]/30 bg-[#181714] shadow-[inset_0_0_25px_rgba(0,0,0,0.18)] transition-all duration-300 focus-within:border-[#C09721] focus-within:shadow-[0_0_0_3px_rgba(192,151,33,0.12)] hover:border-[#C09721]/80 hover:bg-[#24200F] hover:shadow-[0_0_22px_rgba(192,151,33,0.08)]">
           <label
             htmlFor={`image-${menuItem?.id ?? 'new'}`}
             className="absolute inset-0 z-10 flex cursor-pointer flex-col items-center justify-center p-4"
           >
             {imagePreview ? (
-              <Image
-                fill
-                src={imagePreview}
-                alt="Preview of uploaded image"
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 448px"
-              />
+              <>
+                <Image
+                  fill
+                  src={imagePreview}
+                  alt="Preview of uploaded image"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  sizes="(max-width: 768px) 100vw, 448px"
+                />
+
+                {/* Preview overlay */}
+                <div className="absolute inset-0 bg-black/35 transition-colors duration-300 group-hover:bg-black/50" />
+
+                {/* Preview text */}
+                <div className="relative z-10 rounded-xl border border-white/20 bg-black/50 px-4 py-2 text-center backdrop-blur-md">
+                  <p className="text-xs font-semibold tracking-wide text-white">Change image</p>
+
+                  <p className="mt-1 text-[10px] tracking-wide text-white/60">Click to select another file</p>
+                </div>
+              </>
             ) : (
               <>
-                <div className="mb-3 rounded-full bg-indigo-50 p-3 text-indigo-600">📷</div>
+                {/* Upload icon */}
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full border border-[#C09721]/30 bg-[#24200F] text-[#C09721] shadow-[0_0_18px_rgba(192,151,33,0.08)] transition-all duration-300 group-hover:border-[#C09721]/70 group-hover:bg-[#302710] group-hover:shadow-[0_0_24px_rgba(192,151,33,0.15)]">
+                  <span className="text-lg">📷</span>
+                </div>
 
-                <p className="text-sm font-semibold text-slate-700">Upload image</p>
+                {/* Upload title */}
+                <p className="text-sm font-semibold tracking-wide text-[#E8E4D8]">Upload image</p>
 
-                <p className="mt-1 text-xs text-slate-400">PNG, JPG or WEBP</p>
+                {/* Supported formats */}
+                <p className="mt-1 text-xs tracking-wide text-[#777267]">PNG, JPG or WEBP</p>
+
+                {/* Browse hint */}
+                <p className="mt-3 text-[10px] tracking-[0.16em] text-[#C09721]/70 uppercase">Click to browse</p>
               </>
             )}
           </label>
 
+          {/* File input */}
           <Input
             id={`image-${menuItem?.id ?? 'new'}`}
             name="image"
@@ -226,20 +252,27 @@ export default function MenuForm({ menuItem, onOpenChange, categories }: Props) 
           />
         </div>
 
-        {imagePreview && <p className="mt-2 text-xs text-slate-500">Click the image to select another file.</p>}
+        {imagePreview && (
+          <p className="mt-2 text-xs tracking-wide text-[#777267]">Click the image to select another file.</p>
+        )}
       </FormField>
 
+      {/* Price and Category */}
       <div className="grid grid-cols-2 gap-4">
         {/* Price */}
         <FormField label="price" htmlFor="price" error={errors.price?.[0]}>
           <Input
             id="price"
             name="price"
-            type="price"
+            type="number"
+            step="0.01"
+            min="0"
             value={price}
-            onChange={(event) => setPrice(event.target.value)}
+            onChange={(event) => {
+              setPrice(event.target.value);
+              clearError('price');
+            }}
             placeholder="Enter price"
-            autoComplete="price"
             disabled={isPending}
             aria-invalid={!!errors.price}
             aria-describedby={errors.price ? 'price-error' : undefined}
@@ -271,7 +304,8 @@ export default function MenuForm({ menuItem, onOpenChange, categories }: Props) 
         </FormField>
       </div>
 
-      <div className="flex gap-3 border-t border-slate-100 pt-5">
+      {/* Submit */}
+      <div className="border-slate-100 pt-5">
         <SubmitButton isLoading={isPending}>{isEditMode ? 'Update menu' : 'Save menu'}</SubmitButton>
       </div>
     </form>

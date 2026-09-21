@@ -11,7 +11,7 @@ export default function AddMenuButton({ onClick }: Props) {
     <button
       type="button"
       onClick={onClick}
-      className="group flex cursor-pointer items-center gap-3 rounded-xl border border-[#C09721]/30 bg-white p-3 text-sm font-medium text-slate-900 shadow-sm transition-all duration-200 ease-out outline-none hover:-translate-y-0.5 hover:border-[#C09721] hover:bg-[#FFFCF5] hover:text-[#A77F18] hover:shadow-md hover:shadow-[#C09721]/15 focus:border-[#C09721] focus:ring-4 focus:ring-[#C09721]/10 active:translate-y-0 active:scale-[0.98]"
+      className="group inline-flex h-12 w-55 cursor-pointer items-center justify-center gap-2.5 rounded-xl border border-[#C09721]/30 bg-[#181714] px-4 text-sm font-semibold tracking-wide text-[#B5B0A3] shadow-sm transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-[#C09721] hover:bg-[#24200F] hover:text-[#E5C76B] hover:shadow-[0_0_22px_rgba(192,151,33,0.12)] focus-visible:ring-2 focus-visible:ring-[#C09721]/50 focus-visible:outline-none active:translate-y-0 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
     >
       <Plus size={17} aria-hidden="true" className="transition-transform duration-300 group-hover:-rotate-45" />
 

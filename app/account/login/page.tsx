@@ -3,7 +3,6 @@ import { redirect } from 'next/navigation';
 
 import LoginForm from '@/components/forms/login-form';
 import { getSession } from '@/lib/auth-guard';
-import Image from 'next/image';
 
 export default async function LoginPage() {
   const session = await getSession();
@@ -13,7 +12,7 @@ export default async function LoginPage() {
   }
 
   return (
-    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0A0A09] px-4 py-12">
+    <main className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-12">
       <div className="relative z-10 w-full max-w-md">
         {/* Login card */}
         <div className="rounded-3xl border border-[#C09721]/25 bg-[#121210]/95 p-7 shadow-[0_25px_100px_rgba(0,0,0,0.65)] backdrop-blur-2xl sm:p-10">
