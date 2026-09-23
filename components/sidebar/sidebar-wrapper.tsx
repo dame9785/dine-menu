@@ -4,6 +4,7 @@ import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
 import Sidebar from './sidebar';
+import { use } from 'react';
 
 export default async function SidebarWrapper() {
   const session = await auth.api.getSession({
@@ -12,7 +13,6 @@ export default async function SidebarWrapper() {
 
   let isAdmin = false;
   let isCompany = false;
-  let companyName: string | null = null;
 
   if (session?.user?.id) {
     const user = await prisma.user.findUnique({
@@ -21,25 +21,15 @@ export default async function SidebarWrapper() {
       },
       select: {
         role: true,
+        company: true,
       },
     });
 
     isAdmin = user?.role === 'admin';
     isCompany = user?.role === 'company';
 
-    if (isCompany) {
-      const company = await prisma.company.findFirst({
-        where: {
-          ownerId: session.user.id,
-        },
-        select: {
-          name: true,
-        },
-      });
-
-      companyName = company?.name ?? null;
-    }
+    console.log('USER', user);
   }
 
-  return <Sidebar isAdmin={isAdmin} isCompany={isCompany} companyName={companyName} />;
+  return <Sidebar isAdmin={isAdmin} isCompany={isCompany} />;
 }

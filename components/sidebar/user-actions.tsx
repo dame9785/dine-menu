@@ -7,7 +7,12 @@ import { LogOut, User, Settings, ArrowUpRight } from 'lucide-react';
 
 import { authClient } from '@/lib/auth-client';
 
-export default function UserActions() {
+type Props = {
+  isAdmin: boolean;
+  isCompany: boolean;
+};
+
+export default function UserActions({ isAdmin, isCompany }: Props) {
   const router = useRouter();
 
   const { data: session, isPending } = authClient.useSession();
@@ -37,7 +42,7 @@ export default function UserActions() {
   const user = session?.user;
 
   return (
-    <div className="rounded-2xl border border-[#332D1F] bg-gradient-to-br from-[#1B1811] to-[#12110D] p-4">
+    <div className="rounded-2xl border border-[#332D1F] bg-linear-to-br from-[#1B1811] to-[#12110D] p-4">
       {/* User information */}
       <div className="flex items-center gap-3">
         {/* Avatar */}
@@ -79,6 +84,28 @@ export default function UserActions() {
               className="text-[#5F584A] transition-colors group-hover:text-[#C09721]"
             />
           </Link>
+
+          {/* Admin */}
+          {isCompany && (
+            <Link
+              href="/company/settings"
+              className="group flex items-center gap-3 rounded-xl border border-transparent px-3 py-2.5 text-xs font-medium text-[#A6A39A] transition-all duration-300 hover:border-[#C09721]/20 hover:bg-[#2A2414] hover:text-[#E5C76B]"
+            >
+              <Settings
+                size={15}
+                strokeWidth={1.7}
+                className="text-[#777267] transition-colors group-hover:text-[#C09721]"
+              />
+
+              <span className="flex-1">Company settings</span>
+
+              <ArrowUpRight
+                size={14}
+                strokeWidth={1.7}
+                className="text-[#5F584A] transition-colors group-hover:text-[#C09721]"
+              />
+            </Link>
+          )}
 
           {/* Logout */}
           <button

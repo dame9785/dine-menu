@@ -8,3 +8,11 @@ export type CompanyIdResponse = {
   message: string;
   data?: number;
 };
+
+export type CompanyViewModel = {
+  id: number;
+  name: string;
+  ownerId: string;
+  createdAt: Date;
+  updatedAt: Date;
+};

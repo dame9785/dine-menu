@@ -25,11 +25,10 @@ const navigationItems = [
 
 type Props = {
   isAdmin: boolean;
-  companyName?: string | null;
   isCompany: boolean;
 };
 
-export default function Sidebar({ isAdmin, companyName, isCompany }: Props) {
+export default function Sidebar({ isAdmin, isCompany }: Props) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -61,7 +60,7 @@ export default function Sidebar({ isAdmin, companyName, isCompany }: Props) {
                   aria-current={isActive ? 'page' : undefined}
                   className={`group relative flex items-center gap-3 overflow-hidden rounded-xl border px-3 py-3.5 text-sm font-medium transition-all duration-300 outline-none ${
                     isActive
-                      ? `border-[#C09721]/30 bg-gradient-to-r from-[#2A2414] to-[#1D1A12] text-[#E5C76B] shadow-[0_4px_20px_rgba(192,151,33,0.04)]`
+                      ? `border-[#C09721]/30 bg-linear-to-r from-[#2A2414] to-[#1D1A12] text-[#E5C76B] shadow-[0_4px_20px_rgba(192,151,33,0.04)]`
                       : `border-transparent text-[#99958A] hover:border-[#C09721]/15 hover:bg-[#191711] hover:text-[#E5C76B]`
                   } focus-visible:ring-2 focus-visible:ring-[#C09721]/50`}
                 >
@@ -163,33 +162,10 @@ export default function Sidebar({ isAdmin, companyName, isCompany }: Props) {
 
           {/* Decorative line */}
           <div className="mt-6 flex items-center gap-2">
-            <span className="h-px flex-1 bg-gradient-to-r from-[#C09721]/40 to-transparent" />
-
+            <span className="h-px flex-1 bg-linear-to-r from-[#C09721]/40 to-transparent" />
             <Sparkles size={12} strokeWidth={1.5} className="text-[#C09721]/60" />
-
-            <span className="h-px flex-1 bg-gradient-to-l from-[#C09721]/40 to-transparent" />
+            <span className="h-px flex-1 bg-linear-to-l from-[#C09721]/40 to-transparent" />
           </div>
-
-          {/* Company info */}
-          {isCompany && companyName && (
-            <div className="mt-5 rounded-xl border border-[#C09721]/20 bg-gradient-to-br from-[#211C10] to-[#15130E] p-4">
-              <div className="mb-3 flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#C09721] shadow-[0_0_8px_rgba(192,151,33,0.6)]" />
-
-                <p className="text-[9px] font-bold tracking-[0.18em] text-[#C09721] uppercase">Your Restaurant</p>
-              </div>
-
-              <p className="truncate text-base font-semibold tracking-tight text-[#E5C76B]" title={companyName}>
-                {companyName}
-              </p>
-
-              <p className="mt-1 text-[11px] text-[#777267]">Company account</p>
-
-              <div className="mt-4 h-px bg-[#C09721]/10" />
-
-              <p className="mt-3 text-[10px] tracking-wide text-[#8E887A]">Manage your culinary menu</p>
-            </div>
-          )}
         </header>
 
         {/* Navigation */}
@@ -197,7 +173,7 @@ export default function Sidebar({ isAdmin, companyName, isCompany }: Props) {
 
         {/* Footer */}
         <footer className="border-t border-[#332D1F] p-4">
-          <UserActions />
+          <UserActions isAdmin={isAdmin} isCompany={isCompany} />
         </footer>
       </aside>
     </>
