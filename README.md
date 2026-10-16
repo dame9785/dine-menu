@@ -1,49 +1,50 @@
+
 # 🍽️ Dine Menu
 
-> En plattform för digitala restaurangmenyer, där restauranger kan hantera sina maträtter och besökare enkelt kan upptäcka, söka och filtrera bland menyer.
+> A platform for digital restaurant menus, where restaurants can manage their dishes and visitors can easily discover, search, and filter menus.
 
-## ✨ Om projektet
+## ✨ About the Project
 
-**Dine Menu** är ett fullstackprojekt med fokus på att skapa en användarvänlig plattform för restauranger och deras menyer.
+**Dine Menu** is a full-stack project focused on creating a user-friendly platform for restaurants and their menus.
 
-Målet är att restaurangföretag ska kunna registrera sig, administrera sina menyer och publicera maträtter, medan vanliga användare kan utforska menyer från olika restauranger.
-
----
-
-## 🚀 Funktioner
-
-### För besökare och användare
-
-- 🔎 Söka efter maträtter och beskrivningar
-- 🗂️ Filtrera maträtter efter kategori & maträtter
-- 🏪 Filtrera efter restaurang – planerad funktion
-- ↕️ Sortera maträtter
-- ❤️ Spara maträtter som favoriter
-- 📄 Pagination för maträttslistor
-- 👤 Registrera konto och logga in
-- 💬 Kommentera maträtter som inloggad användare
-- 🔐 Återställa lösenord via e-post
-
-### För administratörer
-
-- ➕ Skapa maträtter
-- ✏️ Redigera maträtter
-- 🗑️ Ta bort maträtter
-- 🗂️ Skapa, redigera och ta bort kategorier
-- 🔒 Skyddade adminfunktioner
-- 👥 Hantera åtkomst baserat på användarroll
-
-### Planerad företagsfunktionalitet
-
-- 🏢 Företagsregistrering
-- 🏪 Restaurangprofiler
-- 📋 Företag kan hantera sina egna menyer
-- 👨‍🍳 Företag kan publicera och administrera maträtter
-- 🌍 Användare kan upptäcka menyer från flera restauranger
+The goal is to allow restaurant businesses to register, manage their menus, and publish dishes, while regular users can explore menus from different restaurants.
 
 ---
 
-## 🛠️ Tekniker
+## 🚀 Features
+
+### For Visitors and Users
+
+- 🔎 Search for dishes and descriptions
+- 🗂️ Filter dishes by category
+- 🏪 Filter by restaurant — planned feature
+- ↕️ Sort dishes
+- ❤️ Save dishes as favorites
+- 📄 Pagination for dish lists
+- 👤 Register an account and log in
+- 💬 Comment on dishes as a logged-in user
+- 🔐 Reset passwords via email
+
+### For Administrators
+
+- ➕ Create dishes
+- ✏️ Edit dishes
+- 🗑️ Delete dishes
+- 🗂️ Create, edit, and delete categories
+- 🔒 Protected admin functionality
+- 👥 Manage access based on user roles
+
+### Planned Business Features
+
+- 🏢 Business registration
+- 🏪 Restaurant profiles
+- 📋 Businesses can manage their own menus
+- 👨‍🍳 Businesses can publish and manage dishes
+- 🌍 Users can discover menus from multiple restaurants
+
+---
+
+## 🛠️ Technologies
 
 ### Frontend
 
@@ -51,68 +52,68 @@ Målet är att restaurangföretag ska kunna registrera sig, administrera sina me
 - [React](https://react.dev/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
-- Server Components och Client Components
+- Server Components and Client Components
 - Server Actions
-- Sonner för toast-notifikationer
-- Lucide React för ikoner
+- [Sonner](https://sonner.emilkowal.ski/) for toast notifications
+- [Lucide React](https://lucide.dev/) for icons
 
-### Backend och datalager
+### Backend and Data Layer
 
 - Next.js API Routes
-- Prisma ORM
+- [Prisma ORM](https://www.prisma.io/)
 - MySQL
-- TiDB Cloud
-- Better Auth
-- Resend för e-postutskick
-- Zod för validering
+- [TiDB Cloud](https://www.pingcap.com/tidb/)
+- [Better Auth](https://www.better-auth.com/)
+- [Resend](https://resend.com/) for email delivery
+- [Zod](https://zod.dev/) for validation
 
 ### Deployment
 
-- Vercel
-- TiDB Cloud
-- Vercel Blob Storage
+- [Vercel](https://vercel.com/)
+- [TiDB Cloud](https://www.pingcap.com/tidb/)
+- [Vercel Blob](https://vercel.com/docs/vercel-blob) for file storage
 
 ---
 
-## 🏗️ Arkitektur
+## 🏗️ Architecture
 
-Projektet använder en lagerbaserad struktur för att separera ansvar och göra koden enklare att underhålla.
+The project uses a layered architecture to separate responsibilities and make the code easier to maintain.
 
 ```text
 UI / Components
-      │
-      ▼
+       │
+       ▼
 Server Actions / API Routes
-      │
-      ▼
+       │
+       ▼
 Services
-      │
-      ▼
+       │
+       ▼
 Repositories
-      │
-      ▼
+       │
+       ▼
 Prisma ORM
-      │
-      ▼
+       │
+       ▼
 MySQL / TiDB Cloud
 ```
 
-### Exempel på ansvarsfördelning
+### Separation of Responsibilities
 
-| Lager          | Ansvar                                         |
-| -------------- | ---------------------------------------------- |
-| Components     | Presentation, formulär och användarinteraktion |
-| Server Actions | Hantera klientanrop och uppdatera data         |
-| API Routes     | Exponera backend-endpoints                     |
-| Services       | Affärslogik och samordning                     |
-| Repositories   | Kommunikation med databasen                    |
-| Mappers        | Konvertera databasobjekt till ViewModels       |
-| Schemas        | Validering med Zod                             |
-| Auth Guards    | Kontrollera sessioner och användarbehörighet   |
+| Layer | Responsibility |
+|---|---|
+| Components | Presentation, forms, and user interaction |
+| Server Actions | Handle requests and update data |
+| API Routes | Expose backend endpoints |
+| Services | Business logic and coordination |
+| Repositories | Database communication |
+| Mappers | Convert database objects into ViewModels |
+| Schemas | Data validation using Zod |
+| Auth Guards | Verify sessions and user permissions |
 
 ---
 
-## 📁 Projektstruktur
+## 📁 Project Structure
 
 ```text
 app/
@@ -158,34 +159,46 @@ types/
 └── api-responses.ts
 ```
 
-> Filstrukturen kan utvecklas över tid när fler funktioner och företagsroller introduceras.
+> The project structure may evolve over time as additional features and business roles are introduced.
 
 ---
 
-## 🔐 Autentisering och säkerhet
+## 🔐 Authentication and Security
 
-Dine Menu använder **Better Auth** för autentisering med e-post och lösenord.
+Dine Menu uses **Better Auth** for authentication with email and password.
+
+The application also includes protected administrative functionality and role-based access control.
 
 ---
 
-## ⚙️ Kom igång lokalt
+## ⚙️ Getting Started Locally
 
-### 1. Klona projektet
+### Prerequisites
+
+Make sure you have the following installed:
+
+- [Node.js](https://nodejs.org/)
+- npm
+- Access to a MySQL-compatible database, such as TiDB Cloud
+
+### 1. Clone the Repository
 
 ```bash
 git clone <repository-url>
 cd dine-menu
 ```
 
-### 2. Installera beroenden
+Replace `<repository-url>` with your GitHub repository URL.
+
+### 2. Install Dependencies
 
 ```bash
 npm install
 ```
 
-### 3. Skapa miljövariabler
+### 3. Configure Environment Variables
 
-Skapa en `.env.local`-fil i projektets rot:
+Create a `.env.local` file in the project root:
 
 ```env
 DATABASE_URL="your-database-connection-string"
@@ -201,35 +214,39 @@ NEXT_PUBLIC_LOGO_URL="your-public-logo-url"
 BLOB_READ_WRITE_TOKEN="your-blob-token"
 ```
 
-> Använd projektets faktiska miljövariabler och värden. Lägg aldrig riktiga nycklar i README-filen eller i versionshanteringen.
+Replace the placeholder values with your actual configuration.
 
-### 4. Kör Prisma
+> **Security:** Never commit real API keys, database credentials, authentication secrets, or other sensitive environment variables to GitHub.
+
+### 4. Generate Prisma Client and Run Migrations
 
 ```bash
 npx prisma generate
 npx prisma migrate dev
 ```
 
-Om du behöver öppna Prisma Studio:
+These commands generate the Prisma Client and apply database migrations to your development database.
+
+### 5. Open Prisma Studio (Optional)
 
 ```bash
 npx prisma studio
 ```
 
-### 5. Starta utvecklingsservern
+Prisma Studio allows you to inspect and manage database records through a graphical interface.
+
+### 6. Start the Development Server
 
 ```bash
 npm run dev
 ```
 
-Öppna sedan:
+Open the application in your browser:
 
-```text
 http://localhost:3000
-```
 
 ---
 
-## 👨‍💻 Utvecklare
+## 👨‍💻 Developer
 
-Skapat av **David Söderberg**.
+Created by **David Söderberg**.
