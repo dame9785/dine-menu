@@ -19,7 +19,7 @@ const navigationItems = [
     label: 'Categories',
     href: '/category',
     icon: Folder,
-    requiresAdmin: true,
+    requiresAdmin: false,
   },
 ];
 

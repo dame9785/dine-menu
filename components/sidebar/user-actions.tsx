@@ -86,7 +86,7 @@ export default function UserActions({ isAdmin, isCompany }: Props) {
           </Link>
 
           {/* Admin */}
-          {isCompany && (
+          {/* {isCompany && (
             <Link
               href="/company/settings"
               className="group flex items-center gap-3 rounded-xl border border-transparent px-3 py-2.5 text-xs font-medium text-[#A6A39A] transition-all duration-300 hover:border-[#C09721]/20 hover:bg-[#2A2414] hover:text-[#E5C76B]"
@@ -105,7 +105,7 @@ export default function UserActions({ isAdmin, isCompany }: Props) {
                 className="text-[#5F584A] transition-colors group-hover:text-[#C09721]"
               />
             </Link>
-          )}
+          )} */}
 
           {/* Logout */}
           <button

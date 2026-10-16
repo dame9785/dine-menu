@@ -3,11 +3,8 @@
 import { FormEvent, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { LockKeyhole } from 'lucide-react';
-import { toast } from 'sonner';
 
-import { authClient } from '@/lib/auth-client';
-import { resetPasswordSchema } from '@/schemas/account';
+import { toast } from 'sonner';
 
 import Input from '@/components/ui/input';
 import SubmitButton from '@/components/ui/submit-button';

@@ -15,7 +15,7 @@ type Props = {
 };
 
 export default async function CategoryPage({ searchParams }: Props) {
-  await requireAdmin();
+  // await requireAdmin();
 
   const params = await searchParams;
 
